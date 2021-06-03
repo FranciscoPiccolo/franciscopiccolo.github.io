@@ -1,0 +1,374 @@
+---
+title: "Análise Exploratória de Dados Financeiros - Dataset da Economatica"
+date: 2021-02-27
+math: true
+output:
+  html_document:
+      fig_width: 9.5
+      fig_height: 7
+      fig_align: center
+      df_print: paged
+---
+
+<script src="index_files/header-attrs/header-attrs.js"></script>
+<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="index_files/anchor-sections/anchor-sections.js"></script>
+
+
+<p>A Economatica é uma empresa de tecnologia do setor financeiro que fornece dados sobre empresas, fundos de investimentos e ações, que auxiliam investidores na tomada de decisão e também acadêmicos na elaboração de estudos. Recentemente comecei a elaborar um artigo acadêmico relacionado a finanças e precisei recorrer à Economatica para pegar alguns dados financeiros de empresas listadas na Bovespa.</p>
+<p>Como vou ter que fazer uma análise exploratória do dataset para ver o que será relevante usar no artigo, vou aproveitar para documentar esta análise e deixar o dataset disponível para que outras pessoas usem também. O dataset pode ser acessado neste <a href="https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/tree/master/datasets/2021-02-27-dataset_economatica">link</a> ou através do comando abaixo:</p>
+<pre class="r"><code># Pacote necessário para usar a função abaixo, que lê o arquivo no github
+library(readr)
+
+dataset_1 &lt;- readr::read_delim(file = &quot;https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2021-02-27-dataset_economatica/dataset_1.csv&quot;,
+                           delim = &quot;;&quot;)
+
+dataset_2 &lt;- readr::read_delim(file = &quot;https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2021-02-27-dataset_economatica/dataset_2.csv&quot;,
+                           delim = &quot;;&quot;)</code></pre>
+<p>O dataset apresenta dados de Março/2016 até Set/2020 das seguintes métricas: Receita líquida; custo de produtos vendidos (cpv); investimentos; EBITDA; Fluxo de caixa livre; Despesas operacionais; Despesas financeiras; Receitas financeiras; Empréstimos de curto prazo; Empréstimos de longo prazo; EV/EBITDA; Patrimônio Líquido; Ativo toal; Passivo + Patrimônio Líquido.</p>
+<p>Para esta análise, vou usar os pacotes abaixo:</p>
+<pre class="r"><code>library(tidyverse)
+library(patchwork)
+library(kableExtra)
+library(DT)
+
+# Função para padronizar o design dos gráficos
+theme_graph &lt;- function(){
+  theme(
+    plot.title = element_text(size = 14),
+    plot.subtitle = element_text(size = 10),
+    plot.caption = element_text(face = &quot;italic&quot;, size = 8.5),
+    axis.text = element_text(size = 8.5),
+    axis.title = element_text(face = &quot;italic&quot;, size = 8.5),
+    strip.background = element_rect(fill = &quot;blue&quot;),
+    strip.text = element_text(face = &quot;bold&quot;),
+    legend.position = &quot;bottom&quot;,
+    legend.title = element_blank()
+  )
+}</code></pre>
+<p>Abaixo consta uma amostra dos dados:</p>
+<pre class="r"><code>dataset_1 %&gt;% 
+  select(company,class,symbol,metric_name,&quot;31/03/2016&quot;,&quot;30/06/2016&quot;) %&gt;% 
+  head(5) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+company
+</th>
+<th style="text-align:left;">
+class
+</th>
+<th style="text-align:left;">
+symbol
+</th>
+<th style="text-align:left;">
+metric_name
+</th>
+<th style="text-align:right;">
+31/03/2016
+</th>
+<th style="text-align:right;">
+30/06/2016
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+3r Petroleum
+</td>
+<td style="text-align:left;">
+ON
+</td>
+<td style="text-align:left;">
+RRRP3
+</td>
+<td style="text-align:left;">
+net_revenue
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+524 Particip
+</td>
+<td style="text-align:left;">
+ON
+</td>
+<td style="text-align:left;">
+QVQP3B
+</td>
+<td style="text-align:left;">
+net_revenue
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abc Brasil
+</td>
+<td style="text-align:left;">
+PN
+</td>
+<td style="text-align:left;">
+ABCB4
+</td>
+<td style="text-align:left;">
+net_revenue
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aco Altona
+</td>
+<td style="text-align:left;">
+PN
+</td>
+<td style="text-align:left;">
+EALT4
+</td>
+<td style="text-align:left;">
+net_revenue
+</td>
+<td style="text-align:right;">
+37863
+</td>
+<td style="text-align:right;">
+69114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aerisenergia
+</td>
+<td style="text-align:left;">
+ON
+</td>
+<td style="text-align:left;">
+AERI3
+</td>
+<td style="text-align:left;">
+net_revenue
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>Agora vamos a sessão de perguntas e respostas referentes ao dataset que formará nossa análise exploratória:</p>
+<ol style="list-style-type: lower-roman">
+<li>Quantidade de empresas no dataset por setor econômico.</li>
+</ol>
+<pre class="r"><code>dataset_1 %&gt;% 
+  distinct(economatica_classification, symbol) %&gt;% 
+  group_by(economatica_classification) %&gt;% 
+  summarise(count = n()) %&gt;% 
+  arrange(desc(count)) -&gt; df
+
+total &lt;- 
+  df %&gt;%
+  group_by() %&gt;% 
+  summarise(total = sum(count)) %&gt;% 
+  as.data.frame()
+
+df[nrow(df)+1, ] = list(&quot;Total&quot;,total[1,1])
+
+df %&gt;% 
+  knitr::kable(format.args = list(big.mark = &quot;.&quot;,
+                                  decimal.mark = &quot;,&quot;))</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+economatica_classification
+</th>
+<th style="text-align:right;">
+count
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:right;">
+95
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+electrical_energy
+</td>
+<td style="text-align:right;">
+41
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+finance_and_securities
+</td>
+<td style="text-align:right;">
+32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+retail
+</td>
+<td style="text-align:right;">
+31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+real_state
+</td>
+<td style="text-align:right;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+transport_and_services
+</td>
+<td style="text-align:right;">
+21
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+textile
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+steel_industry
+</td>
+<td style="text-align:right;">
+18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vehicles
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+food_and_beverages
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+software_and_data
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+oil_and_gas
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+chemistry
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+industry_machines
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+mining
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+telecom
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+eletronics
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+agriculture
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+paper_and_cellulose
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+376
+</td>
+</tr>
+</tbody>
+</table>
