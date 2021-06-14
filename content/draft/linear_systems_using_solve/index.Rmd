@@ -1,0 +1,144 @@
+---
+title: "Resolvendo Sistemas Lineares no R com Solve"
+date: 2021-02-11
+math: true
+output: html_document
+---
+
+```{r, warning=F,message=F, echo=F}
+# Parâmetro para ser usado em todos os códigos
+
+knitr::opts_chunk$set(
+  eval = T,
+  echo = T,
+  warning = F,
+  message = F,
+  fig.align = "center"
+)
+```
+
+Neste post vou mostrar como o R pode ser usado na Álgebra Linear, especificamente na resolução de Sistemas Lineares. Vou usar um exemplo simples e resolvê-lo com algumas funções do R base e com outras de pacotes adicionais. Os seguintes pacotes serão usados para este exemplo:
+
+```{r}
+# Pacotes necessários
+library(tidyverse)
+library(patchwork)
+library(matlib)
+```
+
+O processo de resolução será bem simples, vou (i) escrever a matriz (pois em alguns problemas não será fornecida de maneira direta); (ii) escrever os coeficientes da matriz; (iii) criar variáveis no R com os coeficientes; (iv) testar se o sistema tem solução; (v) aplicar a função para resolvê-lo; (iv) plotar a solução em um gráfico.
+
+### **Exercício 1**
+
+(i) Escrevendo a matriz (basta usar linguagem Latex):
+
+```{r, eval=FALSE}
+$$
+\begin{bmatrix}
+-5x & +2y & =3\\
+9x & +y & =2
+\end{bmatrix}
+$$
+```
+
+$$
+\begin{bmatrix}
+-5x & +2y & =3\\
+9x & +y & =2
+\end{bmatrix}
+$$
+(ii) Escrevendo os coeficientes:
+$$
+\begin{bmatrix}
+-5 & 2 & = 3\\
+ 9 & 1 & = 2
+\end{bmatrix}
+$$
+(iii) Criando as variáveis: Uma linha de cada vez e depos se indica o número de linhas com o **'nrow'**.
+
+```{r}
+left_side <- matrix(c(-5,9, # linha 1
+                      2,1), # linha 2
+                 nrow = 2)
+
+right_side <- matrix(c(3,2), 
+            nrow = 2)
+```
+
+(iv) Validando se há solução: Se retorna **TRUE** é porque há solução.
+
+```{r}
+all.equal(R(left_side), R(cbind(left_side,right_side)))
+```
+
+(v) Solucionando o sistema linear:
+
+```{r}
+solve(left_side,right_side)
+```
+
+Os valores 0.0435 e 1.6087 indicam os valores de X e Y que geram a intersecção destas retas. Plotando o gráfico, a solução ficará mais evidente.
+
+(vi) Visualização gráfica:
+
+```{r}
+matlib::plotEqn(left_side,right_side)
+```
+
+
+### **Exercício 2**
+
+(i) Escrevendo a matriz:
+
+$$
+\begin{bmatrix}
+ 1x & -1y & +2z & -1w & = -1\\
+ 2x & +1y & -2z & -2w & = -2\\
+-1x & +2y & -4z & +1w & = 1\\
+ 3x & +0y & +0z & -3w & = -3
+\end{bmatrix}
+$$
+(ii) Escrevendo os coeficientes:
+$$
+\begin{bmatrix}
+ 1 & -1 & +2 & -1 & = -1\\
+ 2 & +1 & -2 & -2 & = -2\\
+-1 & +2 & -4 & +1 & = 1\\
+ 3 & +0 & +0 & -3 & = -3
+\end{bmatrix}
+$$
+(iii) Criando as variáveis:
+
+```{r}
+left_side <- matrix(c(1,2,-1,3,
+                      -1,1,2,0,
+                      2,-2,-4,0,
+                      -1,-2,1,-3),
+                 nrow = 4)
+
+right_side <- matrix(c(-1,-2,1,-3), 
+            nrow = 4)
+```
+
+(iv) Validando se há solução: Se retorna **TRUE** é porque há solução.
+
+```{r}
+all.equal(R(left_side), R(cbind(left_side,right_side)))
+```
+
+(v) Solucionando o sistema linear:
+
+```{r}
+#solve(left_side,right_side)
+```
+
+A mensagem de erro *Lapack routine dgesv: system is exactly singular* indica que o pacote [Lapack](http://www.netlib.org/lapack/) (desenvolvido em Fortran) que é usado através da função **solve()** tentará inverter a matriz e se a matriz for singular (i.e Determinandte igual a zero) ela não é invertível, por isso gerará este erro. Para verificar o valor dor determinante, basta usar a função abaixo:
+
+```{r}
+det(left_side)
+```
+
+
+
+
+

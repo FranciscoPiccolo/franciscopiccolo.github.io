@@ -4,10 +4,9 @@ date: 2020-03-01
 math: true
 ---
 
-<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="index_files/anchor-sections/anchor-sections.js"></script>
-<script src="index_files/kePrint/kePrint.js"></script>
-<link href="index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
 
 
 <p>Econometria é uma ferramenta (ou técnica) muito usada por economistas, estatísticos e também por outras ciências. Uma definição encontrada nos livros básicos é:</p>
@@ -32,33 +31,18 @@ table_1.3_cpi &lt;- readr::read_delim(file = &quot;https://raw.githubusercontent
                                &quot;table_1.3_cpi.txt&quot;, 
                                sep = &quot;&quot;),
                   delim = &quot; &quot;)</code></pre>
-<p>Agora vamos ao que interessa. Para desenvolver os exercícios, vou usar os pacotes abaixo e também uma função para padronizar o design dos gráficos.</p>
+<p>Agora vamos ao que interessa. Para desenvolver os exercícios, vou usar os pacotes abaixo:</p>
 <pre class="r"><code>library(tidyverse)
 library(patchwork)
 library(gt)
 library(modelsummary)
-library(stringr)
-
-# Função para padronizar o design dos gráficos
-theme_graph &lt;- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = &quot;italic&quot;, size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = &quot;italic&quot;, size = 9),
-    strip.background = element_rect(fill = &quot;grey&quot;),
-    strip.text = element_text(face = &quot;bold&quot;),
-    legend.position = &quot;bottom&quot;,
-    legend.title = element_blank()
-  )
-}</code></pre>
+library(stringr)</code></pre>
 <div id="capítulo-1" class="section level2">
 <h2><strong>Capítulo 1</strong></h2>
 <div id="a-tabela-1.3-apresenta-dados-relativos-ao-índice-de-preços-ao-consumidor-ipc-de-sete-países-industrializados.-a-base-do-índice-é-19821984-100." class="section level3">
 <h3><strong>1.1. A Tabela 1.3 apresenta dados relativos ao Índice de Preços ao Consumidor (IPC) de sete países industrializados. A base do índice é 1982–1984 = 100.</strong></h3>
 <p><strong>a. Com base nos dados fornecidos, calcule a taxa de inflação de cada país.</strong></p>
-<p>Para resolver este exercício, vamos trazer o dataset necessário.</p>
+<p>Vamos trazer o dataset necessário.</p>
 <pre class="r"><code>table_1.3_cpi &lt;- 
   readr::read_delim(file = paste(dataset_path,
                                &quot;table_1.3_cpi.txt&quot;, 
@@ -163,7 +147,7 @@ country_cpi %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#gwqjcpvree .gt_table {
+#thrleqxqev .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -188,7 +172,7 @@ country_cpi %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_heading {
+#thrleqxqev .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -200,7 +184,7 @@ country_cpi %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_title {
+#thrleqxqev .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -210,7 +194,7 @@ country_cpi %&gt;%
   border-bottom-width: 0;
 }
 
-#gwqjcpvree .gt_subtitle {
+#thrleqxqev .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -220,13 +204,13 @@ country_cpi %&gt;%
   border-top-width: 0;
 }
 
-#gwqjcpvree .gt_bottom_border {
+#thrleqxqev .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_col_headings {
+#thrleqxqev .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -241,7 +225,7 @@ country_cpi %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_col_heading {
+#thrleqxqev .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -261,7 +245,7 @@ country_cpi %&gt;%
   overflow-x: hidden;
 }
 
-#gwqjcpvree .gt_column_spanner_outer {
+#thrleqxqev .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -273,15 +257,15 @@ country_cpi %&gt;%
   padding-right: 4px;
 }
 
-#gwqjcpvree .gt_column_spanner_outer:first-child {
+#thrleqxqev .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gwqjcpvree .gt_column_spanner_outer:last-child {
+#thrleqxqev .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gwqjcpvree .gt_column_spanner {
+#thrleqxqev .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -293,7 +277,7 @@ country_cpi %&gt;%
   width: 100%;
 }
 
-#gwqjcpvree .gt_group_heading {
+#thrleqxqev .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -315,7 +299,7 @@ country_cpi %&gt;%
   vertical-align: middle;
 }
 
-#gwqjcpvree .gt_empty_group_heading {
+#thrleqxqev .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -330,15 +314,15 @@ country_cpi %&gt;%
   vertical-align: middle;
 }
 
-#gwqjcpvree .gt_from_md > :first-child {
+#thrleqxqev .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gwqjcpvree .gt_from_md > :last-child {
+#thrleqxqev .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gwqjcpvree .gt_row {
+#thrleqxqev .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -357,7 +341,7 @@ country_cpi %&gt;%
   overflow-x: hidden;
 }
 
-#gwqjcpvree .gt_stub {
+#thrleqxqev .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -369,7 +353,7 @@ country_cpi %&gt;%
   padding-left: 12px;
 }
 
-#gwqjcpvree .gt_summary_row {
+#thrleqxqev .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -379,7 +363,7 @@ country_cpi %&gt;%
   padding-right: 5px;
 }
 
-#gwqjcpvree .gt_first_summary_row {
+#thrleqxqev .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -389,7 +373,7 @@ country_cpi %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_grand_summary_row {
+#thrleqxqev .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -399,7 +383,7 @@ country_cpi %&gt;%
   padding-right: 5px;
 }
 
-#gwqjcpvree .gt_first_grand_summary_row {
+#thrleqxqev .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -409,11 +393,11 @@ country_cpi %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_striped {
+#thrleqxqev .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gwqjcpvree .gt_table_body {
+#thrleqxqev .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -422,7 +406,7 @@ country_cpi %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_footnotes {
+#thrleqxqev .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -436,13 +420,13 @@ country_cpi %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_footnote {
+#thrleqxqev .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#gwqjcpvree .gt_sourcenotes {
+#thrleqxqev .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -456,46 +440,46 @@ country_cpi %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_sourcenote {
+#thrleqxqev .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#gwqjcpvree .gt_left {
+#thrleqxqev .gt_left {
   text-align: left;
 }
 
-#gwqjcpvree .gt_center {
+#thrleqxqev .gt_center {
   text-align: center;
 }
 
-#gwqjcpvree .gt_right {
+#thrleqxqev .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gwqjcpvree .gt_font_normal {
+#thrleqxqev .gt_font_normal {
   font-weight: normal;
 }
 
-#gwqjcpvree .gt_font_bold {
+#thrleqxqev .gt_font_bold {
   font-weight: bold;
 }
 
-#gwqjcpvree .gt_font_italic {
+#thrleqxqev .gt_font_italic {
   font-style: italic;
 }
 
-#gwqjcpvree .gt_super {
+#thrleqxqev .gt_super {
   font-size: 65%;
 }
 
-#gwqjcpvree .gt_footnote_marks {
+#thrleqxqev .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="gwqjcpvree" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="thrleqxqev" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="8" class="gt_heading gt_title gt_font_normal" style><strong>Inflação (CPI) para os Países Selecionados</strong></th>
@@ -801,7 +785,7 @@ country_cpi %&gt;%
   theme_graph()+
   labs(title = &quot;Inflação dos Países Selecionados&quot;,
        y = &quot;CPI (Consumer Price Index)&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>c. Que conclusões gerais é possível tirar sobre a evolução da inflação nos sete países?</strong></p>
 <p>Há uma tendência de queda nos países selecionados após 1985, onde todos mantiveram uma taxa abaio de 5% ao ano.</p>
 <p><strong>d. Em que país a taxa de inflação parece ser a mais flutuante? Há alguma explicação para isso?</strong></p>
@@ -1079,7 +1063,7 @@ usa_cpi
   labs(title = &quot;Análise da Inflação na Itália&quot;,
        subtitle = &quot;Aparentemente é a taxa mais flutuante&quot;,
        y = &quot;CPI (Consumer Price Index)&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>A flutuação parece maior na Itália por conta dos primeiros anos, onde a inflação ficou bastante alta. Caso a análise seja feita a partir de 1985, a Inglaterra fica com maior desvio padrão.</p>
 </div>
 <div id="section" class="section level3">
@@ -1092,7 +1076,7 @@ usa_cpi
   theme_graph()+
   theme(axis.text = element_blank())+
   labs(title = &quot;Correlação Entre as Taxas de Inflação&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>Apenas a linha e coluna ‘usa_cpi’ precisa ser usada, mostrando o gráficos de dispersão entre as variáveis e seu coeficiente de correlação. A menor correlação é a da Alemanha, que ficou em 69,3%.</p>
 <p><strong>b. Faça um comentário geral sobre o comportamento das taxas de inflação dos seis países em relação à inflação dos Estados Unidos.</strong></p>
 <pre class="r"><code>country_cpi %&gt;% 
@@ -1315,8 +1299,10 @@ usa_cpi
 </table>
 <p>Os países selecionados possuem economias já desenvolvidas e bastante conectadas entre si, por isso há este comportamento parecido nas taxas de inflação. A correlação é alta não apenas entre os EUA e os outros países, por conta desta conexão entre as economias.</p>
 <p><strong>c. Se você constatar que as taxas de inflação dos seis países evoluem no mesmo sentido que a dos Estados Unidos, isso sugere que a inflação dos Estados Unidos “causa” inflação nos outros países? Justifique.</strong></p>
-<p>Com estes dados não é possível verificar se há uma correlação <a href="https://pt.wikipedia.org/wiki/Rela%C3%A7%C3%A3o_esp%C3%BAria">espúria</a> entre as variáveis, portanto não consigo afirmar se a variação na inflação dos EUA causa variação na inflação dos outros países. Mas pelo que lembro das aulas de macroeconomia, se um país está tendo inflação, sua moeda tende a se desvalorizar frente à outras moedas e se um país importa de outro que está tendo uma desvalorização cambial, ocorrerá uma queda no custo de importação e consequentemente uma pressão para redução de preços.
-### <strong>1.3 A Tabela 1.4 apresenta as taxas de câmbio em sete países industrializados, no período 1985 - 2006. Exceto no caso do Reino Unido, as taxas de câmbio estão definidas como unidades de moeda estrangeira por um dólar; no caso do Reino Unido, a taxa de câmbio é dada como o número de dólares por uma libra esterlina.</strong></p>
+<p>Com estes dados não é possível verificar se há uma correlação <a href="https://pt.wikipedia.org/wiki/Rela%C3%A7%C3%A3o_esp%C3%BAria">espúria</a> entre as variáveis, portanto não consigo afirmar se a variação na inflação dos EUA causa variação na inflação dos outros países. Mas pelo que lembro das aulas de macroeconomia, se um país está tendo inflação, sua moeda tende a se desvalorizar frente à outras moedas e se um país importa de outro que está tendo uma desvalorização cambial, ocorrerá uma queda no custo de importação e consequentemente uma pressão para redução de preços.</p>
+</div>
+<div id="a-tabela-1.4-apresenta-as-taxas-de-câmbio-em-sete-países-industrializados-no-período-1985---2006.-exceto-no-caso-do-reino-unido-as-taxas-de-câmbio-estão-definidas-como-unidades-de-moeda-estrangeira-por-um-dólar-no-caso-do-reino-unido-a-taxa-de-câmbio-é-dada-como-o-número-de-dólares-por-uma-libra-esterlina." class="section level3">
+<h3><strong>1.3 A Tabela 1.4 apresenta as taxas de câmbio em sete países industrializados, no período 1985 - 2006. Exceto no caso do Reino Unido, as taxas de câmbio estão definidas como unidades de moeda estrangeira por um dólar; no caso do Reino Unido, a taxa de câmbio é dada como o número de dólares por uma libra esterlina.</strong></h3>
 <p><strong>a. Represente graficamente a evolução das taxas de câmbio ao longo do tempo e comente sobre o comportamento geral dessa evolução.</strong></p>
 <pre class="r"><code># Trazendo o dataset para o exercício
 table_1.4_exchange_rate &lt;- 
@@ -1537,13 +1523,14 @@ Reino.unido
   scale_y_continuous(labels = scales::comma)+
   scale_fill_brewer(type = &quot;qual&quot;, palette = 3)+
   theme_graph()+
-  theme(legend.position = &quot;none&quot;)+
+  theme(legend.position = &quot;none&quot;,
+        axis.text.x = element_text(angle = 90))+
   facet_wrap(~country, scales = &quot;free_y&quot;)+
   labs(title = &quot;Taxa de Câmbio de Países Selecionados&quot;,
        subtitle = &quot;Unidade de moeda local por 1 dólar&quot;,
        y = &quot;Taxa de Câmbio&quot;,
        x = &quot;&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>De maneira geral, apenas o México mostrou uma tendência de desvalorização de sua taxa de câmbio. Os outros países parecem ter a taxa de câmbio sob controle.</p>
 <p><strong>b. Diz-se que o dólar apreciou-se quando pode comprar mais unidades de moeda estrangeira. Opostamente, diz-se que se depreciou quando compra menos unidades da moeda estrangeira. No período 1985–2006, qual foi o comportamento geral do dólar dos Estados Unidos? Aproveite para pesquisar em algum livro de macroeconomia ou de economia internacional os fatores que determinam a apreciação ou depreciação de uma moeda.</strong></p>
 <p>O comportamento foi variado entre os países selecionados. Em alguns (Suíça, Japão e Reino Unido) houve desvalorização do dólar e em outros (México, China e Coréia do Sul), houve valorização.</p>
@@ -1818,7 +1805,7 @@ year_and_month
        subtitle = &quot;M1: Moeda em poder do público + Reservas Bancárias&quot;,
        x = &quot;&quot;,
        y = &quot;M1&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>O crescimento pode ser atribuído ao aumento de oferta de crédito pelo governo e também ao crescimento econômico, que faz as pessoas sacarem seus investimentos para consumo ou investimento.</p>
 </div>
 <div id="os-dados-apresentados-na-tabela-1.6-foram-divulgados-na-edição-do-the-wall-street-journal-de-1º-de-março-de-1984.-relacionam-o-orçamento-de-publicidade-em-milhões-de-dólares-de-21-empresas-em-1983-com-as-impressões-retidas-semanalmente-pelos-que-viram-os-produtos-anunciados-por-essas-empresas.-os-dados-foram-obtidos-em-uma-pesquisa-realizada-com-4-mil-adultos-em-que-foi-pedido-aos-usuários-dos-produtos-que-citassem-um-comercial-da-categoria-do-produto-que-tivessem-assistido-na-semana-anterior." class="section level3">
@@ -1920,7 +1907,7 @@ Burger_King
        subtitle = &quot;Impressões Retidas nos Proutos Anunciados&quot;,
        x = &quot;Investimento em Publicidade (milhões de US$)&quot;,
        y = &quot;Impressões Retidas em Produtos Anunciados&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-20-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>b. O que você poderia dizer sobre a natureza da relação entre as duas variáveis?</strong></p>
 <p>Apesar de existir uma correlação (notada pelo gráfico, não estatísticamente comprovada), ela pode não ser linear.</p>
 <p><strong>c. Examinando o gráfico, você acha que vale a pena anunciar? Pense em todos os comerciais veiculados em finais de campeonatos de esportes ou no horário nobre.</strong></p>
@@ -2232,11 +2219,11 @@ men
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = share_work_force, y = unemployment_rate))+
   theme_graph()+
-  labs(title = &quot;Relação entre Participação na Força de Trabalho e Taxa de Desemprego&quot;,
-       subtitle = &quot;Para os Homens&quot;,
+  labs(title = &quot;Relação entre Participação na Força \nde Trabalho e Taxa de Desemprego&quot;,
+       subtitle = &quot;Grupo de Homem apenas&quot;,
        x = &quot;Participação (%) no mercado de trabalho&quot;,
        y = &quot;Taxa (%) de Desemprego&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-24-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>b. Faça o mesmo para as mulheres</strong></p>
 <pre class="r"><code>table_2.7_labour_market_adj %&gt;%
   filter(gender == &quot;women&quot;) %&gt;% 
@@ -2244,11 +2231,11 @@ men
   geom_point(mapping = aes(x = share_work_force, 
                            y = unemployment_rate))+
   theme_graph()+
-  labs(title = &quot;Relação entre Participação na Força de Trabalho e Taxa de Desemprego&quot;,
-       subtitle = &quot;Para as Mulheres&quot;,
+  labs(title = &quot;Relação entre Participação na Força \nde Trabalho e Taxa de Desemprego&quot;,
+       subtitle = &quot;Grupo de Homem apenas&quot;,
        x = &quot;Participação (%) no mercado de trabalho&quot;,
        y = &quot;Taxa (%) de Desemprego&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-25-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>c. Agora, represente graficamente a taxa de participação de homens e mulheres em relação aos ganhos médios por hora (em dólares de 1982). (Você pode usar gráficos separados.) O que constatou? Como você justificaria isso?</strong></p>
 <pre class="r"><code>table_2.7_labour_market_adj %&gt;% 
   ggplot2::ggplot()+
@@ -2258,10 +2245,10 @@ men
   theme_graph()+
   scale_color_viridis_d()+
   facet_grid(~gender, scales = &quot;free&quot;)+
-  labs(title = &quot;Relação Entre Salário e Participação no Mercado de Trabalho&quot;,
+  labs(title = &quot;Relação Entre Salário e Participação \nno Mercado de Trabalho&quot;,
        x = &quot;Participação no Mercado de Trabalho (%)&quot;,
        y = &quot;Salário por Hora&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-26-1.png" width="432" style="display: block; margin: auto;" /></p>
 </div>
 <div id="a-tabela-2.8-apresenta-dados-sobre-despesas-com-alimentação-e-gastos-totais-em-rupias-para-uma-amostra-de-55-domicílios-rurais-da-índia.-no-início-de-2000-um-dólar-americano-era-equivalente-a-cerca-de-40-rupias-indianas." class="section level3">
 <h3><strong>2.15. A Tabela 2.8 apresenta dados sobre despesas com alimentação e gastos totais, em rupias, para uma amostra de 55 domicílios rurais da Índia. (No início de 2000, um dólar americano era equivalente a cerca de 40 rupias indianas.)</strong></h3>
@@ -2338,7 +2325,7 @@ total
   labs(title = &quot;Despesas Totais vs Despesas com Alimentação&quot;,
        x = &quot;Despesas Totais&quot;,
        y = &quot;Despesas com Alimentação&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-28-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>b. Que conclusões gerais você pode tirar deste exemplo?</strong></p>
 <p>A correlação é mais para famílias de baixa renda (com despesas totais abaixo de 600 rupias), visto que a maior parte dos gastos se concentra em itens básicos de alimentação. Porém, no geral, pode-se concluir com base neste teste visual, que há uma correlação entre as duas variáveis.</p>
 <p><strong>c. Você esperaria, a priori, que as despesas com alimentação aumentassem linearmente com o aumento das despesas totais, independentemente do nível destas? Por quê? Utilize a despesa total como uma proxy para o nível de renda total.</strong></p>
@@ -2527,7 +2514,7 @@ math_graph &lt;-
 verbal_graph + math_graph +
   patchwork::plot_annotation(title = &quot;Comparativo de Notas Entre os Gêneros&quot;,
                              subtitle = &quot;Teste SAT dos EUA&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-30-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>b. Que conclusões gerais você tirou desses gráficos?</strong></p>
 <ol style="list-style-type: lower-roman">
 <li>Homens se saem melhores em ambos os testes e (ii) o teste de matemática ou foi ficando mais fácil ao longo dos anos ou os alunos foram se preparando melhor para fazê-lo. Também nota-se uma correlação entre os desempenhos em ‘Verbal’ e ‘Math’.</li>
@@ -2545,7 +2532,7 @@ verbal_graph + math_graph +
        subtitle = &quot;Exame de Matemática (SAT)&quot;,
        x = &quot;Mulheres&quot;,
        y = &quot;Homens&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-31-1.png" width="432" style="display: block; margin: auto;" /></p>
 <hr />
 </div>
 </div>
@@ -2715,7 +2702,7 @@ non_agricultural_wages
   labs(title = &quot;Relação Entre Produção por Hora e Salários&quot;,
        x = &quot;Produção por Hora&quot;,
        y = &quot;Salário&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-36-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>b. Qual a teoria econômica que embasa a relação entre as duas variáveis? O gráfico de dispersão confirma a teoria?</strong></p>
 <p>R: Não sei dizer a teoria econômica que fundamenta esta relação direta, porém é esperado que a produtividade gere ganhos salariais, visto que se cria mais valor pra sociedade em um mesmo intervalo de tempo.</p>
 <p><strong>c. Estime uma regressão de MQO de Y contra X. Guarde os resultados para examiná-los novamente depois de estudar o Capítulo 5.</strong></p>
@@ -2942,7 +2929,7 @@ real_gdp
   labs(title = &quot;PIB dos EUA, Nominal e Real&quot;,
        x = &quot;Year&quot;,
        y = &quot;GDP&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-41-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><strong>b. Denotando o PIB por Y e o tempo por X (medido em uma sequência cronológica em que l represente 1959, 2, 1960 e assim por diante até 47 para 2005), veja se o seguinte modelo ajusta-se aos dados do PIB:</strong></p>
 <p><span class="math display">\[y_t = \beta_1 + \beta_2 x_t + \mu_t\]</span></p>
 <p>Apenas pelo gráfico dá para se notar uma relação entre tempo e variação do PIB. Algo que é bem comum em séries temporais, onde se incluem modelos de regressão para fazer o ‘forecasting’. Vamos ver se o modelo se adequa bem aos dados.</p>

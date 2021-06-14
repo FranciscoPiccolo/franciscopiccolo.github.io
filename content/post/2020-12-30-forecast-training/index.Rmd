@@ -1,14 +1,35 @@
 ---
 title: "Analisando modelos de Forecasting"
-date: 2020-12-30
+date: 2020-12-10
 math: true
 ---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = T,
+                      warning = F,
+                      message = F,
+                      fig.height = 3,
+                      fig.width = 4.5,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 12),
+    plot.subtitle = element_text(size = 8),
+    plot.caption = element_text(face = "italic", size = 7),
+    axis.title = element_text(face = "italic", size = 7),
+    legend.position = "bottom",
+    legend.title = element_blank()
+  )
+}
+```
 
 Neste post vou desenvolver e analisar diversos modelos de 'forecasting' que aprendi após ler livros sobre o tema. A ideia é mostrar, de maneira simples, como rodar estes modelos no R, como analisar a performance e interpretar os resultados.
 
 Neste trabalho eu vou usar os pacotes abaixo, que já contêm vários datasets de exemplo para desenvolvimento do 'forecast'.
 
-```{r, warning=F, message=F}
+```{r}
 library(GGally)
 library(fpp3)
 library(fable)
@@ -19,21 +40,6 @@ library(tidyverse)
 library(patchwork)
 library(seasonal)
 library(fma)
-
-# Função para padronizar o design dos gráficos
-theme_graph <- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = "italic", size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = "italic", size = 9),
-    strip.background = element_rect(fill = "grey"),
-    strip.text = element_text(face = "bold"),
-    legend.position = "bottom",
-    legend.title = element_blank()
-  )
-}
 ```
 
 A lista abaixo apresenta os métodos que irei aplicar às séries temporais:
@@ -63,7 +69,7 @@ Esta série é obtida no dataset 'aus_production' do pacote 'tsibbledata'.
 
 #### **Análise Exploratória**
 
-```{r, message=F, warning=F}
+```{r}
 tsibbledata::aus_production %>% 
   select(Quarter, Bricks) %>%
   filter(!is.na(Bricks)) %>% 
@@ -75,7 +81,7 @@ tsibbledata::aus_production %>%
 
 Vamos verificar a sazonalidade entre os trimestres.
 
-```{r, message=F,warning=F}
+```{r}
 tsibbledata::aus_production %>% 
   select(Quarter, Bricks) %>%
   filter(!is.na(Bricks)) %>% 
@@ -86,7 +92,7 @@ tsibbledata::aus_production %>%
 
 Parece que os trimestres possuem uma sazonalidade estável. Vamos ver, entre um trimestre e o seguinte, a diferença percentual.
 
-```{r, message=F, warning=F}
+```{r}
 tsibbledata::aus_production %>% 
   select(Quarter, Bricks) %>%
   filter(!is.na(Bricks)) %>% 
@@ -99,7 +105,7 @@ tsibbledata::aus_production %>%
 
 Agora vamos segmentar a série através do modelo 'STL' (Multiple Seasonal Decomposition by Loess). Este modelo irá decompor a série em Sazonalidade, Tendência e Resíduo.
 
-```{r,message=F, warning=F}
+```{r}
 stl <- tsibbledata::aus_production %>% 
   select(Quarter, Bricks) %>%
   filter(!is.na(Bricks)) %>% 
@@ -113,7 +119,7 @@ fabletools::components(stl) %>%
 
 Com este dataset da série decomposta, podemos plotar para ver qual "segmento" é mais forte (uma validação visual).
 
-```{r,message=F, warning=F}
+```{r, fig.height=4}
 fabletools::components(stl) %>% 
   feasts::autoplot()+
   theme_graph()+
@@ -127,7 +133,7 @@ Sabendo que a série tem este comportamento sazonal e uma certa tendência, pode
 
 O dataset vai de 1956/Q1 até 2005/Q2. Para o treino, vou pegar o período de 1956/Q1 até 1999/Q4, e depois irei fazer o teste no período restante para depois fazer a comparação com os valores reais.
 
-```{r, message=F, warning=F}
+```{r}
 # Dataset de teste
 tsibbledata::aus_production %>% 
   select(Quarter, Bricks) %>%
@@ -144,7 +150,7 @@ tsibbledata::aus_production %>%
 
 Para os modelos 'Mean', 'Naive', 'Snaive' e 'Drift', não é preciso ajustar parâmetros para se adequar à série temporal. Porém nos modelos do tipo 'Exponential Smoothing' e 'Arima' este ajuste se faz necessário. O ajuste que farei será para levar em consideração a sazonalidade da série temporal.
 
-```{r, message=F, warning=F}
+```{r}
 # Criando os modelos
 model_fit <- 
   train_dataset %>% 
@@ -168,7 +174,7 @@ forecasting <- model_fit %>%
 
 Como são muitos modelos, vou separar em dois grupos para colocar no gráfico e ficar mais fácil de visualizar.
 
-```{r, message=F, warning=F}
+```{r, fig.height=4, fig.width=6}
 # Plotando os resultados
 g1 <- 
   forecasting %>% 
@@ -204,7 +210,7 @@ g1/g2 + patchwork::plot_annotation(
 
 Neste primeiro grupo, evidentemente o modelo 'Seazonal Naive' (SNaive) performou melhor. Vamos ver o próximo grupo de modelos.
 
-```{r, message=F, warning=F}
+```{r, fig.height=4, fig.width=6}
 # Plotando os resultados
 g1 <- 
   forecasting %>% 
@@ -245,7 +251,4 @@ g1/g2 + patchwork::plot_annotation(
   title = "Verificando Visualmente a Performance dos Modelos"
 )
 ```
-
-
-
 

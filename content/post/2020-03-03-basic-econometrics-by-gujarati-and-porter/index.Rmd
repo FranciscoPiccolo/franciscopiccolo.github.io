@@ -4,6 +4,27 @@ date: 2020-03-01
 math: true
 ---
 
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = T,
+                      warning = F,
+                      message = F,
+                      fig.height = 3,
+                      fig.width = 4.5,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 12),
+    plot.subtitle = element_text(size = 8),
+    plot.caption = element_text(face = "italic", size = 7),
+    axis.title = element_text(face = "italic", size = 7),
+    legend.position = "bottom",
+    legend.title = element_blank()
+  )
+}
+```
+
 Econometria é uma ferramenta (ou técnica) muito usada por economistas, estatísticos e também por outras ciências. Uma definição encontrada nos livros básicos é:
 
 > "Econometria é a aplicação de modelos estatísticos em dados econômicos"
@@ -16,7 +37,7 @@ Estou apresentando estas definições por conta de que neste post irei focar em 
 
 Os dados usados nos exercícios estarão em meu repositório do [Github](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/tree/master/datasets/2020-03-01-basic_econometrics_by_gujarati), em formato ".txt". Para acessar um dataset, basta usar o seguinte comando:
 
-```{r, warning=F, message=F}
+```{r}
 # Primeiro chame o pacote 'readr' que contém a função 'read_csv'
 library(readr)
 
@@ -27,13 +48,13 @@ table_1.3_cpi <- readr::read_delim(file = "https://raw.githubusercontent.com/Fra
 
 Porém, ao invés de sempre usar este caminho extenso para trazer o dataset, eu posso criar uma variável contendo este caminho e mudar apenas a última parte, em que indico o nome do dataset (i.e. "table_1.3_ipc.txt").
 
-```{r, warning=F, message=F}
+```{r}
 dataset_path <- "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2020-03-01-basic_econometrics_by_gujarati/"
 ```
 
 Com isso, para chamar um dataset, basta usar um comando mais curto, com a função "paste".
 
-```{r, warning=F, message=F}
+```{r}
 table_1.3_cpi <- 
   readr::read_delim(file = paste(dataset_path,
                                "table_1.3_cpi.txt", 
@@ -41,29 +62,14 @@ table_1.3_cpi <-
                   delim = " ")
 ```
 
-Agora vamos ao que interessa. Para desenvolver os exercícios, vou usar os pacotes abaixo e também uma função para padronizar o design dos gráficos.
+Agora vamos ao que interessa. Para desenvolver os exercícios, vou usar os pacotes abaixo:
 
-```{r, warning=F, message=F}
+```{r}
 library(tidyverse)
 library(patchwork)
 library(gt)
 library(modelsummary)
 library(stringr)
-
-# Função para padronizar o design dos gráficos
-theme_graph <- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = "italic", size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = "italic", size = 9),
-    strip.background = element_rect(fill = "grey"),
-    strip.text = element_text(face = "bold"),
-    legend.position = "bottom",
-    legend.title = element_blank()
-  )
-}
 ```
 
 ## **Capítulo 1**
@@ -72,9 +78,9 @@ theme_graph <- function(){
 
 **a. Com base nos dados fornecidos, calcule a taxa de inflação de cada país.**
 
-Para resolver este exercício, vamos trazer o dataset necessário.
+Vamos trazer o dataset necessário.
 
-```{r, message=F, warning=F}
+```{r}
 table_1.3_cpi <- 
   readr::read_delim(file = paste(dataset_path,
                                "table_1.3_cpi.txt", 
@@ -85,7 +91,7 @@ table_1.3_cpi <-
 
 Vamos também ver uma amostra destes dados:
 
-```{r, warning=F, message=F}
+```{r}
 table_1.3_cpi %>% 
   head(5) %>% 
   knitr::kable(format.args = list(big.mark = ".", decimal.mark = "."))
@@ -93,7 +99,7 @@ table_1.3_cpi %>%
 
 A inflação para cada país será a variação de um período com base no período anterior. Para realizar este cálculo, basta usar o 'mutate' e a função 'lag'.
 
-```{r, error=F, message=F, warning=F}
+```{r}
 # Usando o pacote gt (Grammar of Tables) para esse exercício
 table_1.3_cpi %>% 
   mutate(usa_cpi = usa/lag(usa,1)-1,
@@ -121,7 +127,7 @@ country_cpi %>%
 
 **b. Represente graficamente a taxa de inflação de cada país em relação ao tempo (isto é, use o eixo horizontal para o tempo e o eixo vertical para a taxa de inflação).**
 
-```{r, message=F, warning=F, error=F}
+```{r}
 country_cpi %>% 
   ggplot2::ggplot()+
   geom_line(mapping = aes(x = year, 
@@ -144,7 +150,7 @@ Há uma tendência de queda nos países selecionados após 1985, onde todos mant
 
 A tabela abaixo mostra um resumo da inflação de cada país, já transformada em percentual.
 
-```{r, message=F, warning=F, error=F}
+```{r}
 country_cpi %>% 
   mutate(values = values*100) %>% 
   tidyr::spread("country","values") %>% 
@@ -153,7 +159,7 @@ country_cpi %>%
 
 O desvio padrão (SD) mais elevado é o da Itália, talvez por ter um *outlier* no valor máximo (de 18.2%). O gráfico abaixo irá dar destaque para este país para vermos se é evidente que sua flutuação é maior que a dos outros.
 
-```{r, message=F, warning=F, error=F}
+```{r}
 country_cpi %>% 
   mutate(is_floating = as.character(case_when(country == "italy_cpi" ~ "Italy CPI",
                                               TRUE ~ "Others"))) %>% 
@@ -182,7 +188,7 @@ A flutuação parece maior na Itália por conta dos primeiros anos, onde a infla
 
 Com o pacote **GGally** é possível criar estes comparativos mais facilmente.
 
-```{r, warning=F, message=F}
+```{r, fig.height=4, fig.width=6}
 country_cpi %>% 
   tidyr::spread("country", "values") %>% 
   GGally::ggpairs(columns = 2:8)+
@@ -195,7 +201,7 @@ Apenas a linha e coluna 'usa_cpi' precisa ser usada, mostrando o gráficos de di
 
 **b. Faça um comentário geral sobre o comportamento das taxas de inflação dos seis países em relação à inflação dos Estados Unidos.**
 
-```{r, message=F, warning=F}
+```{r}
 country_cpi %>% 
   tidyr::spread("country", "values") %>% 
   select(-year) %>% 
@@ -208,11 +214,12 @@ Os países selecionados possuem economias já desenvolvidas e bastante conectada
 **c. Se você constatar que as taxas de inflação dos seis países evoluem no mesmo sentido que a dos Estados Unidos, isso sugere que a inflação dos Estados Unidos "causa" inflação nos outros países? Justifique.**
 
 Com estes dados não é possível verificar se há uma correlação [espúria](https://pt.wikipedia.org/wiki/Rela%C3%A7%C3%A3o_esp%C3%BAria) entre as variáveis, portanto não consigo afirmar se a variação na inflação dos EUA causa variação na inflação dos outros países. Mas pelo que lembro das aulas de macroeconomia, se um país está tendo inflação, sua moeda tende a se desvalorizar frente à outras moedas e se um país importa de outro que está tendo uma desvalorização cambial, ocorrerá uma queda no custo de importação e consequentemente uma pressão para redução de preços. 
+
 ### **1.3 A Tabela 1.4 apresenta as taxas de câmbio em sete países industrializados, no período 1985 - 2006. Exceto no caso do Reino Unido, as taxas de câmbio estão definidas como unidades de moeda estrangeira por um dólar; no caso do Reino Unido, a taxa de câmbio é dada como o número de dólares por uma libra esterlina.**
 
 **a. Represente graficamente a evolução das taxas de câmbio ao longo do tempo e comente sobre o comportamento geral dessa evolução.**
 
-```{r, message=F, warning=F}
+```{r}
 # Trazendo o dataset para o exercício
 table_1.4_exchange_rate <- 
   readr::read_delim(file = paste(dataset_path,
@@ -228,7 +235,7 @@ table_1.4_exchange_rate %>%
 
 Antes de plotar o gráfico, vou fazer um ajuste para o Reino Unido para representar a mesma unidade de medida que os outros países (unidades de moeda local para adquirir 1 dólar).
 
-```{r, message=F, warning=F}
+```{r, fig.height=4}
 table_1.4_exchange_rate %>% 
   mutate(Reino.unido = 1/Reino.unido) %>%  # Ajustando o Reino Unido
   tidyr::gather("country", "values", 2:10) %>% 
@@ -238,7 +245,8 @@ table_1.4_exchange_rate %>%
   scale_y_continuous(labels = scales::comma)+
   scale_fill_brewer(type = "qual", palette = 3)+
   theme_graph()+
-  theme(legend.position = "none")+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90))+
   facet_wrap(~country, scales = "free_y")+
   labs(title = "Taxa de Câmbio de Países Selecionados",
        subtitle = "Unidade de moeda local por 1 dólar",
@@ -254,7 +262,7 @@ O comportamento foi variado entre os países selecionados. Em alguns (Suíça, J
 
 ### **1.4 A Tabela 1.5 apresenta os dados relativos à oferta monetária, no conceito de M1, que aparecem na Figura 1.5. Você poderia apresentar razões para o aumento da oferta de moeda no período considerado?**
 
-```{r, message=F, warning=F}
+```{r}
 table_1.5_currency_m1_volume <- 
   readr::read_delim(file = paste(dataset_path,
                                "table_1.5_currency_m1_volume.txt", 
@@ -269,7 +277,7 @@ table_1.5_currency_m1_volume %>%
 
 Esta tabela precisa ser tratada para poder ser analisada de maneira fácil. Veja que há 6 colunas para 6 meses de dados e os anos contemplam duas linhas. Será necessário ajustar para que cada mês fique em uma linha e o dataset tenha os campos 'ano', 'mês' e 'valor (m1)'.
 
-```{r, message=F, warning=F}
+```{r}
 table_1.5_currency_m1_volume %>% 
   tidyr::gather("month", "value", 2:7) %>% 
   filter(!is.na(value)) %>% 
@@ -286,7 +294,7 @@ table_1.5_adj %>%
 
 Agora podemos plotar o gráfico conforme solicitado e tentar analisar o aumento no período considerado.
 
-```{r, warning=F, message=F}
+```{r}
 table_1.5_adj %>% 
   ggplot2::ggplot()+
   geom_line(mapping = aes(x = year_and_month, y = value, group = 1))+
@@ -305,7 +313,7 @@ O crescimento pode ser atribuído ao aumento de oferta de crédito pelo governo 
 
 Vamos importar o dataset do Github e ver uma amostra dos valores.
 
-```{r, warning=F, message=F}
+```{r}
 # Este arquivo está separado por ';' ao invés de '\tab'
 table_1.6_advertising <- 
   readr::read_delim(file = paste(dataset_path,
@@ -323,7 +331,7 @@ table_1.6_advertising %>%
 
 **a. Trace um gráfico com as impressões no eixo vertical e os gastos com publicidade no eixo horizontal.**
 
-```{r, message=F, warning=F}
+```{r}
 table_1.6_advertising %>% 
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = investment, y = impressions), 
@@ -352,7 +360,7 @@ Parece valer a pena anunciar, porém não uma quantia acima de 100 milhões de d
 
 **a. Represente graficamente a relação entre a taxa de participação dos homens na força de trabalho civil e a taxa de desemprego civil dos homens. Trace, a olho, uma linha de regressão que passe pelos pontos. A priori, qual a relação esperada entre as duas variáveis e em que teoria econômica está embasada? O diagrama de dispersão respalda essa teoria?**
 
-```{r, warning=F, message=F}
+```{r}
 table_2.7_labour_market <- 
   readr::read_delim(file = paste(dataset_path,
                                "table_2.7_labour_market.txt", 
@@ -367,7 +375,7 @@ table_2.7_labour_market %>%
 
 O dataset está em um formato não muito organizado ('tidy'), pois está com as variáveis duplicadas para representar homens e mulheres. Vou ajustar o dataset para agrupar as variáveis e separar as linhas em 'men'/'women'. 
 
-```{r, warning=F, message=F}
+```{r}
 table_2.7_labour_market %>% 
   select(year,
          share_men_work_force,
@@ -399,42 +407,42 @@ table_2.7_labour_market %>%
 
 Veja a tabela ajustada. Talvez desse para fazer o ajuste com menos código, mas no fim o resultado deu certo.
 
-```{r, message=F, warning=F}
+```{r}
 table_2.7_labour_market_adj %>% 
   head(5) %>% 
   knitr::kable()
 ```
 
-```{r, message=F, warning=F}
+```{r}
 table_2.7_labour_market_adj %>% 
   filter(gender == "men") %>% 
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = share_work_force, y = unemployment_rate))+
   theme_graph()+
-  labs(title = "Relação entre Participação na Força de Trabalho e Taxa de Desemprego",
-       subtitle = "Para os Homens",
+  labs(title = "Relação entre Participação na Força \nde Trabalho e Taxa de Desemprego",
+       subtitle = "Grupo de Homem apenas",
        x = "Participação (%) no mercado de trabalho",
        y = "Taxa (%) de Desemprego")
 ```
 
 **b. Faça o mesmo para as mulheres**
 
-```{r, message=F, warning=F}
+```{r}
 table_2.7_labour_market_adj %>%
   filter(gender == "women") %>% 
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = share_work_force, 
                            y = unemployment_rate))+
   theme_graph()+
-  labs(title = "Relação entre Participação na Força de Trabalho e Taxa de Desemprego",
-       subtitle = "Para as Mulheres",
+  labs(title = "Relação entre Participação na Força \nde Trabalho e Taxa de Desemprego",
+       subtitle = "Grupo de Homem apenas",
        x = "Participação (%) no mercado de trabalho",
        y = "Taxa (%) de Desemprego")
 ```
 
 **c. Agora, represente graficamente a taxa de participação de homens e mulheres em relação aos ganhos médios por hora (em dólares de 1982). (Você pode usar gráficos separados.) O que constatou? Como você justificaria isso?**
 
-```{r, message=F, warning=F}
+```{r, fig.height=4}
 table_2.7_labour_market_adj %>% 
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = share_work_force, 
@@ -443,14 +451,14 @@ table_2.7_labour_market_adj %>%
   theme_graph()+
   scale_color_viridis_d()+
   facet_grid(~gender, scales = "free")+
-  labs(title = "Relação Entre Salário e Participação no Mercado de Trabalho",
+  labs(title = "Relação Entre Salário e Participação \nno Mercado de Trabalho",
        x = "Participação no Mercado de Trabalho (%)",
        y = "Salário por Hora")
 ```
 
 ### **2.15. A Tabela 2.8 apresenta dados sobre despesas com alimentação e gastos totais, em rupias, para uma amostra de 55 domicílios rurais da Índia. (No início de 2000, um dólar americano era equivalente a cerca de 40 rupias indianas.)**
 
-```{r, message=F, warning=F}
+```{r}
 table_2.8_expenses_in_india <- 
   readr::read_delim(file = paste(dataset_path,
                                "table_2.8_expenses_in_india.txt", 
@@ -464,7 +472,7 @@ table_2.8_expenses_in_india %>%
 
 **a. Represente graficamente os dados colocando no eixo vertical as despesas com alimentação e no eixo horizontal os gastos totais. Trace uma linha de regressão.**
 
-```{r, message=F, warning=F}
+```{r}
 table_2.8_expenses_in_india %>%
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = total, y = food), 
@@ -486,7 +494,7 @@ Não esperaria, visto que com o aumento do nível de renda a necessidade de se c
 
 ### **2.16. A Tabela 2.9 apresenta dados sobre a pontuação média do Teste de Aptidão Escolar (SAT) para os estudantes que se preparavam para ingressar no ensino superior no período 1967-1990.**
 
-```{r, message=F, warning=F}
+```{r}
 table_2.9_sat_scores <-
   readr::read_delim(file = paste(dataset_path,
                                "table_2.9_sat_scores.txt", 
@@ -500,7 +508,7 @@ table_2.9_sat_scores %>%
 
 **a. Use o eixo horizontal para os anos e o eixo vertical para a pontuação obtida para traçar as notas nas provas de aptidão verbal e matemática obtidas por homens e mulheres, separadamente.**
 
-```{r, message=F, warning=F}
+```{r}
 verbal_graph <- 
   table_2.9_sat_scores %>% 
   ggplot2::ggplot(mapping = aes(x = year))+
@@ -540,7 +548,7 @@ Analisando a série temporal do exercício 'a', parece ser possível esta regres
 
 **d. Represente graficamente as notas de matemática das mulheres em relação às dos homens. O que você observa?**
 
-```{r, message=F, warning=F}
+```{r}
 table_2.9_sat_scores %>% 
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = women_math_score, y = men_math_score),
@@ -561,14 +569,14 @@ table_2.9_sat_scores %>%
 
 Como a tabela 3.5 é pequena, vou colocar os valores manualmente.
 
-```{r, warning=F, message=F}
+```{r}
 table_3.5 <- 
   data.frame(parcial_test = c(1,3,7,10,9,5,4,8,2,6),
              final_test = c(3,2,8,7,9,6,5,10,1,4),
              student = c("a","b","c","d","e","f","g","h","i","j"))
 ```
 
-```{r, warning=F, message=F}
+```{r}
 cor.test(x = table_3.5$parcial_test, 
          y = table_3.5$final_test,
          method = "spearman")
@@ -590,7 +598,7 @@ R: Mudaria, visto que Y continuaria sendo (DC/\$).
 
 **3.20. A Tabela 3.6 apresenta dados relativos a índices de produção por hora (X) e remuneração real por hora (Y) para os setores empresarial e empresarial não agrícola da economia dos Estados Unidos no período 1960-2005. O ano-base dos índices é 1992 D 100 e os índices foram ajustados sazonalmente**
 
-```{r, message=F, warning=F}
+```{r}
 table_3.6_wage_and_productivity <-
   readr::read_delim(file = paste(dataset_path,
                                "table_3.6_wage_and_productivity.txt", 
@@ -601,7 +609,7 @@ table_3.6_wage_and_productivity <-
   tidyr::spread("metric","value")
 ```
 
-```{r, message=F, warning=F}
+```{r}
 table_3.6_wage_and_productivity %>% 
   head(5) %>% 
   knitr::kable(format.args = list(big.mark = ".", 
@@ -610,7 +618,7 @@ table_3.6_wage_and_productivity %>%
 
 **a. Represente graficamente Y contra X para os dois setores da economia separadamente.**
 
-```{r, message=F, warning=F}
+```{r}
 table_3.6_wage_and_productivity %>% 
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = corporate, 
@@ -640,14 +648,14 @@ Cada setor terá uma regressão estimada.
 
 * Setor Empresarial
 
-```{r, warning=F, message=F}
+```{r}
 table_3.6_wage_and_productivity %>% 
   lm(formula = "corporate_wages ~ corporate") %>% 
   summary() %>% 
   pander::pander()
 ```
 
-```{r, warning=F, message=F}
+```{r}
 table_3.6_wage_and_productivity %>% 
   lm(formula = "non_agricultural_wages ~ non_agricultural") %>% 
   summary() %>% 
@@ -656,7 +664,7 @@ table_3.6_wage_and_productivity %>%
 
 **3.23. A Tabela 3.8 apresenta dados do produto interno bruto (PIB) dos Estados Unidos no período 1959-2005.**
 
-```{r, message=F, warning=F}
+```{r}
 table_3.8_usa_gdp_nominal_and_real <-
   readr::read_delim(file = paste(dataset_path,
                                "table_3.8_usa_gdp_nominal_and_real.txt", 
@@ -664,7 +672,7 @@ table_3.8_usa_gdp_nominal_and_real <-
                     delim = " ")
 ```
 
-```{r, message=F, warning=F}
+```{r}
 table_3.8_usa_gdp_nominal_and_real %>% 
   head(5) %>% 
   knitr::kable(format.args = list(big.mark = ".",
@@ -673,7 +681,7 @@ table_3.8_usa_gdp_nominal_and_real %>%
 
 **a. Represente graficamente os dados do PIB em dólares correntes e em dólares constantes (de 2000) em relação ao tempo.**
 
-```{r, warning=F, message=F}
+```{r}
 table_3.8_usa_gdp_nominal_and_real %>% 
   ggplot2::ggplot()+
   geom_line(mapping = aes(x = year, y = nominal_gdp, color = "Nominal"))+
@@ -694,7 +702,7 @@ Apenas pelo gráfico dá para se notar uma relação entre tempo e variação do
 
 * PIB Nominal
 
-```{r, warning=F, message=F}
+```{r}
 table_3.8_usa_gdp_nominal_and_real %>%
   lm(formula = "nominal_gdp ~ year") %>% 
   summary() %>% 
@@ -703,7 +711,7 @@ table_3.8_usa_gdp_nominal_and_real %>%
 
 * PIB Real
 
-```{r, warning=F, message=F}
+```{r}
 table_3.8_usa_gdp_nominal_and_real %>%
   lm(formula = "real_gdp ~ year") %>% 
   summary() %>% 

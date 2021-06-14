@@ -1,11 +1,10 @@
 ---
 title: "Analisando modelos de Forecasting"
-date: 2020-12-30
+date: 2020-12-10
 math: true
 ---
 
-<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="index_files/anchor-sections/anchor-sections.js"></script>
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 
 
 <p>Neste post vou desenvolver e analisar diversos modelos de ‘forecasting’ que aprendi após ler livros sobre o tema. A ideia é mostrar, de maneira simples, como rodar estes modelos no R, como analisar a performance e interpretar os resultados.</p>
@@ -19,22 +18,7 @@ library(feasts)
 library(tidyverse)
 library(patchwork)
 library(seasonal)
-library(fma)
-
-# Função para padronizar o design dos gráficos
-theme_graph &lt;- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = &quot;italic&quot;, size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = &quot;italic&quot;, size = 9),
-    strip.background = element_rect(fill = &quot;grey&quot;),
-    strip.text = element_text(face = &quot;bold&quot;),
-    legend.position = &quot;bottom&quot;,
-    legend.title = element_blank()
-  )
-}</code></pre>
+library(fma)</code></pre>
 <p>A lista abaixo apresenta os métodos que irei aplicar às séries temporais:</p>
 <ul>
 <li>Average: Média dos valores passados.</li>
@@ -66,7 +50,7 @@ theme_graph &lt;- function(){
   theme_graph()+
   labs(title = &quot;Produção Trimestral de Barro&quot;,
        subtitle = &quot;Série sem tendência porém com forte sazonalidade&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Vamos verificar a sazonalidade entre os trimestres.</p>
 <pre class="r"><code>tsibbledata::aus_production %&gt;% 
   select(Quarter, Bricks) %&gt;%
@@ -74,7 +58,7 @@ theme_graph &lt;- function(){
   feasts::gg_subseries()+
   theme_graph()+
   labs(title = &quot;Produção em cada trimestre&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Parece que os trimestres possuem uma sazonalidade estável. Vamos ver, entre um trimestre e o seguinte, a diferença percentual.</p>
 <pre class="r"><code>tsibbledata::aus_production %&gt;% 
   select(Quarter, Bricks) %&gt;%
@@ -84,7 +68,7 @@ theme_graph &lt;- function(){
   feasts::autoplot(perc_delta)+
   scale_y_continuous(labels = scales::percent)+
   labs(title = &quot;Diferença % entre um trimestre e o seguinte&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Agora vamos segmentar a série através do modelo ‘STL’ (Multiple Seasonal Decomposition by Loess). Este modelo irá decompor a série em Sazonalidade, Tendência e Resíduo.</p>
 <pre class="r"><code>stl &lt;- tsibbledata::aus_production %&gt;% 
   select(Quarter, Bricks) %&gt;%
@@ -206,7 +190,7 @@ fabletools::components(stl) %&gt;%
   theme_graph()+
   labs(title = &quot;Série decomposta&quot;,
        subtitle = &quot;Sazonalidade entre um trimeste e o seguinte&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Sabendo que a série tem este comportamento sazonal e uma certa tendência, podemos testar alguns modelos para ver qual irá ter a melhor performance.</p>
 </div>
 <div id="segmentação-em-treino-e-teste" class="section level4">
@@ -278,7 +262,7 @@ g2 &lt;-
 g1/g2 + patchwork::plot_annotation(
   title = &quot;Verificando Visualmente a Performance dos Modelos&quot;
 )</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>Neste primeiro grupo, evidentemente o modelo ‘Seazonal Naive’ (SNaive) performou melhor. Vamos ver o próximo grupo de modelos.</p>
 <pre class="r"><code># Plotando os resultados
 g1 &lt;- 
@@ -319,6 +303,6 @@ g2 &lt;-
 g1/g2 + patchwork::plot_annotation(
   title = &quot;Verificando Visualmente a Performance dos Modelos&quot;
 )</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 </div>
