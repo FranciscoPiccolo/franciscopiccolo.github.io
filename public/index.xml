@@ -384,333 +384,6 @@ Total
     </item>
     
     <item>
-      <title>Analisando modelos de Forecasting</title>
-      <link>https://francisco.piccolo.com/post/2020-12-30-forecast-training/</link>
-      <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
-      <guid>https://francisco.piccolo.com/post/2020-12-30-forecast-training/</guid>
-      <description>
-&lt;link href=&#34;index_files/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;index_files/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
-
-
-&lt;p&gt;Neste post vou desenvolver e analisar diversos modelos de ‘forecasting’ que aprendi após ler livros sobre o tema. A ideia é mostrar, de maneira simples, como rodar estes modelos no R, como analisar a performance e interpretar os resultados.&lt;/p&gt;
-&lt;p&gt;Neste trabalho eu vou usar os pacotes abaixo, que já contêm vários datasets de exemplo para desenvolvimento do ‘forecast’.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(GGally)
-library(fpp3)
-library(fable)
-library(tsibble)
-library(tsibbledata)
-library(feasts)
-library(tidyverse)
-library(patchwork)
-library(seasonal)
-library(fma)
-
-# Função para padronizar o design dos gráficos
-theme_graph &amp;lt;- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
-    strip.background = element_rect(fill = &amp;quot;grey&amp;quot;),
-    strip.text = element_text(face = &amp;quot;bold&amp;quot;),
-    legend.position = &amp;quot;bottom&amp;quot;,
-    legend.title = element_blank()
-  )
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;A lista abaixo apresenta os métodos que irei aplicar às séries temporais:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Average: Média dos valores passados.&lt;/li&gt;
-&lt;li&gt;Naive: Último valor da série.&lt;/li&gt;
-&lt;li&gt;SNaive: Últimos valores considerando a sazonalidade da série, ou seja, repete o padrão sazonal para o período projetado.&lt;/li&gt;
-&lt;li&gt;Drift: Desvio entre o primeiro período (d1) e o último período da projeção. Como se fosse uma linha ligando dois pontos.&lt;/li&gt;
-&lt;li&gt;ETS: Suavização Exponencial, sendo médias ponderadas de valores passados, com o peso da média caindo com o tempo.&lt;/li&gt;
-&lt;li&gt;Arima: Busca descrever a autocorrelação na série temporal e modelar esta autocorrelação para criar as projeções.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Importante notar que dentro de cada método é possível criar os modelos de previsão. No caso dos métodos ETS (também conhecido como &lt;em&gt;Suavização Exponencial&lt;/em&gt;) e Arima, uma infinidade de modelos é possível, onde é preciso estudar a série temporal para escolher o melhor modelo.&lt;/p&gt;
-&lt;p&gt;Para cada série temporal, irei aplicar as seguintes etapas para poder gerar uma conclusão ao final:&lt;/p&gt;
-&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;Análise exploratória da série temporal.&lt;/li&gt;
-&lt;li&gt;Segmentação da série temporal em ‘treino’ e ‘teste’.&lt;/li&gt;
-&lt;li&gt;Aplicação dos modelos no dataset ‘treino’.&lt;/li&gt;
-&lt;li&gt;Validação da performance.&lt;/li&gt;
-&lt;li&gt;Conclusões.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Agora vamos por a mão na massa para ver se as conclusões irão valer a leitura.&lt;/p&gt;
-&lt;div id=&#34;produção-trimestral-de-barro-na-australia&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;&lt;strong&gt;Produção Trimestral de Barro na Australia&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;Esta série é obtida no dataset ‘aus_production’ do pacote ‘tsibbledata’.&lt;/p&gt;
-&lt;div id=&#34;análise-exploratória&#34; class=&#34;section level4&#34;&gt;
-&lt;h4&gt;&lt;strong&gt;Análise Exploratória&lt;/strong&gt;&lt;/h4&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tsibbledata::aus_production %&amp;gt;% 
-  select(Quarter, Bricks) %&amp;gt;%
-  filter(!is.na(Bricks)) %&amp;gt;% 
-  feasts::autoplot(Bricks)+
-  theme_graph()+
-  labs(title = &amp;quot;Produção Trimestral de Barro&amp;quot;,
-       subtitle = &amp;quot;Série sem tendência porém com forte sazonalidade&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Vamos verificar a sazonalidade entre os trimestres.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tsibbledata::aus_production %&amp;gt;% 
-  select(Quarter, Bricks) %&amp;gt;%
-  filter(!is.na(Bricks)) %&amp;gt;% 
-  feasts::gg_subseries()+
-  theme_graph()+
-  labs(title = &amp;quot;Produção em cada trimestre&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Parece que os trimestres possuem uma sazonalidade estável. Vamos ver, entre um trimestre e o seguinte, a diferença percentual.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tsibbledata::aus_production %&amp;gt;% 
-  select(Quarter, Bricks) %&amp;gt;%
-  filter(!is.na(Bricks)) %&amp;gt;% 
-  mutate(lag_bricks = lag(Bricks,1),
-         perc_delta = Bricks/lag_bricks-1) %&amp;gt;% 
-  feasts::autoplot(perc_delta)+
-  scale_y_continuous(labels = scales::percent)+
-  labs(title = &amp;quot;Diferença % entre um trimestre e o seguinte&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Agora vamos segmentar a série através do modelo ‘STL’ (Multiple Seasonal Decomposition by Loess). Este modelo irá decompor a série em Sazonalidade, Tendência e Resíduo.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stl &amp;lt;- tsibbledata::aus_production %&amp;gt;% 
-  select(Quarter, Bricks) %&amp;gt;%
-  filter(!is.na(Bricks)) %&amp;gt;% 
-  fabletools::model(feasts::STL(Bricks))
-
-# Amostra do dataset criado após a decomposição
-fabletools::components(stl) %&amp;gt;% 
-  head(10) %&amp;gt;% 
-  knitr::kable(format.args = list(big.mark = &amp;quot;.&amp;quot;, decimal.mark = &amp;quot;,&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr class=&#34;header&#34;&gt;
-&lt;th align=&#34;left&#34;&gt;.model&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;Quarter&lt;/th&gt;
-&lt;th align=&#34;right&#34;&gt;Bricks&lt;/th&gt;
-&lt;th align=&#34;right&#34;&gt;trend&lt;/th&gt;
-&lt;th align=&#34;right&#34;&gt;season_year&lt;/th&gt;
-&lt;th align=&#34;right&#34;&gt;remainder&lt;/th&gt;
-&lt;th align=&#34;right&#34;&gt;season_adjust&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1956 Q1&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;189&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;204,6824&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-22,103518&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;6,4210798&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;211,1035&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1956 Q2&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;204&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;202,2213&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;3,270554&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-1,4918814&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;200,7294&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1956 Q3&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;208&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;200,6363&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;17,262705&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-9,8990529&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;190,7373&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1956 Q4&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;197&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;199,8118&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;1,654780&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-4,4665777&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;195,3452&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1957 Q1&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;187&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;204,2528&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-22,264318&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;5,0114886&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;209,2643&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1957 Q2&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;214&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;209,4834&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;3,256947&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;1,2596320&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;210,7431&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1957 Q3&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;227&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;213,7849&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;17,418423&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-4,2033676&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;209,5816&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1957 Q4&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;222&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;217,4343&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;1,683168&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;2,8825771&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;220,3168&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1958 Q1&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;199&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;222,0642&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-22,424785&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-0,6394626&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;221,4248&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;feasts::STL(Bricks)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1958 Q2&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;229&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;226,2032&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;3,249909&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-0,4531573&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;225,7501&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;Com este dataset da série decomposta, podemos plotar para ver qual “segmento” é mais forte (uma validação visual).&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fabletools::components(stl) %&amp;gt;% 
-  feasts::autoplot()+
-  theme_graph()+
-  labs(title = &amp;quot;Série decomposta&amp;quot;,
-       subtitle = &amp;quot;Sazonalidade entre um trimeste e o seguinte&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Sabendo que a série tem este comportamento sazonal e uma certa tendência, podemos testar alguns modelos para ver qual irá ter a melhor performance.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;segmentação-em-treino-e-teste&#34; class=&#34;section level4&#34;&gt;
-&lt;h4&gt;&lt;strong&gt;Segmentação em Treino e Teste&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;O dataset vai de 1956/Q1 até 2005/Q2. Para o treino, vou pegar o período de 1956/Q1 até 1999/Q4, e depois irei fazer o teste no período restante para depois fazer a comparação com os valores reais.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Dataset de teste
-tsibbledata::aus_production %&amp;gt;% 
-  select(Quarter, Bricks) %&amp;gt;%
-  filter(!is.na(Bricks),
-         year(Quarter) &amp;lt;= &amp;quot;1999&amp;quot;) -&amp;gt; train_dataset
-
-tsibbledata::aus_production %&amp;gt;% 
-  select(Quarter, Bricks) %&amp;gt;%
-  filter(!is.na(Bricks),
-         year(Quarter) &amp;gt; &amp;quot;1999&amp;quot;) -&amp;gt; test_dataset&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;desenvolvimento-dos-modelos&#34; class=&#34;section level4&#34;&gt;
-&lt;h4&gt;&lt;strong&gt;Desenvolvimento dos Modelos&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;Para os modelos ‘Mean’, ‘Naive’, ‘Snaive’ e ‘Drift’, não é preciso ajustar parâmetros para se adequar à série temporal. Porém nos modelos do tipo ‘Exponential Smoothing’ e ‘Arima’ este ajuste se faz necessário. O ajuste que farei será para levar em consideração a sazonalidade da série temporal.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Criando os modelos
-model_fit &amp;lt;- 
-  train_dataset %&amp;gt;% 
-  model(
-    mean = fable::MEAN(Bricks),
-    naive = fable::NAIVE(Bricks),
-    snaive = fable::SNAIVE(Bricks),
-    drift = fable::RW(Bricks ~ drift()),
-    simp_exp_smooth = fable::ETS(Bricks ~ error(&amp;quot;A&amp;quot;) + trend(&amp;quot;N&amp;quot;) + season(&amp;quot;A&amp;quot;)),
-    holt_linear_trend = fable::ETS(Bricks ~ error(&amp;quot;A&amp;quot;) + trend(&amp;quot;A&amp;quot;) + season(&amp;quot;N&amp;quot;)),
-    holt_damped_trend = fable::ETS(Bricks ~ error(&amp;quot;A&amp;quot;) + trend(&amp;quot;Ad&amp;quot;, phi = .9) + season(&amp;quot;A&amp;quot;)),
-    holt_winter_season_add = fable::ETS(Bricks ~ error(&amp;quot;A&amp;quot;) + trend(&amp;quot;A&amp;quot;) + season(&amp;quot;A&amp;quot;))
-  )
-
-# Gerando as previsões para os próximos 22 períodos (quarters), até 2005 Q2
-forecasting &amp;lt;- model_fit %&amp;gt;% 
-  forecast::forecast(h = 22)&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;analisando-a-performance&#34; class=&#34;section level4&#34;&gt;
-&lt;h4&gt;&lt;strong&gt;Analisando a Performance&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;Como são muitos modelos, vou separar em dois grupos para colocar no gráfico e ficar mais fácil de visualizar.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Plotando os resultados
-g1 &amp;lt;- 
-  forecasting %&amp;gt;% 
-  filter(.model %in% c(&amp;quot;mean&amp;quot;,&amp;quot;naive&amp;quot;,&amp;quot;snaive&amp;quot;,&amp;quot;drift&amp;quot;)) %&amp;gt;% 
-  feasts::autoplot(level = NULL, 
-                   size = 1)+
-  feasts::autolayer(test_dataset,
-                    color = &amp;quot;black&amp;quot;,
-                    size = 1)+
-  scale_color_brewer(type = &amp;quot;qual&amp;quot;, palette = 2)+
-  theme_graph()+
-  theme(legend.position = &amp;quot;none&amp;quot;)
-
-g2 &amp;lt;-
-  forecasting %&amp;gt;% 
-    filter(.model %in% c(&amp;quot;mean&amp;quot;,&amp;quot;naive&amp;quot;,&amp;quot;snaive&amp;quot;,&amp;quot;drift&amp;quot;)) %&amp;gt;% 
-  feasts::autoplot(train_dataset,
-                   level = NULL, 
-                   size = 1)+
-  feasts::autolayer(test_dataset,
-                    color = &amp;quot;black&amp;quot;,
-                    size = 1)+
-  scale_color_brewer(type = &amp;quot;qual&amp;quot;, palette = 2)+
-  theme_graph()+
-  theme(legend.position = &amp;quot;right&amp;quot;)+
-  labs(x = &amp;quot;&amp;quot;,
-       y = &amp;quot;&amp;quot;)
-
-g1/g2 + patchwork::plot_annotation(
-  title = &amp;quot;Verificando Visualmente a Performance dos Modelos&amp;quot;
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Neste primeiro grupo, evidentemente o modelo ‘Seazonal Naive’ (SNaive) performou melhor. Vamos ver o próximo grupo de modelos.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Plotando os resultados
-g1 &amp;lt;- 
-  forecasting %&amp;gt;% 
-    filter(.model %in% c(&amp;quot;simp_exp_smooth&amp;quot;,
-                       &amp;quot;holt_linear_trend&amp;quot;,
-                       &amp;quot;holt_damped_trend&amp;quot;,
-                       &amp;quot;holt_winter_season_add&amp;quot;,
-                       &amp;quot;holt_winter_season_mult&amp;quot;)) %&amp;gt;% 
-  feasts::autoplot(level = NULL, 
-                   size = 1)+
-  feasts::autolayer(test_dataset,
-                    color = &amp;quot;black&amp;quot;,
-                    size = 1)+
-  scale_color_brewer(type = &amp;quot;qual&amp;quot;, palette = 2)+
-  theme_graph()+
-  theme(legend.position = &amp;quot;none&amp;quot;)
-
-g2 &amp;lt;-
-  forecasting %&amp;gt;% 
-    filter(.model %in% c(&amp;quot;simp_exp_smooth&amp;quot;,
-                       &amp;quot;holt_linear_trend&amp;quot;,
-                       &amp;quot;holt_damped_trend&amp;quot;,
-                       &amp;quot;holt_winter_season_add&amp;quot;,
-                       &amp;quot;holt_winter_season_mult&amp;quot;)) %&amp;gt;% 
-  feasts::autoplot(train_dataset,
-                   level = NULL, 
-                   size = 1)+
-  feasts::autolayer(test_dataset,
-                    color = &amp;quot;black&amp;quot;,
-                    size = 1)+
-  scale_color_brewer(type = &amp;quot;qual&amp;quot;, palette = 2)+
-  theme_graph()+
-  theme(legend.position = &amp;quot;right&amp;quot;)+
-  labs(x = &amp;quot;&amp;quot;,
-       y = &amp;quot;&amp;quot;)
-
-g1/g2 + patchwork::plot_annotation(
-  title = &amp;quot;Verificando Visualmente a Performance dos Modelos&amp;quot;
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Volatilidade no Preços dos Alimentos - Jundiaí</title>
       <link>https://francisco.piccolo.com/draft/food_price_volatility/</link>
       <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
@@ -836,10 +509,9 @@ dataset %&amp;gt;%
       <pubDate>Sun, 01 Mar 2020 00:00:00 +0000</pubDate>
       <guid>https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/</guid>
       <description>
-&lt;link href=&#34;index_files/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;index_files/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
 
 
 &lt;p&gt;Econometria é uma ferramenta (ou técnica) muito usada por economistas, estatísticos e também por outras ciências. Uma definição encontrada nos livros básicos é:&lt;/p&gt;
@@ -864,33 +536,18 @@ table_1.3_cpi &amp;lt;- readr::read_delim(file = &amp;quot;https://raw.githubuse
                                &amp;quot;table_1.3_cpi.txt&amp;quot;, 
                                sep = &amp;quot;&amp;quot;),
                   delim = &amp;quot; &amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Agora vamos ao que interessa. Para desenvolver os exercícios, vou usar os pacotes abaixo e também uma função para padronizar o design dos gráficos.&lt;/p&gt;
+&lt;p&gt;Agora vamos ao que interessa. Para desenvolver os exercícios, vou usar os pacotes abaixo:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
 library(patchwork)
 library(gt)
 library(modelsummary)
-library(stringr)
-
-# Função para padronizar o design dos gráficos
-theme_graph &amp;lt;- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
-    strip.background = element_rect(fill = &amp;quot;grey&amp;quot;),
-    strip.text = element_text(face = &amp;quot;bold&amp;quot;),
-    legend.position = &amp;quot;bottom&amp;quot;,
-    legend.title = element_blank()
-  )
-}&lt;/code&gt;&lt;/pre&gt;
+library(stringr)&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;capítulo-1&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;&lt;strong&gt;Capítulo 1&lt;/strong&gt;&lt;/h2&gt;
 &lt;div id=&#34;a-tabela-1.3-apresenta-dados-relativos-ao-índice-de-preços-ao-consumidor-ipc-de-sete-países-industrializados.-a-base-do-índice-é-19821984-100.&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;&lt;strong&gt;1.1. A Tabela 1.3 apresenta dados relativos ao Índice de Preços ao Consumidor (IPC) de sete países industrializados. A base do índice é 1982–1984 = 100.&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;a. Com base nos dados fornecidos, calcule a taxa de inflação de cada país.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Para resolver este exercício, vamos trazer o dataset necessário.&lt;/p&gt;
+&lt;p&gt;Vamos trazer o dataset necessário.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table_1.3_cpi &amp;lt;- 
   readr::read_delim(file = paste(dataset_path,
                                &amp;quot;table_1.3_cpi.txt&amp;quot;, 
@@ -995,7 +652,7 @@ country_cpi %&amp;gt;%
   font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
 }
 
-#gwqjcpvree .gt_table {
+#thrleqxqev .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1020,7 +677,7 @@ country_cpi %&amp;gt;%
   border-left-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_heading {
+#thrleqxqev .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1032,7 +689,7 @@ country_cpi %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_title {
+#thrleqxqev .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1042,7 +699,7 @@ country_cpi %&amp;gt;%
   border-bottom-width: 0;
 }
 
-#gwqjcpvree .gt_subtitle {
+#thrleqxqev .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1052,13 +709,13 @@ country_cpi %&amp;gt;%
   border-top-width: 0;
 }
 
-#gwqjcpvree .gt_bottom_border {
+#thrleqxqev .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_col_headings {
+#thrleqxqev .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1073,7 +730,7 @@ country_cpi %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_col_heading {
+#thrleqxqev .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1093,7 +750,7 @@ country_cpi %&amp;gt;%
   overflow-x: hidden;
 }
 
-#gwqjcpvree .gt_column_spanner_outer {
+#thrleqxqev .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1105,15 +762,15 @@ country_cpi %&amp;gt;%
   padding-right: 4px;
 }
 
-#gwqjcpvree .gt_column_spanner_outer:first-child {
+#thrleqxqev .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gwqjcpvree .gt_column_spanner_outer:last-child {
+#thrleqxqev .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gwqjcpvree .gt_column_spanner {
+#thrleqxqev .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1125,7 +782,7 @@ country_cpi %&amp;gt;%
   width: 100%;
 }
 
-#gwqjcpvree .gt_group_heading {
+#thrleqxqev .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1147,7 +804,7 @@ country_cpi %&amp;gt;%
   vertical-align: middle;
 }
 
-#gwqjcpvree .gt_empty_group_heading {
+#thrleqxqev .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1162,15 +819,15 @@ country_cpi %&amp;gt;%
   vertical-align: middle;
 }
 
-#gwqjcpvree .gt_from_md &gt; :first-child {
+#thrleqxqev .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#gwqjcpvree .gt_from_md &gt; :last-child {
+#thrleqxqev .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#gwqjcpvree .gt_row {
+#thrleqxqev .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1189,7 +846,7 @@ country_cpi %&amp;gt;%
   overflow-x: hidden;
 }
 
-#gwqjcpvree .gt_stub {
+#thrleqxqev .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1201,7 +858,7 @@ country_cpi %&amp;gt;%
   padding-left: 12px;
 }
 
-#gwqjcpvree .gt_summary_row {
+#thrleqxqev .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1211,7 +868,7 @@ country_cpi %&amp;gt;%
   padding-right: 5px;
 }
 
-#gwqjcpvree .gt_first_summary_row {
+#thrleqxqev .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1221,7 +878,7 @@ country_cpi %&amp;gt;%
   border-top-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_grand_summary_row {
+#thrleqxqev .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1231,7 +888,7 @@ country_cpi %&amp;gt;%
   padding-right: 5px;
 }
 
-#gwqjcpvree .gt_first_grand_summary_row {
+#thrleqxqev .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1241,11 +898,11 @@ country_cpi %&amp;gt;%
   border-top-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_striped {
+#thrleqxqev .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gwqjcpvree .gt_table_body {
+#thrleqxqev .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1254,7 +911,7 @@ country_cpi %&amp;gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_footnotes {
+#thrleqxqev .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1268,13 +925,13 @@ country_cpi %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_footnote {
+#thrleqxqev .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#gwqjcpvree .gt_sourcenotes {
+#thrleqxqev .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1288,46 +945,46 @@ country_cpi %&amp;gt;%
   border-right-color: #D3D3D3;
 }
 
-#gwqjcpvree .gt_sourcenote {
+#thrleqxqev .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#gwqjcpvree .gt_left {
+#thrleqxqev .gt_left {
   text-align: left;
 }
 
-#gwqjcpvree .gt_center {
+#thrleqxqev .gt_center {
   text-align: center;
 }
 
-#gwqjcpvree .gt_right {
+#thrleqxqev .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gwqjcpvree .gt_font_normal {
+#thrleqxqev .gt_font_normal {
   font-weight: normal;
 }
 
-#gwqjcpvree .gt_font_bold {
+#thrleqxqev .gt_font_bold {
   font-weight: bold;
 }
 
-#gwqjcpvree .gt_font_italic {
+#thrleqxqev .gt_font_italic {
   font-style: italic;
 }
 
-#gwqjcpvree .gt_super {
+#thrleqxqev .gt_super {
   font-size: 65%;
 }
 
-#gwqjcpvree .gt_footnote_marks {
+#thrleqxqev .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 &lt;/style&gt;
-&lt;div id=&#34;gwqjcpvree&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
+&lt;div id=&#34;thrleqxqev&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;&lt;table class=&#34;gt_table&#34;&gt;
   &lt;thead class=&#34;gt_header&#34;&gt;
     &lt;tr&gt;
       &lt;th colspan=&#34;8&#34; class=&#34;gt_heading gt_title gt_font_normal&#34; style&gt;&lt;strong&gt;Inflação (CPI) para os Países Selecionados&lt;/strong&gt;&lt;/th&gt;
@@ -1633,7 +1290,7 @@ country_cpi %&amp;gt;%
   theme_graph()+
   labs(title = &amp;quot;Inflação dos Países Selecionados&amp;quot;,
        y = &amp;quot;CPI (Consumer Price Index)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;c. Que conclusões gerais é possível tirar sobre a evolução da inflação nos sete países?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Há uma tendência de queda nos países selecionados após 1985, onde todos mantiveram uma taxa abaio de 5% ao ano.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;d. Em que país a taxa de inflação parece ser a mais flutuante? Há alguma explicação para isso?&lt;/strong&gt;&lt;/p&gt;
@@ -1911,7 +1568,7 @@ usa_cpi
   labs(title = &amp;quot;Análise da Inflação na Itália&amp;quot;,
        subtitle = &amp;quot;Aparentemente é a taxa mais flutuante&amp;quot;,
        y = &amp;quot;CPI (Consumer Price Index)&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;A flutuação parece maior na Itália por conta dos primeiros anos, onde a inflação ficou bastante alta. Caso a análise seja feita a partir de 1985, a Inglaterra fica com maior desvio padrão.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;section&#34; class=&#34;section level3&#34;&gt;
@@ -1924,7 +1581,7 @@ usa_cpi
   theme_graph()+
   theme(axis.text = element_blank())+
   labs(title = &amp;quot;Correlação Entre as Taxas de Inflação&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;576&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Apenas a linha e coluna ‘usa_cpi’ precisa ser usada, mostrando o gráficos de dispersão entre as variáveis e seu coeficiente de correlação. A menor correlação é a da Alemanha, que ficou em 69,3%.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. Faça um comentário geral sobre o comportamento das taxas de inflação dos seis países em relação à inflação dos Estados Unidos.&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;country_cpi %&amp;gt;% 
@@ -2147,8 +1804,10 @@ usa_cpi
 &lt;/table&gt;
 &lt;p&gt;Os países selecionados possuem economias já desenvolvidas e bastante conectadas entre si, por isso há este comportamento parecido nas taxas de inflação. A correlação é alta não apenas entre os EUA e os outros países, por conta desta conexão entre as economias.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;c. Se você constatar que as taxas de inflação dos seis países evoluem no mesmo sentido que a dos Estados Unidos, isso sugere que a inflação dos Estados Unidos “causa” inflação nos outros países? Justifique.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Com estes dados não é possível verificar se há uma correlação &lt;a href=&#34;https://pt.wikipedia.org/wiki/Rela%C3%A7%C3%A3o_esp%C3%BAria&#34;&gt;espúria&lt;/a&gt; entre as variáveis, portanto não consigo afirmar se a variação na inflação dos EUA causa variação na inflação dos outros países. Mas pelo que lembro das aulas de macroeconomia, se um país está tendo inflação, sua moeda tende a se desvalorizar frente à outras moedas e se um país importa de outro que está tendo uma desvalorização cambial, ocorrerá uma queda no custo de importação e consequentemente uma pressão para redução de preços.
-### &lt;strong&gt;1.3 A Tabela 1.4 apresenta as taxas de câmbio em sete países industrializados, no período 1985 - 2006. Exceto no caso do Reino Unido, as taxas de câmbio estão definidas como unidades de moeda estrangeira por um dólar; no caso do Reino Unido, a taxa de câmbio é dada como o número de dólares por uma libra esterlina.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Com estes dados não é possível verificar se há uma correlação &lt;a href=&#34;https://pt.wikipedia.org/wiki/Rela%C3%A7%C3%A3o_esp%C3%BAria&#34;&gt;espúria&lt;/a&gt; entre as variáveis, portanto não consigo afirmar se a variação na inflação dos EUA causa variação na inflação dos outros países. Mas pelo que lembro das aulas de macroeconomia, se um país está tendo inflação, sua moeda tende a se desvalorizar frente à outras moedas e se um país importa de outro que está tendo uma desvalorização cambial, ocorrerá uma queda no custo de importação e consequentemente uma pressão para redução de preços.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;a-tabela-1.4-apresenta-as-taxas-de-câmbio-em-sete-países-industrializados-no-período-1985---2006.-exceto-no-caso-do-reino-unido-as-taxas-de-câmbio-estão-definidas-como-unidades-de-moeda-estrangeira-por-um-dólar-no-caso-do-reino-unido-a-taxa-de-câmbio-é-dada-como-o-número-de-dólares-por-uma-libra-esterlina.&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;&lt;strong&gt;1.3 A Tabela 1.4 apresenta as taxas de câmbio em sete países industrializados, no período 1985 - 2006. Exceto no caso do Reino Unido, as taxas de câmbio estão definidas como unidades de moeda estrangeira por um dólar; no caso do Reino Unido, a taxa de câmbio é dada como o número de dólares por uma libra esterlina.&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;a. Represente graficamente a evolução das taxas de câmbio ao longo do tempo e comente sobre o comportamento geral dessa evolução.&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Trazendo o dataset para o exercício
 table_1.4_exchange_rate &amp;lt;- 
@@ -2369,13 +2028,14 @@ Reino.unido
   scale_y_continuous(labels = scales::comma)+
   scale_fill_brewer(type = &amp;quot;qual&amp;quot;, palette = 3)+
   theme_graph()+
-  theme(legend.position = &amp;quot;none&amp;quot;)+
+  theme(legend.position = &amp;quot;none&amp;quot;,
+        axis.text.x = element_text(angle = 90))+
   facet_wrap(~country, scales = &amp;quot;free_y&amp;quot;)+
   labs(title = &amp;quot;Taxa de Câmbio de Países Selecionados&amp;quot;,
        subtitle = &amp;quot;Unidade de moeda local por 1 dólar&amp;quot;,
        y = &amp;quot;Taxa de Câmbio&amp;quot;,
        x = &amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;De maneira geral, apenas o México mostrou uma tendência de desvalorização de sua taxa de câmbio. Os outros países parecem ter a taxa de câmbio sob controle.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. Diz-se que o dólar apreciou-se quando pode comprar mais unidades de moeda estrangeira. Opostamente, diz-se que se depreciou quando compra menos unidades da moeda estrangeira. No período 1985–2006, qual foi o comportamento geral do dólar dos Estados Unidos? Aproveite para pesquisar em algum livro de macroeconomia ou de economia internacional os fatores que determinam a apreciação ou depreciação de uma moeda.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;O comportamento foi variado entre os países selecionados. Em alguns (Suíça, Japão e Reino Unido) houve desvalorização do dólar e em outros (México, China e Coréia do Sul), houve valorização.&lt;/p&gt;
@@ -2650,7 +2310,7 @@ year_and_month
        subtitle = &amp;quot;M1: Moeda em poder do público + Reservas Bancárias&amp;quot;,
        x = &amp;quot;&amp;quot;,
        y = &amp;quot;M1&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;O crescimento pode ser atribuído ao aumento de oferta de crédito pelo governo e também ao crescimento econômico, que faz as pessoas sacarem seus investimentos para consumo ou investimento.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;os-dados-apresentados-na-tabela-1.6-foram-divulgados-na-edição-do-the-wall-street-journal-de-1º-de-março-de-1984.-relacionam-o-orçamento-de-publicidade-em-milhões-de-dólares-de-21-empresas-em-1983-com-as-impressões-retidas-semanalmente-pelos-que-viram-os-produtos-anunciados-por-essas-empresas.-os-dados-foram-obtidos-em-uma-pesquisa-realizada-com-4-mil-adultos-em-que-foi-pedido-aos-usuários-dos-produtos-que-citassem-um-comercial-da-categoria-do-produto-que-tivessem-assistido-na-semana-anterior.&#34; class=&#34;section level3&#34;&gt;
@@ -2752,7 +2412,7 @@ Burger_King
        subtitle = &amp;quot;Impressões Retidas nos Proutos Anunciados&amp;quot;,
        x = &amp;quot;Investimento em Publicidade (milhões de US$)&amp;quot;,
        y = &amp;quot;Impressões Retidas em Produtos Anunciados&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-20-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. O que você poderia dizer sobre a natureza da relação entre as duas variáveis?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Apesar de existir uma correlação (notada pelo gráfico, não estatísticamente comprovada), ela pode não ser linear.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;c. Examinando o gráfico, você acha que vale a pena anunciar? Pense em todos os comerciais veiculados em finais de campeonatos de esportes ou no horário nobre.&lt;/strong&gt;&lt;/p&gt;
@@ -3064,11 +2724,11 @@ men
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = share_work_force, y = unemployment_rate))+
   theme_graph()+
-  labs(title = &amp;quot;Relação entre Participação na Força de Trabalho e Taxa de Desemprego&amp;quot;,
-       subtitle = &amp;quot;Para os Homens&amp;quot;,
+  labs(title = &amp;quot;Relação entre Participação na Força \nde Trabalho e Taxa de Desemprego&amp;quot;,
+       subtitle = &amp;quot;Grupo de Homem apenas&amp;quot;,
        x = &amp;quot;Participação (%) no mercado de trabalho&amp;quot;,
        y = &amp;quot;Taxa (%) de Desemprego&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-23-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-24-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. Faça o mesmo para as mulheres&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table_2.7_labour_market_adj %&amp;gt;%
   filter(gender == &amp;quot;women&amp;quot;) %&amp;gt;% 
@@ -3076,11 +2736,11 @@ men
   geom_point(mapping = aes(x = share_work_force, 
                            y = unemployment_rate))+
   theme_graph()+
-  labs(title = &amp;quot;Relação entre Participação na Força de Trabalho e Taxa de Desemprego&amp;quot;,
-       subtitle = &amp;quot;Para as Mulheres&amp;quot;,
+  labs(title = &amp;quot;Relação entre Participação na Força \nde Trabalho e Taxa de Desemprego&amp;quot;,
+       subtitle = &amp;quot;Grupo de Homem apenas&amp;quot;,
        x = &amp;quot;Participação (%) no mercado de trabalho&amp;quot;,
        y = &amp;quot;Taxa (%) de Desemprego&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-24-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-25-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;c. Agora, represente graficamente a taxa de participação de homens e mulheres em relação aos ganhos médios por hora (em dólares de 1982). (Você pode usar gráficos separados.) O que constatou? Como você justificaria isso?&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table_2.7_labour_market_adj %&amp;gt;% 
   ggplot2::ggplot()+
@@ -3090,10 +2750,10 @@ men
   theme_graph()+
   scale_color_viridis_d()+
   facet_grid(~gender, scales = &amp;quot;free&amp;quot;)+
-  labs(title = &amp;quot;Relação Entre Salário e Participação no Mercado de Trabalho&amp;quot;,
+  labs(title = &amp;quot;Relação Entre Salário e Participação \nno Mercado de Trabalho&amp;quot;,
        x = &amp;quot;Participação no Mercado de Trabalho (%)&amp;quot;,
        y = &amp;quot;Salário por Hora&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-25-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-26-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;a-tabela-2.8-apresenta-dados-sobre-despesas-com-alimentação-e-gastos-totais-em-rupias-para-uma-amostra-de-55-domicílios-rurais-da-índia.-no-início-de-2000-um-dólar-americano-era-equivalente-a-cerca-de-40-rupias-indianas.&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;&lt;strong&gt;2.15. A Tabela 2.8 apresenta dados sobre despesas com alimentação e gastos totais, em rupias, para uma amostra de 55 domicílios rurais da Índia. (No início de 2000, um dólar americano era equivalente a cerca de 40 rupias indianas.)&lt;/strong&gt;&lt;/h3&gt;
@@ -3170,7 +2830,7 @@ total
   labs(title = &amp;quot;Despesas Totais vs Despesas com Alimentação&amp;quot;,
        x = &amp;quot;Despesas Totais&amp;quot;,
        y = &amp;quot;Despesas com Alimentação&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-27-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-28-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. Que conclusões gerais você pode tirar deste exemplo?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;A correlação é mais para famílias de baixa renda (com despesas totais abaixo de 600 rupias), visto que a maior parte dos gastos se concentra em itens básicos de alimentação. Porém, no geral, pode-se concluir com base neste teste visual, que há uma correlação entre as duas variáveis.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;c. Você esperaria, a priori, que as despesas com alimentação aumentassem linearmente com o aumento das despesas totais, independentemente do nível destas? Por quê? Utilize a despesa total como uma proxy para o nível de renda total.&lt;/strong&gt;&lt;/p&gt;
@@ -3359,7 +3019,7 @@ math_graph &amp;lt;-
 verbal_graph + math_graph +
   patchwork::plot_annotation(title = &amp;quot;Comparativo de Notas Entre os Gêneros&amp;quot;,
                              subtitle = &amp;quot;Teste SAT dos EUA&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-29-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-30-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. Que conclusões gerais você tirou desses gráficos?&lt;/strong&gt;&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: lower-roman&#34;&gt;
 &lt;li&gt;Homens se saem melhores em ambos os testes e (ii) o teste de matemática ou foi ficando mais fácil ao longo dos anos ou os alunos foram se preparando melhor para fazê-lo. Também nota-se uma correlação entre os desempenhos em ‘Verbal’ e ‘Math’.&lt;/li&gt;
@@ -3377,7 +3037,7 @@ verbal_graph + math_graph +
        subtitle = &amp;quot;Exame de Matemática (SAT)&amp;quot;,
        x = &amp;quot;Mulheres&amp;quot;,
        y = &amp;quot;Homens&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-30-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-31-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -3547,7 +3207,7 @@ non_agricultural_wages
   labs(title = &amp;quot;Relação Entre Produção por Hora e Salários&amp;quot;,
        x = &amp;quot;Produção por Hora&amp;quot;,
        y = &amp;quot;Salário&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-35-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-36-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. Qual a teoria econômica que embasa a relação entre as duas variáveis? O gráfico de dispersão confirma a teoria?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;R: Não sei dizer a teoria econômica que fundamenta esta relação direta, porém é esperado que a produtividade gere ganhos salariais, visto que se cria mais valor pra sociedade em um mesmo intervalo de tempo.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;c. Estime uma regressão de MQO de Y contra X. Guarde os resultados para examiná-los novamente depois de estudar o Capítulo 5.&lt;/strong&gt;&lt;/p&gt;
@@ -3774,7 +3434,7 @@ real_gdp
   labs(title = &amp;quot;PIB dos EUA, Nominal e Real&amp;quot;,
        x = &amp;quot;Year&amp;quot;,
        y = &amp;quot;GDP&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-40-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-03-03-basic-econometrics-by-gujarati-and-porter/index_files/figure-html/unnamed-chunk-41-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;b. Denotando o PIB por Y e o tempo por X (medido em uma sequência cronológica em que l represente 1959, 2, 1960 e assim por diante até 47 para 2005), veja se o seguinte modelo ajusta-se aos dados do PIB:&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_t = \beta_1 + \beta_2 x_t + \mu_t\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Apenas pelo gráfico dá para se notar uma relação entre tempo e variação do PIB. Algo que é bem comum em séries temporais, onde se incluem modelos de regressão para fazer o ‘forecasting’. Vamos ver se o modelo se adequa bem aos dados.&lt;/p&gt;
@@ -3923,8 +3583,7 @@ real_gdp
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       <guid>https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/</guid>
       <description>
-&lt;link href=&#34;index_files/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;index_files/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;A imigração vem sendo um tema central nos debates políticos para presidencia, gerando muitas dúvidas nos eleitores, por conta de &lt;em&gt;fake news&lt;/em&gt; que acabam surgindo, e também muita esperança para as pessoas que buscam mudar de vida com a mudança de país. Esta onda imigratória está cada vez chamando mais a atenção da mídia, por conta da grave crise na Syria, Yemen e Venezuela, que fez com que milhões de pessoas decidissem sair de seus lares.&lt;/p&gt;
@@ -3946,21 +3605,7 @@ real_gdp
 &lt;p&gt;Agora que entendemos alguns aspectos do fluxo imigratório, nós podemos analisar alguns datasets da base de dados do Banco Mundial para nos aprofundar um pouco mais no tema. Para isso, vamos usar os seguintes pacotes.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse) # data science and data manipulation packages
 library(wbstats)   # World Bank API
-library(patchwork)
-
-theme_graph &amp;lt;- function(){
-  theme(
-    plot.title = element_text(size = 15),
-    plot.subtitle = element_text(size = 9),
-    plot.caption = element_text(face = &amp;quot;italic&amp;quot;, size = 7),
-    axis.text = element_text(size = 8),
-    axis.title = element_text(face = &amp;quot;italic&amp;quot;, size = 8),
-    strip.background = element_rect(fill = &amp;quot;grey&amp;quot;),
-    strip.text = element_text(face = &amp;quot;bold&amp;quot;),
-    legend.title = element_blank(),
-    legend.position = &amp;quot;bottom&amp;quot;
-  )
-}&lt;/code&gt;&lt;/pre&gt;
+library(patchwork)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A primeira informação que vale a pena ser vista sobre o tema é a quantidade de pessoas consideradas imigrantes pelo Banco Mundial. O gráfico abaixo irá mostrar a série temporal desta variável.&lt;/p&gt;
 &lt;p&gt;O código abaixo salva na variável ‘migrants_pop’ o resultado da chamada da API do Banco Mundial. Veja que é necessário especificar qual indicator se deseja trazer, o período e quais países para ser retornado.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Creating a variable with the data.frame of the requested data
@@ -3984,7 +3629,7 @@ migrants_pop &amp;lt;- wbstats::wb(indicator = &amp;quot;SM.POP.TOTL&amp;quot;,
   labs(title = &amp;quot;População Imigrante ao Longo do Tempo&amp;quot;,
        x = &amp;quot;&amp;quot;,
        y = &amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Veja que o dataset trouxe dados até 2015, mesmo eu tendo solicitado até 2020. Em 2015 a população imigrante era de 250 milhões (maior do que a população do Brasil). Agora vamos verificar os países que possuem maior proporção de imigrantes em seus territórios. O próximo gráfico irá trazer os 20 países com maior proporção de população imigrante. Provavelmente Canadá e Austrália estarão presentes neste rank. Irei remover países com população abaixo de 1 milhão de habitantes.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Trazendo a população dos países
 population &amp;lt;- wbstats::wb(indicator = &amp;quot;SP.POP.TOTL&amp;quot;,
@@ -4004,64 +3649,18 @@ migrants_pop %&amp;gt;%
            fill = &amp;quot;steel blue&amp;quot;)+
   scale_y_continuous(labels = scales::percent)+
   theme_graph()+
-  labs(title = &amp;quot;Países com Maior Proporção de Imigrantes&amp;quot;,
+  labs(title = &amp;quot;Países com Maior Proporção de \nImigrantes&amp;quot;, # \n indica quebra de linha para o título caber na imagem
        x = &amp;quot;&amp;quot;,
        y = &amp;quot;% de Imigrantes no País&amp;quot;)+
   coord_flip()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Alguns países me surpreenderam estar na lista, como por exemplo Arábia Saudita. Este &lt;a href=&#34;https://www.thestreet.com/personal-finance/countries-with-most-immigrants&#34;&gt;artigo&lt;/a&gt; reforça esse número.&lt;/p&gt;
 &lt;p&gt;Se por um lado, alguns países receberam muitos imigrantes, por outro, alguns países perderam muitos residentes. Vamos ver os países que mais perderam residentes nos últimos anos. O Banco Mundial possui um indicador que mostra a saída líquida de pessoas, e com essa métrica, podemos classificar os países do menor valor para o maior e selecionar os 20 primeiros. Com isso, o resultado será os 20 países que mais perderam pessoas.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;net_immigration &amp;lt;- wbstats::wb(indicator = &amp;quot;SM.POP.NETM&amp;quot;,
                          country = &amp;quot;countries_only&amp;quot;,
                          startdate = 2010,
                          enddate = 2019) %&amp;gt;% 
-  select(country, value, date)
-
-# Dataset sample
-net_immigration[sample(nrow(net_immigration),5), ] %&amp;gt;% 
-  knitr::kable(format.args = list(decimal.mark = &amp;quot;,&amp;quot;, big.mark = &amp;quot;.&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr class=&#34;header&#34;&gt;
-&lt;th align=&#34;left&#34;&gt;&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;country&lt;/th&gt;
-&lt;th align=&#34;right&#34;&gt;value&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;date&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;1803&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Slovak Republic&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;7.423&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2017&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;148&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Belgium&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;258.672&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2012&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;1663&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Rwanda&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-44.998&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2017&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;2033&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;United States&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;4.774.029&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2017&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;1588&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Korea, Dem. People’s Rep.&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;-27.013&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2012&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+  select(country, value, date)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;net_immigration %&amp;gt;% 
   group_by(country) %&amp;gt;% 
   summarise(net_immigration = sum(value)) %&amp;gt;% 
@@ -4075,10 +3674,10 @@ net_immigration[sample(nrow(net_immigration),5), ] %&amp;gt;%
   scale_y_continuous(labels = scales::comma)+
   theme_graph()+
   coord_flip()+
-  labs(title = &amp;quot;Países que Mais Perderam Imigrantes desde 2010&amp;quot;,
+  labs(title = &amp;quot;Países que Mais Perderam \nImigrantes desde 2010&amp;quot;,
        x = &amp;quot;&amp;quot;,
        y = &amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/index_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Síria e Venezuela são dois países que eu esperava ver neste gráfico. Porém Índia e China aparecem por conta de sua grande população, pois um pequeno movimento de seus habitantes é algo grande comparado aos outros. O ideal é normalizar este dataset usando a população de cada país, de forma que a saída de pessoas seja relativa à sua população. Para isso, basta cruzarmos este dataset com o dataset de população do país para criar a métrica de ‘saída líquida relativa de pessoas’.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Net immigration summed during the period
 net_immigration %&amp;gt;% 
@@ -4106,7 +3705,7 @@ population %&amp;gt;%
        x = &amp;quot;&amp;quot;,
        y = &amp;quot;&amp;quot;,
        caption = &amp;quot;De 2010 até 2017&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/index_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Com essa visão ajustada, podemos ver outros países compondo o ranking. Seguindo adiante, vamos verificar as ‘remittances’ que são enviadas por imigrantes para seus familiares que estão em dificuldades. Um dado importante indicado nas reportagens da revista é que este fluxo de investimento direto representa mais de 10% do PIB de 29 países. Vamos ver se este indicador é corroborado pelo dataset do Banco Mundial.&lt;/p&gt;
 &lt;p&gt;Por sorte o Banco Mundial já mensura o percentual de ‘remittances’ sobre o PIB, desta forma desenvolver esta tabela ficou bem simples.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;remitances_over_gdp &amp;lt;- wbstats::wb(indicator = &amp;quot;BX.TRF.PWKR.DT.GD.ZS&amp;quot;,
@@ -4165,7 +3764,7 @@ remitances_over_gdp %&amp;gt;%
 &lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;2018&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;Bermuda&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;19.99%&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;20.03%&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;odd&#34;&gt;
 &lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
@@ -4224,20 +3823,20 @@ remitances_over_gdp %&amp;gt;%
 &lt;tr class=&#34;even&#34;&gt;
 &lt;td align=&#34;right&#34;&gt;16&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;2018&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Marshall Islands&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;14.21%&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Comoros&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;14.65%&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;odd&#34;&gt;
 &lt;td align=&#34;right&#34;&gt;17&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;2018&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Liberia&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;14.09%&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Marshall Islands&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;14.21%&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;even&#34;&gt;
 &lt;td align=&#34;right&#34;&gt;18&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;2018&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Comoros&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;13.8%&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Liberia&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;14.09%&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;odd&#34;&gt;
 &lt;td align=&#34;right&#34;&gt;19&lt;/td&gt;
@@ -4329,7 +3928,20 @@ remitances_over_gdp %&amp;gt;%
 &lt;p&gt;Outra informação indicada nas reportagens é de que as remessas enviadas pelos familiares aos seus parentes é um fluxo acíclico. Isso quer dizer que o fluxo não varia em conformidade com a variação do PIB do país que recebe este investimento. Essa hipótese tem um fundamento sólido, visto que o imigrante, ao ver seus parentes precisando de ajuda (por conta de uma crise econômica), envia mais dinheiro para que eles consigam passar por esta situação adversa. Apesar deste embasamento, é necessário ver empiricamente esta afirmação.&lt;/p&gt;
 &lt;p&gt;Vou selecionar alguns países com baixo PIB per capita para ver se o fluxo de ‘remittances’ de fato assume um comportamento acíclico. Os países serão:
 Suriname, Somalia, Serra Leoa, Senegal, Sudão, Ruanda, Nepal, Nigéria, Malawi, Mali, Líbia, Quênia, Etiópia, Eritreia e Congo.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Creating a variable with the selected countries
+country_view &amp;lt;- c(&amp;quot;Yemen, Rep.&amp;quot;,&amp;quot;Tanzania&amp;quot;,&amp;quot;Uganda&amp;quot;,
+                  &amp;quot;Tunisia&amp;quot;,&amp;quot;Chad&amp;quot;,&amp;quot;Syrian Arab Republic&amp;quot;,
+                  &amp;quot; Suriname&amp;quot;,&amp;quot;Somalia&amp;quot;,&amp;quot;Sierra Leone&amp;quot;,
+                  &amp;quot;Senegal&amp;quot;,&amp;quot;Sudan&amp;quot;,&amp;quot;Rwanda&amp;quot;,&amp;quot;Nepal&amp;quot;,
+                  &amp;quot;Nigeria&amp;quot;,&amp;quot;Malawi&amp;quot;,&amp;quot;Mali&amp;quot;,&amp;quot;Libya&amp;quot;,
+                  &amp;quot;Kenya&amp;quot;,&amp;quot;Ethiopia&amp;quot;,&amp;quot;Eritrea&amp;quot;,
+                  &amp;quot;Congo, Rep.&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Agora vamos ver o fluxo de ‘remittances’ e o PIB per Capita.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;remitances_received &amp;lt;- wbstats::wb(indicator = &amp;quot;BX.TRF.PWKR.CD.DT&amp;quot;,
+                               country = &amp;quot;countries_only&amp;quot;)
+
+gdp_pc &amp;lt;- wbstats::wb(indicator = &amp;quot;NY.GDP.PCAP.CD&amp;quot;,
+                      country = &amp;quot;countries_only&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Tendo as duas variáveis, antes de compará-las, será necessário normalizar o fluxo de ‘remittances’ pela população. O seguinte código fará esta normalização.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;remitances_received %&amp;gt;% 
   mutate(remitances = value) %&amp;gt;% 
@@ -4345,7 +3957,7 @@ Suriname, Somalia, Serra Leoa, Senegal, Sudão, Ruanda, Nepal, Nigéria, Malawi,
 remitances[sample(nrow(remitances),5), ] %&amp;gt;% 
   knitr::kable(caption = &amp;quot;Amostra do dataset&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;table&gt;
-&lt;caption&gt;&lt;span id=&#34;tab:unnamed-chunk-12&#34;&gt;Table 1: &lt;/span&gt;Amostra do dataset&lt;/caption&gt;
+&lt;caption&gt;&lt;span id=&#34;tab:unnamed-chunk-13&#34;&gt;Table 1: &lt;/span&gt;Amostra do dataset&lt;/caption&gt;
 &lt;thead&gt;
 &lt;tr class=&#34;header&#34;&gt;
 &lt;th align=&#34;left&#34;&gt;&lt;/th&gt;
@@ -4356,34 +3968,34 @@ remitances[sample(nrow(remitances),5), ] %&amp;gt;%
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;19&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2016&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Kenya&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;35.5674&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;89&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2012&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Senegal&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;117.6113&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;67&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2013&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Rwanda&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;15.7424&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Congo, Rep.&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.0000&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;83&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Senegal&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;153.1145&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
 &lt;td align=&#34;left&#34;&gt;52&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2019&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Nepal&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;288.3564&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;24&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2011&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Kenya&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;21.6345&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2013&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Nigeria&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;121.0781&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;left&#34;&gt;33&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;2011&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;Mali&lt;/td&gt;
-&lt;td align=&#34;right&#34;&gt;50.5400&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;143&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2012&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Uganda&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26.4261&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -4400,6 +4012,7 @@ remitances[sample(nrow(remitances),5), ] %&amp;gt;%
             color = &amp;quot;dark orange&amp;quot;, size = 1)+
   scale_y_continuous(labels = scales::comma)+
   theme_graph()+
+  theme(axis.text.x = element_text(angle = 90))+
   labs(title = &amp;quot;PIB per Capita&amp;quot;)
 
 
@@ -4415,10 +4028,11 @@ remittances &amp;lt;- gdp_pc %&amp;gt;%
             color = &amp;quot;steel blue&amp;quot;, size = 1)+
   scale_y_continuous(labels = scales::comma)+
   theme_graph()+
-  labs(title = &amp;quot;Remittances per Capita&amp;quot;)
+  theme(axis.text.x = element_text(angle = 90))+
+  labs(title = &amp;quot;Remittances \nper Capita&amp;quot;)
 
 gdp+remittances&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/index_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;624&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Nota-se que a relação não é direta, porém também não é inversa. Desta forma, esta relação acíclica não fica evidente ao vermos estas duas séries temporais. O gráfico abaixo mostra a correlação destas duas séries temporais.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gdp_pc %&amp;gt;% 
   mutate(gdp_pc = value) %&amp;gt;% 
@@ -4438,7 +4052,7 @@ gdp+remittances&lt;/code&gt;&lt;/pre&gt;
   labs(title = &amp;quot;Correlação do PIB per Capita e &amp;#39;Remittances&amp;#39;&amp;quot;,
        y = &amp;quot;PIB per Capita&amp;quot;,
        x = &amp;quot;Remitances&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2020-01-20-imigration-data-analysis/index_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Eu esperava ver uma correlação mais forte, onde o PIB per Capito reduzido iria trazer um valor de ‘remittances’ per Capita alto. Porém não ficou tão clara esta correlação. O modelo de regressão linear para este contexto pode ser do seguinte formato:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[R = \beta_0 + \beta_1 pc.gdp + \mu\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Este modelo tentará explicar variações do fluxo de ‘remittances’ per Capita em função do PIB per Capita, de forma que se possa prever o valor da variável dependente com um dado grau de confiança.&lt;/p&gt;
@@ -4469,26 +4083,26 @@ gdp+remittances&lt;/code&gt;&lt;/pre&gt;
 &lt;tbody&gt;
 &lt;tr class=&#34;odd&#34;&gt;
 &lt;td align=&#34;center&#34;&gt;&lt;strong&gt;(Intercept)&lt;/strong&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;25.88&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;9.849&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;2.628&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;0.009635&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;26.68&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;9.947&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2.682&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.008241&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr class=&#34;even&#34;&gt;
 &lt;td align=&#34;center&#34;&gt;&lt;strong&gt;gdp_pc&lt;/strong&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;0.03021&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;0.00591&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;5.111&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;1.118e-06&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.02804&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.005904&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;4.748&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;5.232e-06&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;table style=&#34;width:88%;&#34;&gt;
+&lt;table style=&#34;width:86%;&#34;&gt;
 &lt;caption&gt;Fitting linear model: remitances_adj ~ gdp_pc&lt;/caption&gt;
 &lt;colgroup&gt;
 &lt;col width=&#34;20%&#34; /&gt;
 &lt;col width=&#34;30%&#34; /&gt;
-&lt;col width=&#34;12%&#34; /&gt;
+&lt;col width=&#34;11%&#34; /&gt;
 &lt;col width=&#34;23%&#34; /&gt;
 &lt;/colgroup&gt;
 &lt;thead&gt;
@@ -4501,10 +4115,10 @@ gdp+remittances&lt;/code&gt;&lt;/pre&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr class=&#34;odd&#34;&gt;
-&lt;td align=&#34;center&#34;&gt;132&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;67.74&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;0.1673&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;0.1609&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;135&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;68.46&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.145&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.1385&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -4518,12 +4132,10 @@ gdp+remittances&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>Análise de Resíduos em Modelos de Regressão Linear</title>
       <link>https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/</link>
-      <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 10 Sep 2019 00:00:00 +0000</pubDate>
       <guid>https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/</guid>
       <description>
-&lt;script src=&#34;index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;index_files/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;index_files/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria. Porém, apesar de sua simplicidade, é preciso se atentar a alguns detalhes sobre suas premissas para que os resultados deste modelo possam ser usados para a tomada de decisão.&lt;/p&gt;
@@ -4542,26 +4154,6 @@ library(lmtest)
 library(corrplot)
 library(readxl)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Também vou criar uma função para facilitar a padronização dos gráficos que serão gerados.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;theme_graph &amp;lt;- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
-    strip.background = element_rect(fill = &amp;quot;grey&amp;quot;),
-    strip.text = element_text(face = &amp;quot;bold&amp;quot;),
-    legend.title = element_blank(),
-    legend.position = &amp;quot;bottom&amp;quot;,
-    panel.grid.major = element_line(
-        rgb(198, 198, 216, maxColorValue = 255),
-        linetype = &amp;quot;dotted&amp;quot;), 
-    panel.grid.minor = element_line(
-        rgb(198, 198, 216, maxColorValue = 255),
-        linetype = &amp;quot;dotted&amp;quot;),
-    panel.background = element_rect(fill = &amp;quot;#FEFDFF&amp;quot;)
-  )
-}&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;exemplo-1-elasticidade-preço-x-oferta-na-produção-de-cana-de-açúcar.&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Exemplo 1: Elasticidade preço x oferta na produção de cana de açúcar.&lt;/h4&gt;
 &lt;p&gt;Este exemplo foi passado na minha aula de econometria em 2017. Na época o exercício foi realizado com o software &lt;strong&gt;EViews&lt;/strong&gt;, por sorte eu guardei os dados e agora posso refazer o problema com mais facilidade com o uso do R.&lt;/p&gt;
@@ -4577,11 +4169,11 @@ dim(df)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
 ##   period  area price
 ##    &amp;lt;int&amp;gt; &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt;
-## 1     31   171 0.360
-## 2     27    97 0.401
-## 3     29   197 0.353
-## 4     17   250 0.381
-## 5     20   162 0.230&lt;/code&gt;&lt;/pre&gt;
+## 1      3    42 0.101
+## 2     31   171 0.360
+## 3     21   143 0.369
+## 4     34   235 0.392
+## 5      8    61 0.210&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;O modelo de regressão linear para este cenário será desenvolvido de acordo com a fórmula abaixo:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[ lnY_t = \beta_0+\beta_1 (lnX_t) + \mu_t \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Onde:&lt;/p&gt;
@@ -4605,7 +4197,7 @@ dim(df)&lt;/code&gt;&lt;/pre&gt;
   labs(title = &amp;quot;Gráfico de dispersão das variáveis&amp;quot;,
        x = &amp;quot;Preço da Cana de Açúcar&amp;quot;,
        y = &amp;quot;Área Plantada&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Podemos ver que há uma relação entre o preço do produto e sua oferta. Agora vamos aplicar o log natural no modelo de regressão. Para isso, o R nos fornece duas opções:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Ajustar as variáveis no dataset e construir o modelo usando as variáveis ajustadas.&lt;/p&gt;&lt;/li&gt;
@@ -4663,18 +4255,16 @@ model_residuals %&amp;gt;%
   labs(title = &amp;quot;Distribuição dos Resíduos&amp;quot;,
        x = &amp;quot;&amp;quot;,
        y = &amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Aparentemente os resíduos se distribuem normalmente. Outro gráfico interessante para analisar é o &lt;strong&gt;q-q plot&lt;/strong&gt;, que também indicará quão parecido com a distribuição normal é a distribuição de uma variável.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# q-q plot
 model_residuals %&amp;gt;% 
   ggplot()+
   geom_qq(mapping = aes(sample = values))+
-  theme_graph()+
   labs(title = &amp;quot;Residuals&amp;#39; Q-Q plot&amp;quot;,
        x = &amp;quot;&amp;quot;,
        y = &amp;quot;&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;index_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;432&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Este gráfico também aponta para a ideia de resíduos normalmente distribuídos. Apesar de estes métodos serem bons e práticos, as vezes é necessário usar métodos formais para gerar alguma conclusão. Para validação da independência no comportamento dos resíduos pode-se usar o teste &lt;strong&gt;Durbin Watson&lt;/strong&gt;. O código abaixo realiza este teste.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Necessário instalar e chamar o pacote &amp;#39;lmtest&amp;#39;
 lmtest::dwtest(df %&amp;gt;% 
@@ -4691,6 +4281,145 @@ lmtest::dwtest(df %&amp;gt;%
 &lt;p&gt;Tendo DW igual a 1.2912, acima de 0 e abaixo de DL, pode-se concluir que os resíduos são independentes.&lt;/p&gt;
 &lt;p&gt;Com isso, podemos concluir que de fato o modelo é confiável para realizar projeções, pois tanto os gráficos quanto o teste formal indicam que as premissas (iii) e (iv) estão sendo atendidas, como como as outras premissas. Desta forma, podemos concluir que há elasticidade na oferta de cana de açúcar com relação ao seu preço.&lt;/p&gt;
 &lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Entendo &#39;Akaike and Schwarz (Bayesian) Information Criterion&#39; na Prática</title>
+      <link>https://francisco.piccolo.com/draft/aic_and_sic_for_model_selection/</link>
+      <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>https://francisco.piccolo.com/draft/aic_and_sic_for_model_selection/</guid>
+      <description>
+&lt;script src=&#34;https://francisco.piccolo.com/draft/aic_and_sic_for_model_selection/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;‘Akaika e Schwarz Information Criterion’ são métodos usados para se fazer a escolha de um modelo dentre vários modelos desenvolvidos.&lt;/p&gt;
+&lt;p&gt;Conhecidos como AIC e BIC. Tem também s² que penaliza parâmetros. Qual destes escolher? Aquele que tiver mais consistência? Terá consistência se (i)&lt;/p&gt;
+&lt;p&gt;Usados em modelos de séries temporais (do tipo ‘Auto Regressive models’) e também em outros modelos que usam regressão.&lt;/p&gt;
+&lt;p&gt;A premissa é de que sempre que se adiciona mais parâmetros em um modelo, o modelo consegue explicar melhor as variações passadas, ou seja, ele se encaixa melhor.&lt;/p&gt;
+&lt;p&gt;O modelo com melhor fit vai ter um menor AIC (que irá penalizar o incremento de mais variáveis explicaticas).&lt;/p&gt;
+&lt;p&gt;O modelo precisa ter um bom fit (log likelihood alto) com poucas variáveis, ou seja, precisa ser encontrado um equilíbrio ideal.&lt;/p&gt;
+&lt;p&gt;AIC foca em fit e números de parâmetros, enquanto BIC considera além disso, o tamanho da amostra (n).&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[AIC = 2k - 2l\]&lt;/span&gt;
+&lt;span class=&#34;math display&#34;&gt;\[BIC = ln(n)k - 2l\]&lt;/span&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(lmtest)
+library(corrplot)
+library(readxl)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Também vou criar uma função para facilitar a padronização dos gráficos que serão gerados.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;theme_graph &amp;lt;- function(){
+  theme(
+    plot.title = element_text(size = 16),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
+    axis.text = element_text(size = 9),
+    axis.title = element_text(face = &amp;quot;italic&amp;quot;, size = 9),
+    strip.background = element_rect(fill = &amp;quot;grey&amp;quot;),
+    strip.text = element_text(face = &amp;quot;bold&amp;quot;),
+    legend.title = element_blank(),
+    legend.position = &amp;quot;bottom&amp;quot;,
+    panel.grid.major = element_line(
+        rgb(198, 198, 216, maxColorValue = 255),
+        linetype = &amp;quot;dotted&amp;quot;), 
+    panel.grid.minor = element_line(
+        rgb(198, 198, 216, maxColorValue = 255),
+        linetype = &amp;quot;dotted&amp;quot;),
+    panel.background = element_rect(fill = &amp;quot;#FEFDFF&amp;quot;)
+  )
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;exemplo-1-elasticidade-preço-x-oferta-na-produção-de-cana-de-açúcar.&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Exemplo 1: Elasticidade preço x oferta na produção de cana de açúcar.&lt;/h4&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Monte Carlo Simulation Applied on Discounted Cash Flow</title>
+      <link>https://francisco.piccolo.com/paper/monte_carlo_applied_on_valuation/monte_carlo_applied_on_valuation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://francisco.piccolo.com/paper/monte_carlo_applied_on_valuation/monte_carlo_applied_on_valuation/</guid>
+      <description>
+&lt;script src=&#34;https://francisco.piccolo.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;My abstract.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Keywords&lt;/em&gt;: My Keywords&lt;/p&gt;
+&lt;div id=&#34;introductionb&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;INTRODUCTIONb&lt;/h1&gt;
+&lt;p&gt;On the first decade of the 21ft century the global economy has experienced the dot-com and real estate bubbles that bursted and impacted the lives of many people on different ways. Some authors claim that these bubbles could have been avoided if basic principles from finance and economics were applied during the euphoria (Koller, 2006). The basic principles indicated by these authors are related to value creation and the methods to proof that an asset is creating value.&lt;/p&gt;
+&lt;p&gt;On one side, the creation of value for a given asset (e.g. a company) is related to the Free Cash Flow that it generates, where this Free Cash Flow must be higher than the cost of capital used to put this asset to work (Assaf Neto, 2004). On the other side, the methods used to proof that an asset is creating value is related to the financial and mathematical framework used on the analysis. These financial and mathematical framework are generally called Valuation.&lt;/p&gt;
+&lt;p&gt;The Valuation is a technique used to calculate the value of an asset and is broadly used on the financial sector (Assaf Neto, 2004). Within this area, there are different methods that can be used to infer the asset’s value and one of the most used and recommended is the Discounted Cash Flow Valuation. This method tries to project the future Free Cash Flow (FCF) that an asset will generate and applies a rate to discount these future FCF, where this rate will represent the cost of capital. This cost of capital exist to represent the investors that allocates capital on the asset being evaluated and it contemplates both risk and opportunity cost.&lt;/p&gt;
+&lt;p&gt;Projecting FCF, discounting it by the cost of capital and summing up the periods projected is the foundation of this method, that will result in a value that represents the asset’s value. In other words, this method indicates that an asset will value the sum of future free cash flows after being discounted by the cost of capital. The method seems simple, but it’s often forgotten by investors, leading to decisions that, when in conjunction with other circumstances, create bubbles that can be avoided, like the dot-com bubble from the 2000’s or the real state bubble from 2007/08.&lt;/p&gt;
+&lt;p&gt;The Discounted Free Cash Flow Valuation is well recommended on the academia (Damodaram, 2012), but the method will generate a deterministic result. This deterministic result informs the asset’s value, but it doesn’t inform the distribution of values that will exist if the model incorporates the risk during the Free Cash Flow projections. This risk on the projections was first incorporated by McKisney Company during the 1980, that applied the Monte Carlo Simulation together with the Discounted Free Cash Flow Valuation (Sharma; Peacock, 2008).&lt;/p&gt;
+&lt;p&gt;The simulation applied on Discounted Cash Flow Valuations is a recommended approach by practitioners but the literature covering the way to build a model to run this simulation isn’t broad. This research will attempt to cover this gap, showing the step-by-step method to develop a Discounted Cash Flow Valuation using Monte Carlo Simulations to generate a distribution probability of values for an asset.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;MODEL&lt;/h1&gt;
+&lt;p&gt;The Discounted Free Cash Flow Valuation can be explained with a simple example, that will grow in complexity in a smooth way. First it’s necessary to get the asset’s Free Cash Flow. For this illustration, let’s assume the asset is a company. On this case, the Free Cash Flow can be found on the company’s Balance Sheet and Profit and Loss Statement. These documents will indicate the revenues, costs, expenditures, taxes and investments for a specific period. With these variables, it’s possible to solve the following equation and find the company’s Free Cash Flow:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[FCF = ((R-C-E).(1-t))-I\]&lt;/span&gt;
+Where:&lt;/p&gt;
+&lt;p&gt;R = Revenue.&lt;/p&gt;
+&lt;p&gt;C = Cost of Products Sold.&lt;/p&gt;
+&lt;p&gt;E = Expenses.&lt;/p&gt;
+&lt;p&gt;t = Tax rate.&lt;/p&gt;
+&lt;p&gt;I = Investments.&lt;/p&gt;
+&lt;p&gt;After calculating FCF, it’s necessary to get the cost of capital for the investors that allocated capital on the company. This cost of capital will account for internal and external investors and the recommended method to estimate this cost is the Weigt Average Cost of Capital (WACC), that will look at the company’s capital structure in terms of capital division between internal and external, and calculate the cost for each type of investor in order to generate the weigh average. The WACC equation is presented as follows:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[WACC = I_i.K_d + E_i.K_e\]&lt;/span&gt;
+Where:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(I_i =\)&lt;/span&gt; Capital share for internal investors.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(K_d =\)&lt;/span&gt; Cost of capital for internal investors.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(E_i =\)&lt;/span&gt; Capital share for external investors.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(K_e =\)&lt;/span&gt; Cost of capital for external investors.&lt;/p&gt;
+&lt;p&gt;The capital structure for the company can be calculated using the company’s Balance Sheet that will inform on liabilities the parcel of that came from Internal and External investors. The cost of capital for external investors will be in the form of financial expenditures indicated on the Profit and Loss statement, where the ratio of financial expenditures over the amount of loan on the period will indicate the cost of capital for these investors.&lt;/p&gt;
+&lt;p&gt;The cost of capital for internal investors relies on a model called Capital Asset Pricing Model (CAPM). This model infer how much return internal investors will demand for the evaluated asset, using as proxy a free risk return rate and a risk rate that represent the company’s risk, like a premium risk. The equation for this model is described below:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[K_d = R_f + \beta(R_m-R_f)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Where:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(R_f =\)&lt;/span&gt; Return rate for asset with zero risk.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(R_m =\)&lt;/span&gt; Market return rate.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\beta =\)&lt;/span&gt; Company’s beta.&lt;/p&gt;
+&lt;p&gt;For &lt;span class=&#34;math inline&#34;&gt;\(R_f\)&lt;/span&gt; it’s recommended to use government’s bonds that is the nearest of a free risk asset. For market return, the S&amp;amp;OP 500 rate of return in one year is the recommended proxy. The company’s beta measure the covariance of the company’s volatility with the market volatility. The equation for calculating beta if described below:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\beta = \frac{COV(R_i,R_m)}{VAR(R_m)}\]&lt;/span&gt;
+Where:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(R_i =\)&lt;/span&gt; Asset’s return rate.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(R_m =\)&lt;/span&gt; Market’s return rate.&lt;/p&gt;
+&lt;p&gt;After calculating each variable, it’s possible to develop the Discounted Free Cash Flow Valuation in order to reach the Enterprise Value (EV), with the final equation:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[EV = \sum_{t=1}^n\frac{FCF_1}{(1+r)^1} + \frac{FCF_2}{(1+r)^2} + ... \frac{FCF_t}{(1+r)^t} + RV \]&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;methods&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;METHODS&lt;/h1&gt;
+&lt;p&gt;Taking a simple approach to understand each variables impact on company’s valuation.&lt;/p&gt;
+&lt;p&gt;The above graph shows each Discounted Cash Flow for the 10 years projection.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;output/figures/unnamed-chunk-2-1.png&#34; width=&#34;528&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 1
+##   company_value
+##           &amp;lt;dbl&amp;gt;
+## 1         3571.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In order to calculate the company’s value it’s necessary to have the historical values of the necessary variabbles present on the following equations:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;results&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;RESULTS&lt;/h1&gt;
+&lt;/div&gt;
+&lt;div id=&#34;discussion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;DISCUSSION&lt;/h1&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusions&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;CONCLUSIONS&lt;/h1&gt;
+&lt;div style=&#34;page-break-after: always;&#34;&gt;&lt;/div&gt;
+&lt;div style=&#34;page-break-after: always;&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>O que são Determinantes em Matrizes</title>
+      <link>https://francisco.piccolo.com/draft/understanding_matrix_determinants/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://francisco.piccolo.com/draft/understanding_matrix_determinants/</guid>
+      <description>
+&lt;script src=&#34;https://francisco.piccolo.com/draft/understanding_matrix_determinants/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Pacotes necessários&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

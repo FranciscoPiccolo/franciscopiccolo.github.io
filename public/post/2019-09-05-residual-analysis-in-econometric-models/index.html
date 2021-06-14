@@ -34,7 +34,7 @@
   
     
   
-  <meta name="description" content="O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente.">
+  <meta name="description" content="O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria.">
 
   
   <link rel="alternate" hreflang="en-us" href="https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/">
@@ -276,13 +276,13 @@
   <meta property="og:site_name" content="Francisco Piccolo">
   <meta property="og:url" content="https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/">
   <meta property="og:title" content="Análise de Resíduos em Modelos de Regressão Linear | Francisco Piccolo">
-  <meta property="og:description" content="O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente."><meta property="og:image" content="https://francisco.piccolo.com/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria."><meta property="og:image" content="https://francisco.piccolo.com/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://francisco.piccolo.com/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2019-09-04T00:00:00&#43;00:00">
+      <meta property="article:published_time" content="2019-09-10T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2019-09-04T00:00:00&#43;00:00">
+    <meta property="article:modified_time" content="2019-09-10T00:00:00&#43;00:00">
   
 
   
@@ -310,8 +310,8 @@
   },
   "headline": "Análise de Resíduos em Modelos de Regressão Linear",
   
-  "datePublished": "2019-09-04T00:00:00Z",
-  "dateModified": "2019-09-04T00:00:00Z",
+  "datePublished": "2019-09-10T00:00:00Z",
+  "dateModified": "2019-09-10T00:00:00Z",
   
   "author": {
     "@type": "Person",
@@ -326,7 +326,7 @@
       "url": "https://francisco.piccolo.com/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente."
+  "description": "O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria."
 }
 </script>
 
@@ -594,7 +594,7 @@
     
       
     
-    Sep 4, 2019
+    Sep 10, 2019
   </span>
   
 
@@ -642,9 +642,7 @@
 
     <div class="article-style">
       
-<script src="index_files/header-attrs/header-attrs.js"></script>
-<link href="index_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="index_files/anchor-sections/anchor-sections.js"></script>
+<script src="https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/header-attrs/header-attrs.js"></script>
 
 
 <p>O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria. Porém, apesar de sua simplicidade, é preciso se atentar a alguns detalhes sobre suas premissas para que os resultados deste modelo possam ser usados para a tomada de decisão.</p>
@@ -663,26 +661,6 @@ library(lmtest)
 library(corrplot)
 library(readxl)</code></pre>
 <p>Também vou criar uma função para facilitar a padronização dos gráficos que serão gerados.</p>
-<pre class="r"><code>theme_graph &lt;- function(){
-  theme(
-    plot.title = element_text(size = 16),
-    plot.subtitle = element_text(size = 12),
-    plot.caption = element_text(face = &quot;italic&quot;, size = 9),
-    axis.text = element_text(size = 9),
-    axis.title = element_text(face = &quot;italic&quot;, size = 9),
-    strip.background = element_rect(fill = &quot;grey&quot;),
-    strip.text = element_text(face = &quot;bold&quot;),
-    legend.title = element_blank(),
-    legend.position = &quot;bottom&quot;,
-    panel.grid.major = element_line(
-        rgb(198, 198, 216, maxColorValue = 255),
-        linetype = &quot;dotted&quot;), 
-    panel.grid.minor = element_line(
-        rgb(198, 198, 216, maxColorValue = 255),
-        linetype = &quot;dotted&quot;),
-    panel.background = element_rect(fill = &quot;#FEFDFF&quot;)
-  )
-}</code></pre>
 <div id="exemplo-1-elasticidade-preço-x-oferta-na-produção-de-cana-de-açúcar." class="section level4">
 <h4>Exemplo 1: Elasticidade preço x oferta na produção de cana de açúcar.</h4>
 <p>Este exemplo foi passado na minha aula de econometria em 2017. Na época o exercício foi realizado com o software <strong>EViews</strong>, por sorte eu guardei os dados e agora posso refazer o problema com mais facilidade com o uso do R.</p>
@@ -698,11 +676,11 @@ dim(df)</code></pre>
 <pre><code>## # A tibble: 5 x 3
 ##   period  area price
 ##    &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-## 1     31   171 0.360
-## 2     27    97 0.401
-## 3     29   197 0.353
-## 4     17   250 0.381
-## 5     20   162 0.230</code></pre>
+## 1      3    42 0.101
+## 2     31   171 0.360
+## 3     21   143 0.369
+## 4     34   235 0.392
+## 5      8    61 0.210</code></pre>
 <p>O modelo de regressão linear para este cenário será desenvolvido de acordo com a fórmula abaixo:</p>
 <p><span class="math display">\[ lnY_t = \beta_0+\beta_1 (lnX_t) + \mu_t \]</span></p>
 <p>Onde:</p>
@@ -726,7 +704,7 @@ dim(df)</code></pre>
   labs(title = &quot;Gráfico de dispersão das variáveis&quot;,
        x = &quot;Preço da Cana de Açúcar&quot;,
        y = &quot;Área Plantada&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/figure-html/unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Podemos ver que há uma relação entre o preço do produto e sua oferta. Agora vamos aplicar o log natural no modelo de regressão. Para isso, o R nos fornece duas opções:</p>
 <ul>
 <li><p>Ajustar as variáveis no dataset e construir o modelo usando as variáveis ajustadas.</p></li>
@@ -784,18 +762,16 @@ model_residuals %&gt;%
   labs(title = &quot;Distribuição dos Resíduos&quot;,
        x = &quot;&quot;,
        y = &quot;&quot;)</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/figure-html/unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Aparentemente os resíduos se distribuem normalmente. Outro gráfico interessante para analisar é o <strong>q-q plot</strong>, que também indicará quão parecido com a distribuição normal é a distribuição de uma variável.</p>
 <pre class="r"><code># q-q plot
 model_residuals %&gt;% 
   ggplot()+
   geom_qq(mapping = aes(sample = values))+
-  theme_graph()+
   labs(title = &quot;Residuals&#39; Q-Q plot&quot;,
        x = &quot;&quot;,
        y = &quot;&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="https://francisco.piccolo.com/post/2019-09-05-residual-analysis-in-econometric-models/index_files/figure-html/unnamed-chunk-11-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Este gráfico também aponta para a ideia de resíduos normalmente distribuídos. Apesar de estes métodos serem bons e práticos, as vezes é necessário usar métodos formais para gerar alguma conclusão. Para validação da independência no comportamento dos resíduos pode-se usar o teste <strong>Durbin Watson</strong>. O código abaixo realiza este teste.</p>
 <pre class="r"><code># Necessário instalar e chamar o pacote &#39;lmtest&#39;
 lmtest::dwtest(df %&gt;% 
