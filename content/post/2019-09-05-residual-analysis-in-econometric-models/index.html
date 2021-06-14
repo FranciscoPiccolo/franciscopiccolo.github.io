@@ -38,11 +38,11 @@ dim(df)</code></pre>
 <pre><code>## # A tibble: 5 x 3
 ##   period  area price
 ##    &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-## 1      3    42 0.101
-## 2     31   171 0.360
-## 3     21   143 0.369
+## 1     31   171 0.360
+## 2      6    57 0.132
+## 3      7    44 0.142
 ## 4     34   235 0.392
-## 5      8    61 0.210</code></pre>
+## 5     13   125 0.194</code></pre>
 <p>O modelo de regressão linear para este cenário será desenvolvido de acordo com a fórmula abaixo:</p>
 <p><span class="math display">\[ lnY_t = \beta_0+\beta_1 (lnX_t) + \mu_t \]</span></p>
 <p>Onde:</p>
@@ -53,20 +53,20 @@ dim(df)</code></pre>
 <p><span class="math inline">\(\mu_t\)</span> = Resíduos</p>
 <p>Os dados precisam ter a aplicação do log natural, pois esta transformação faz com que as variações entre os períodos possam ser interpretadas como variações percentuais, e isso é necessário por conta de que a elasticidade é quantificada em termos percentuais. Esta característica ocorre apenas na transformação com logarítmo natural, se a transformação fosse feita com outros logs, a interpretação não seria válida.</p>
 <p>O gráfico abaixo irá mostrar o comportamento das variáveis do dataset, bem como a curva de regressão linear, antes de aplicar a transformação log natural.</p>
-<pre class="r"><code>df %&gt;%
+<pre class="r"><code>df %&gt;% 
   ggplot()+
   geom_point(mapping = aes(x = price, y = area), shape = 2)+
-  geom_smooth(mapping = aes(x = price, y = area),
-              method = &quot;lm&quot;,
-              formula = y ~ x,
-              se = F,
+  geom_smooth(mapping = aes(x = price, y = area), 
+              method = &quot;lm&quot;, 
+              formula = y ~ x, 
+              se = F, 
               lty = 2,
               color = &quot;dark orange&quot;)+
   theme_graph()+
   labs(title = &quot;Gráfico de dispersão das variáveis&quot;,
        x = &quot;Preço da Cana de Açúcar&quot;,
        y = &quot;Área Plantada&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Podemos ver que há uma relação entre o preço do produto e sua oferta. Agora vamos aplicar o log natural no modelo de regressão. Para isso, o R nos fornece duas opções:</p>
 <ul>
 <li><p>Ajustar as variáveis no dataset e construir o modelo usando as variáveis ajustadas.</p></li>
@@ -75,14 +75,14 @@ dim(df)</code></pre>
 <p>Vamos ver na prática como cada opção pode ser usada. O resultado final será idêntico.</p>
 <p>Primeiro vou criar duas variáveis com os resultados dos dois métodos:</p>
 <pre class="r"><code># Método 1, criando novos campos no dataset com a transformação log (e)
-first_method &lt;-
-  df %&gt;%
+first_method &lt;- 
+  df %&gt;% 
   mutate(area_log = log(area),
-         price_log = log(price)) %&gt;%
+         price_log = log(price)) %&gt;% 
   lm(formula = area_log ~ price_log)
 
-second_method &lt;-
-  df %&gt;%
+second_method &lt;- 
+  df %&gt;% 
   lm(formula = log(area) ~ log(price))</code></pre>
 <p>Com as duas variáveis criadas, vamos criar uma tabela comparando os principais resultados dos modelos:</p>
 <pre class="r"><code>data.frame(&quot;1º Método&quot; = c(first_method$coefficients),
@@ -94,30 +94,30 @@ second_method &lt;-
 <p><span class="math display">\[\hat{Y} = 1.6416 + 0.9706X_1 + \mu\]</span></p>
 <p>O resultado é estatisticamente significativo, visto que tanto o intercepto quanto a inclinação apresentam um valor-p baixo. Veja abaixo estes valores bem como o R².</p>
 <pre class="r"><code>second_method %&gt;% summary()</code></pre>
-<pre><code>##
+<pre><code>## 
 ## Call:
 ## lm(formula = log(area) ~ log(price), data = .)
-##
+## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max
-## -0.65076 -0.18823 -0.03096  0.24914  0.60492
-##
+##      Min       1Q   Median       3Q      Max 
+## -0.65076 -0.18823 -0.03096  0.24914  0.60492 
+## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)
+##             Estimate Std. Error t value Pr(&gt;|t|)    
 ## (Intercept)   6.1113     0.1686  36.254  &lt; 2e-16 ***
 ## log(price)    0.9706     0.1106   8.773 5.03e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-##
+## 
 ## Residual standard error: 0.3088 on 32 degrees of freedom
-## Multiple R-squared:  0.7063, Adjusted R-squared:  0.6972
+## Multiple R-squared:  0.7063, Adjusted R-squared:  0.6972 
 ## F-statistic: 76.97 on 1 and 32 DF,  p-value: 5.031e-10</code></pre>
 <p>Apesar destes dados mostrarem que a reta se ajustou bem aos dados e que o modelo consegue explicar ~70% da variação na variável dependente, é preciso anda analisar os resíduos para poder ter confiança no resultado para fazer projeções. No gráfico abaixo, vamos ver como se distribui os resíduos do modelo.</p>
-<pre class="r"><code>model_residuals &lt;-
+<pre class="r"><code>model_residuals &lt;- 
   data.frame(values = second_method$residuals)</code></pre>
 <p>Eu opto primeiro por analisar um histograma dos reísduos, pois ele indicará se a distribuição se assemelha a uma distribuição normal. Vamos ver isso no gráfico abaixo.</p>
 <pre class="r"><code># Histogram
-model_residuals %&gt;%
+model_residuals %&gt;% 
   ggplot()+
   geom_histogram(mapping = aes(x = values), fill = &quot;steel blue&quot;)+
   theme_graph()+
@@ -127,7 +127,7 @@ model_residuals %&gt;%
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Aparentemente os resíduos se distribuem normalmente. Outro gráfico interessante para analisar é o <strong>q-q plot</strong>, que também indicará quão parecido com a distribuição normal é a distribuição de uma variável.</p>
 <pre class="r"><code># q-q plot
-model_residuals %&gt;%
+model_residuals %&gt;% 
   ggplot()+
   geom_qq(mapping = aes(sample = values))+
   labs(title = &quot;Residuals&#39; Q-Q plot&quot;,
@@ -136,11 +136,11 @@ model_residuals %&gt;%
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Este gráfico também aponta para a ideia de resíduos normalmente distribuídos. Apesar de estes métodos serem bons e práticos, as vezes é necessário usar métodos formais para gerar alguma conclusão. Para validação da independência no comportamento dos resíduos pode-se usar o teste <strong>Durbin Watson</strong>. O código abaixo realiza este teste.</p>
 <pre class="r"><code># Necessário instalar e chamar o pacote &#39;lmtest&#39;
-lmtest::dwtest(df %&gt;%
+lmtest::dwtest(df %&gt;% 
                  lm(formula = log(area) ~ log(price)))</code></pre>
-<pre><code>##
+<pre><code>## 
 ##  Durbin-Watson test
-##
+## 
 ## data:  df %&gt;% lm(formula = log(area) ~ log(price))
 ## DW = 1.2912, p-value = 0.009801
 ## alternative hypothesis: true autocorrelation is greater than 0</code></pre>
