@@ -1,0 +1,121 @@
+---
+title: "Design Padrão para Output em PDF"
+subtitle: "NA"
+
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2.0
+    keep_tex: yes
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+      
+documentclass: article
+papersize: a4
+pagestyle: plain  # plain, empty, headings
+geometry: margin=.5in
+linestretch: 1.2
+mainfont: Arial
+fontsize: 12pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+# YAML para Incluir Arquivo .Rmd
+
+```{r, eval=F}
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2.0
+    keep_tex: yes
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+      
+documentclass: article
+papersize: a4
+pagestyle: plain  # plain, empty, headings
+geometry: margin=.5in
+linestretch: 1.2
+mainfont: Arial
+fontsize: 12pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+```
+
+# Parâmetros para Blocos de Código
+
+```{r, echo=T, warning=F, message=F}
+knitr::opts_chunk$set(echo = T,
+                      warning = F,
+                      message = F,
+                      fig.align = "center")
+```
+
+# Parâmetros para Formatação de Gráficos
+
+```{r}
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 12),
+    plot.subtitle = element_text(size = 8),
+    plot.caption = element_text(face = "italic", size = 7),
+    axis.title = element_text(face = "italic", size = 7),
+    legend.position = "bottom",
+    legend.title = element_blank()
+  )
+}
+```
+
+# Pacotes Usados no Artigo
+
+```{r}
+library(tidyverse)
+library(gt)
+library(kableExtra)
+```
+
+# Criação e Formatação de Tabelas
+
+```{r}
+mtcars %>% 
+  head() %>% 
+  kableExtra::kbl(caption = "Teste",
+                  linesep = "\\addlinespace",
+                  booktabs = T) %>% 
+  kable_styling(position = "center",
+                font_size = 10,
+                full_width = F,
+                latex_options = c("HOLD_position","stripped")) %>% 
+  kableExtra::row_spec(row = 0, 
+                       bold = T,
+                       italic = F,
+                       underline = F,
+                       background = "RoyalBlue",
+                       color = "white")
+```
+
+# Criação de Gráficos
+
+```{r}
+mtcars %>% 
+  ggplot2::ggplot()+
+  geom_point(mapping = aes(x = mpg, y = cyl))+
+  theme_graph()
+```
+
+
+
+
+
