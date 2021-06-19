@@ -11,7 +11,7 @@ date: 2020-12-06
 
 |  1  |  2  |  3  |  4  |  5  |
 |-----|-----|-----|-----|-----|
-|<img src=./library_images/2021_por_dentro_do_alibaba.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_the_man_who_solved_the_market.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_a_logica_do_consumo.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_o_colapso_do_universo.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_elements_of_forecasting.png style="float: left; widh: 150px; height: 250px" />|
+|<img src=/00.library_images/2021_por_dentro_do_alibaba.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_the_man_who_solved_the_market.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_a_logica_do_consumo.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_o_colapso_do_universo.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_elements_of_forecasting.png style="float: left; widh: 150px; height: 250px" />|
 |<img src=./library_images/2021_dimensional_modeling_ibm.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_desenvolvimento_agil_limpo.png style="float: left; widh: 150px; height: 250px" />|<img src=./library_images/2021_a_historia_do_airbnb.png style="float: left; widh: 150px; height: 250px" />|
 
 ## **2020**
