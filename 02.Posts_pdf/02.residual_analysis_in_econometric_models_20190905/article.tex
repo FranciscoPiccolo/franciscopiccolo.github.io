@@ -43,6 +43,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={Análise de Resíduos em Modelos de Regressão Linear},
+  pdfauthor={Francisco Piccolo},
   colorlinks=true,
   linkcolor=RoyalBlue,
   filecolor=Maroon,
@@ -113,8 +114,8 @@
 }
 \makeatother
 \subtitle{Testando Soluções com R}
-\author{}
-\date{\vspace{-2.5em}}
+\author{Francisco Piccolo}
+\date{2019-09-05}
 
 \begin{document}
 \maketitle
@@ -138,39 +139,35 @@ Abaixo vou listar algumas das premissas da regressão linear:
   Resíduos se distribuem de acordo com uma distribuição normal.
 \end{enumerate}
 
-Tendo estas premissas atendidas, o modelo pode gerar conclusões confiáveis. Neste post eu vou desenvolver alguns modelos de regressão linear para testar as premissas \textbf{iii} e \textbf{iv} que tratam dos resíduos, para ver alguns casos práticos.
+Tendo estas premissas atendidas, o modelo pode gerar conclusões confiáveis. Neste post eu vou desenvolver um modelo de regressão linear para testar as premissas \textbf{iii} e \textbf{iv} que tratam dos resíduos, para ver alguns casos práticos. O código usado neste post está nesta \href{https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/02.Posts_pdf/02.residual_analysis_in_econometric_models_20190905/article.Rmd}{pasta} do meu Github.
 
-Para começar, vamos trazer os pacotes necessários para execução das funções no R:
+\hypertarget{exemplo-pruxe1tico-elasticidade-preuxe7o-x-oferta-na-produuxe7uxe3o-de-cana-de-auxe7uxfacar}{%
+\subsubsection{Exemplo prático: Elasticidade preço x oferta na produção de cana de açúcar}\label{exemplo-pruxe1tico-elasticidade-preuxe7o-x-oferta-na-produuxe7uxe3o-de-cana-de-auxe7uxfacar}}
 
-Também vou criar uma função para facilitar a padronização dos gráficos que serão gerados.
+Este exemplo foi passado na minha aula de econometria em 2017. Na época o exercício foi realizado com o software \textbf{EViews}, por sorte eu guardei os dados e agora posso refazer o problema com mais facilidade com o uso do R. O dataset pode ser visualizado neste \href{https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/02.Posts_pdf/02.residual_analysis_in_econometric_models_20190905/datasets/dataset_1.csv}{link}.
 
-\hypertarget{exemplo-1-elasticidade-preuxe7o-x-oferta-na-produuxe7uxe3o-de-cana-de-auxe7uxfacar}{%
-\subsection{Exemplo 1: Elasticidade preço x oferta na produção de cana de açúcar}\label{exemplo-1-elasticidade-preuxe7o-x-oferta-na-produuxe7uxe3o-de-cana-de-auxe7uxfacar}}
+No exercício, temos a variável independente (X) sendo o preço da cana de açúcar e a variável dependente (Y) sendo a área plantada de cana de açúcar (representando uma proxy para a oferta do produto). O objetivo deste modelo é tentar quantificar a elasticidade da oferta em função do preço, ou seja, quantificar quão sensível é a oferta da cana de açúcar quando ocorrem variações em seu preço.
 
-Este exemplo foi passado na minha aula de econometria em 2017. Na época o exercício foi realizado com o software \textbf{EViews}, por sorte eu guardei os dados e agora posso refazer o problema com mais facilidade com o uso do R.
-
-No exercício, há a variável independente (X) sendo o preço da cana de açúcar e a variável dependente (Y) sendo a área plantada de cana de açúcar (representando uma proxy para a oferta do produto). O objetivo deste modelo é tentar quantificar a elasticidade da oferta em função do preço, ou seja, quantificar quão sensível é a oferta da cana de açúcar quando ocorre uma variações em seu preço. Os dados deste exercício estão no meu repositório do Github, vamos trazê-los com o comando abaixo, salvando-os na variável df (a.k.a data.frame):
-
-Vamos ver uma amostra dos dados.
+Abaixo há uma amostragem do dataset.
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-5}Amostra do Dataset}
+\caption{\label{tab:unnamed-chunk-4}Amostra do Dataset}
 \centering
 \fontsize{10}{12}\selectfont
 \begin{tabular}[t]{lrrr}
 \toprule
 \cellcolor{RoyalBlue}{\textcolor{white}{\textbf{ }}} & \cellcolor{RoyalBlue}{\textcolor{white}{\textbf{period}}} & \cellcolor{RoyalBlue}{\textcolor{white}{\textbf{area}}} & \cellcolor{RoyalBlue}{\textcolor{white}{\textbf{price}}}\\
 \midrule
-1 & 1 & 29 & 0.075258\\
+12 & 12 & 80 & 0.145585\\
 \addlinespace
-30 & 30 & 220 & 0.410233\\
+3 & 3 & 42 & 0.101075\\
 \addlinespace
-4 & 4 & 90 & 0.110309\\
+23 & 23 & 230 & 0.360332\\
 \addlinespace
-2 & 2 & 71 & 0.114894\\
+7 & 7 & 44 & 0.141783\\
 \addlinespace
-29 & 29 & 197 & 0.353188\\
+17 & 17 & 250 & 0.380952\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -191,13 +188,13 @@ Onde:
 
 \(\mu_t\) = Resíduos
 
-Os dados precisam ter a aplicação do log natural, pois esta transformação faz com que as variações entre os períodos possam ser interpretadas como variações percentuais, e isso é necessário por conta de que a elasticidade é quantificada em termos percentuais. Esta característica ocorre apenas na transformação com logarítmo natural, se a transformação fosse feita com outros logs, a interpretação não seria válida.
+Os dados precisam ter a aplicação do log natural, pois esta transformação faz com que as variações entre os períodos possam ser interpretadas como variações percentuais, e isso é necessário por conta de que a elasticidade é quantificada em termos percentuais. Esta característica ocorre apenas na transformação com logarítmo natural, se a transformação fosse feita com outros logs, a interpretação (de variaçõs percentuais) não seria válida.
 
 O gráfico abaixo irá mostrar o comportamento das variáveis do dataset, bem como a curva de regressão linear, antes de aplicar a transformação log natural.
 
-\begin{center}\includegraphics{article_files/figure-latex/unnamed-chunk-6-1} \end{center}
+\begin{center}\includegraphics{article_files/figure-latex/unnamed-chunk-5-1} \end{center}
 
-Podemos ver que há uma relação entre o preço do produto e sua oferta. Agora vamos aplicar o log natural no modelo de regressão. Para isso, o R nos fornece duas opções:
+Podemos ver que há uma relação entre o preço do produto e sua oferta (área plantada). Agora vamos aplicar o log natural no modelo de regressão. Para isso, o R nos fornece duas opções:
 
 \begin{itemize}
 \item
@@ -212,16 +209,25 @@ Primeiro vou criar duas variáveis com os resultados dos dois métodos:
 
 Com as duas variáveis criadas, vamos criar uma tabela comparando os principais resultados dos modelos:
 
-\begin{verbatim}
-##             X1º.Método X2º.Método
-## (Intercept)  6.1113284  6.1113284
-## price_log    0.9705823  0.9705823
-\end{verbatim}
+\begin{table}[H]
+
+\caption{\label{tab:unnamed-chunk-7}Comparativo dos Resultados}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lrr}
+\toprule
+\cellcolor{RoyalBlue}{\textcolor{white}{\textbf{ }}} & \cellcolor{RoyalBlue}{\textcolor{white}{\textbf{X1º.Método}}} & \cellcolor{RoyalBlue}{\textcolor{white}{\textbf{X2º.Método}}}\\
+\midrule
+(Intercept) & 6.1113284 & 6.1113284\\
+\addlinespace
+price\_log & 0.9705823 & 0.9705823\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 Conforme indicado, ambos os métodos geram o mesmo valor. Eu prefiro o segundo, que exige menos linhas de código. Com base nos coeficientes estimados, temos a seguinte equação:
 
 \[\hat{Y} = 1.6416 + 0.9706X_1 + \mu\]
-
 O resultado é estatisticamente significativo, visto que tanto o intercepto quanto a inclinação apresentam um valor-p baixo. Veja abaixo estes valores bem como o R².
 
 \begin{longtable}[]{@{}ccccc@{}}
@@ -302,28 +308,46 @@ Adjusted \(R^2\)\strut
 \bottomrule
 \end{longtable}
 
-Apesar destes dados mostrarem que a reta se ajustou bem aos dados e que o modelo consegue explicar \textasciitilde70\% da variação na variável dependente, é preciso anda analisar os resíduos para poder ter confiança no resultado para fazer projeções. No gráfico abaixo, vamos ver como se distribui os resíduos do modelo.
+Embora o modelo consiga explicar \textasciitilde70\% da variação na variável dependente, é preciso analisar os reíduos gerados para poder ter confiança no resultado e fazer projeções (objetivo principal). No gráfico abaixo, vamos ver como se distribui os resíduos do modelo em um Histograma e Gráfico QQ (quantile-quantile)
 
-Eu opto primeiro por analisar um histograma dos reísduos, pois ele indicará se a distribuição se assemelha a uma distribuição normal. Vamos ver isso no gráfico abaixo.
+\begin{center}\includegraphics{article_files/figure-latex/unnamed-chunk-10-1} \end{center}
 
-\begin{center}\includegraphics{article_files/figure-latex/unnamed-chunk-11-1} \end{center}
+Ambos os gráficos indicam distribuição normal dos resíduos. Apesar desta forma visual ser recomendada, as vezes ela não é suficiente, casos em que o pesquisador precisará usar métodos mais formais para gerar uma conclusão. Para validação da independência no comportamento dos resíduos pode-se usar o teste \textbf{Durbin Watson}. O código abaixo realiza este teste.
 
-Aparentemente os resíduos se distribuem normalmente. Outro gráfico interessante para analisar é o \textbf{q-q plot}, que também indicará quão parecido com a distribuição normal é a distribuição de uma variável.
+\begin{longtable}[]{@{}ccc@{}}
+\caption{Durbin-Watson test: \texttt{df\ \%\textgreater{}\%\ lm(formula\ =\ log(area)\ \textasciitilde{}\ log(price))}}\tabularnewline
+\toprule
+\begin{minipage}[b]{(\columnwidth - 2\tabcolsep) * \real{0.24}}\centering
+Test statistic\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 2\tabcolsep) * \real{0.21}}\centering
+P value\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 2\tabcolsep) * \real{0.36}}\centering
+Alternative hypothesis\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{(\columnwidth - 2\tabcolsep) * \real{0.24}}\centering
+Test statistic\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 2\tabcolsep) * \real{0.21}}\centering
+P value\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 2\tabcolsep) * \real{0.36}}\centering
+Alternative hypothesis\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{(\columnwidth - 2\tabcolsep) * \real{0.24}}\centering
+1.291\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 2\tabcolsep) * \real{0.21}}\centering
+0.009801 * *\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 2\tabcolsep) * \real{0.36}}\centering
+true autocorrelation is
+greater than 0\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
-\begin{center}\includegraphics{article_files/figure-latex/unnamed-chunk-12-1} \end{center}
-
-Este gráfico também aponta para a ideia de resíduos normalmente distribuídos. Apesar de estes métodos serem bons e práticos, as vezes é necessário usar métodos formais para gerar alguma conclusão. Para validação da independência no comportamento dos resíduos pode-se usar o teste \textbf{Durbin Watson}. O código abaixo realiza este teste.
-
-\begin{verbatim}
-## 
-##  Durbin-Watson test
-## 
-## data:  df %>% lm(formula = log(area) ~ log(price))
-## DW = 1.2912, p-value = 0.009801
-## alternative hypothesis: true autocorrelation is greater than 0
-\end{verbatim}
-
-O resultado do teste foi de 1.2912, mas apenas com este valor não é possível fazer uma conclusão. Em conjunto com este valor, é preciso saber os valores limiares \textbf{DL} e \textbf{DU}, que podem ser encontrados nesta \href{http://www.portalaction.com.br/analise-de-regressao/33-diagnostico-de-independencia}{tabela}. Para encontrar os valores com esta tabela, basta saber o número de observações no dataset (i.e.~n = 33), o nível de significância do teste (i.e.~0.05) e os graus de liberdade (i.e.~1). Com isso, tem-se:
+O resultado do teste foi de 1.2912, mas apenas com este valor não é possível fazer uma conclusão. Em conjunto com este valor é preciso saber os valores limiares \textbf{DL} e \textbf{DU}, que podem ser encontrados nesta \href{http://www.portalaction.com.br/analise-de-regressao/33-diagnostico-de-independencia}{tabela}. Para encontrar os valores com nesta tabela, basta saber o número de observações no dataset (i.e.~33), o nível de significância do teste (i.e.~0.05) e os graus de liberdade (i.e.~1). Com isso, tem-se:
 
 \textbf{DL} = 1.35
 
@@ -331,6 +355,6 @@ O resultado do teste foi de 1.2912, mas apenas com este valor não é possível 
 
 Tendo DW igual a 1.2912, acima de 0 e abaixo de DL, pode-se concluir que os resíduos são independentes.
 
-Com isso, podemos concluir que de fato o modelo é confiável para realizar projeções, pois tanto os gráficos quanto o teste formal indicam que as premissas (iii) e (iv) estão sendo atendidas, como como as outras premissas. Desta forma, podemos concluir que há elasticidade na oferta de cana de açúcar com relação ao seu preço.
+Com isso, podemos concluir que de fato o modelo é confiável para realizar projeções, pois tanto os gráficos quanto o teste formal indicam que as premissas (iii) e (iv) estão sendo atendidas. Desta forma, podemos concluir que há elasticidade na oferta de cana de açúcar com relação ao seu preço.
 
 \end{document}
