@@ -1,0 +1,67 @@
+---
+title: "Livro 'Econometria Básica de Gujarati'"
+subtitle: "Resolvendo Exercícios Propostos"
+author: "Francisco Piccolo"
+date: "2020-03-10"
+
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3
+    fig_height: 2
+    keep_tex: yes
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+      
+documentclass: article
+papersize: a4
+pagestyle: plain  # plain, empty, headings
+geometry: margin=.5in
+linestretch: 1.2
+mainfont: Arial
+fontsize: 12pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      message = F,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 7),
+    plot.caption = element_text(face = "italic", size = 6),
+    axis.title = element_text(face = "italic", size = 6),
+    axis.text = element_text(face = "italic", size = 6.5),
+    legend.position = "bottom",
+    legend.title = element_blank()
+  )
+}
+```
+
+Neste post vou resolver alguns exercícios de um livro de econometria bastante usado nos cursos de economia, o **Econometria Básica** de Gujarati.
+
+![](/00.library_images/basic_econometrics_gujarati.png)
+
+Os códigos usados nos exercícios podem ser encontrados no arquivo .Rmd que gera este PDF neste [link](). Os datasets dos exercícios também estarão no meu repositório do Github nesta [pasta]().
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
