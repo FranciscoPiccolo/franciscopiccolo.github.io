@@ -15,14 +15,14 @@ output:
     toc: no
     includes:
       in_header: header.tex
-      
+
 documentclass: article
 papersize: a4
 pagestyle: plain  # plain, empty, headings
 geometry: margin=.5in
 linestretch: 1.2
 mainfont: Arial
-fontsize: 12pt
+fontsize: 11pt
 linkcolor: RoyalBlue
 urlcolor: RoyalBlue
 links-as-notes: false
@@ -81,7 +81,7 @@ No exercício, temos a variável independente (X) sendo o preço da cana de aç�
 
 ```{r}
 df <- read.csv(file = "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/02.Posts_pdf/02.residual_analysis_in_econometric_models_20190905/datasets/dataset_1.csv",
-               sep = ";", 
+               sep = ";",
                dec = ",")
 ```
 
@@ -91,12 +91,12 @@ Abaixo há uma amostragem do dataset.
 df[sample(nrow(df),5), ] %>%
 	kableExtra::kbl(caption = "Amostra do Dataset",
 	                linesep = "\\addlinespace",
-	                booktabs = T) %>% 
+	                booktabs = T) %>%
   kableExtra::kable_styling(position = "center",
                             font_size = 10,
                             full_width = F,
                             latex_options = c("HOLD_position",
-                                              "stripped")) %>% 
+                                              "stripped")) %>%
   kableExtra::row_spec(row = 0,
                        bold = T,
                        italic = F,
@@ -126,12 +126,12 @@ Os dados precisam ter a aplicação do log natural, pois esta transformação fa
 O gráfico abaixo irá mostrar o comportamento das variáveis do dataset, bem como a curva de regressão linear, antes de aplicar a transformação log natural.
 
 ```{r}
-df %>% 
+df %>%
   ggplot()+
   geom_point(mapping = aes(x = price, y = area), shape = 1)+
-  geom_smooth(mapping = aes(x = price, y = area), 
-              method = "lm", 
-              formula = y ~ x, 
+  geom_smooth(mapping = aes(x = price, y = area),
+              method = "lm",
+              formula = y ~ x,
               se = F,
               lty = 2,
               color = "royal blue")+
@@ -153,14 +153,14 @@ Primeiro vou criar duas variáveis com os resultados dos dois métodos:
 
 ```{r}
 # Método 1, criando novos campos no dataset com a transformação log (e)
-first_method <- 
-  df %>% 
+first_method <-
+  df %>%
   mutate(area_log = log(area),
-         price_log = log(price)) %>% 
+         price_log = log(price)) %>%
   lm(formula = area_log ~ price_log)
 
-second_method <- 
-  df %>% 
+second_method <-
+  df %>%
   lm(formula = log(area) ~ log(price))
 ```
 
@@ -168,10 +168,10 @@ Com as duas variáveis criadas, vamos criar uma tabela comparando os principais 
 
 ```{r}
 data.frame("1º Método" = c(first_method$coefficients),
-           "2º Método" = c(second_method$coefficients)) %>% 
+           "2º Método" = c(second_method$coefficients)) %>%
   kableExtra::kbl(caption = "Comparativo dos Resultados",
                   linesep = "\\addlinespace",
-                  booktabs = T) %>% 
+                  booktabs = T) %>%
   kableExtra::kable_styling(position = "center",
                             font_size = 10,
                             full_width = F,
@@ -191,21 +191,21 @@ $$\hat{Y} = 1.6416 + 0.9706X_1 + \mu$$
 O resultado é estatisticamente significativo, visto que tanto o intercepto quanto a inclinação apresentam um valor-p baixo. Veja abaixo estes valores bem como o R².
 
 ```{r}
-second_method %>% 
-  summary() %>% 
+second_method %>%
+  summary() %>%
   pander::pander()
 ```
 
 Embora o modelo consiga explicar ~70% da variação na variável dependente, é preciso analisar os reíduos gerados para poder ter confiança no resultado e fazer projeções (objetivo principal). No gráfico abaixo, vamos ver como se distribui os resíduos do modelo em um Histograma e Gráfico QQ (quantile-quantile)
 
 ```{r}
-model_residuals <- 
+model_residuals <-
   data.frame(values = second_method$residuals)
 ```
 
 ```{r, fig.width=5}
 # Histogram
-g1 <- 
+g1 <-
   model_residuals %>%
   ggplot()+
   geom_histogram(mapping = aes(x = values), fill = "steel blue")+
@@ -215,8 +215,8 @@ g1 <-
        y = "")
 
 # q-q plot
-g2 <- 
-  model_residuals %>% 
+g2 <-
+  model_residuals %>%
   ggplot()+
   geom_qq(mapping = aes(sample = values))+
   theme_graph()+
@@ -231,8 +231,8 @@ Ambos os gráficos indicam distribuição normal dos resíduos. Apesar desta for
 
 ```{r}
 # Necessário instalar e chamar o pacote 'lmtest'
-lmtest::dwtest(df %>% 
-                 lm(formula = log(area) ~ log(price))) %>% 
+lmtest::dwtest(df %>%
+                 lm(formula = log(area) ~ log(price))) %>%
   pander::pander()
 ```
 
@@ -245,5 +245,3 @@ O resultado do teste foi de 1.2912, mas apenas com este valor não é possível 
 Tendo DW igual a 1.2912, acima de 0 e abaixo de DL, pode-se concluir que os resíduos são independentes.
 
 Com isso, podemos concluir que de fato o modelo é confiável para realizar projeções, pois tanto os gráficos quanto o teste formal indicam que as premissas (iii) e (iv) estão sendo atendidas. Desta forma, podemos concluir que há elasticidade na oferta de cana de açúcar com relação ao seu preço.
-
-
