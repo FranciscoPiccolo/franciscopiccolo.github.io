@@ -10,12 +10,12 @@ output:
     fig_caption: yes
     fig_width: 3.5
     fig_height: 2
-    keep_tex: yes
+    keep_tex: no
     number_sections: no
     toc: no
     includes:
       in_header: header.tex
-      
+
 documentclass: article
 papersize: a4
 pagestyle: plain  # plain, empty, headings
@@ -50,12 +50,12 @@ theme_graph <- function(){
 
 
 table_design <- function(table,caption_set){
-  table %>% 
+  table %>%
   kableExtra::kable_styling(position = "center",
                             font_size = 10,
                             full_width = F,
                             latex_options = c("HOLD_position",
-                                              "stripped")) %>% 
+                                              "stripped")) %>%
   kableExtra::row_spec(row = 0,
                        bold = T,
                        italic = F,
@@ -82,68 +82,68 @@ library(stringr)
 dataset_path <- "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/02.solving_exercises_from_gujarati's_book_basic_econometrics_20200301/datasets/"
 
 # Trazendo os datasets dos exercícios
-table_1.3_cpi <- 
+table_1.3_cpi <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_1.3_cpi.txt", 
+                               "table_1.3_cpi.txt",
                                sep = ""),
-                  delim = " ") %>% 
+                  delim = " ") %>%
   mutate(year = as.character(year))
 #---------------------------------------------------------
-table_1.4_exchange_rate <- 
+table_1.4_exchange_rate <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_1.4_exchange_rate.txt", 
+                               "table_1.4_exchange_rate.txt",
                                sep = ""),
                     delim = "\t")
 #---------------------------------------------------------
-table_1.5_currency_m1_volume <- 
+table_1.5_currency_m1_volume <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_1.5_currency_m1_volume.txt", 
+                               "table_1.5_currency_m1_volume.txt",
                                sep = ""),
                     delim = "\t")
 #---------------------------------------------------------
-table_1.6_advertising <- 
+table_1.6_advertising <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_1.6_advertising.txt", 
+                               "table_1.6_advertising.txt",
                                sep = ""),
-                    delim = "\t") %>% 
+                    delim = "\t") %>%
   mutate(impressions = as.numeric(impressions),
          investment = as.numeric(investment))
 #---------------------------------------------------------
-table_2.7_labour_market <- 
+table_2.7_labour_market <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_2.7_labour_market.txt", 
+                               "table_2.7_labour_market.txt",
                                sep = ""),
                     delim = " ")
 #---------------------------------------------------------
-table_2.8_expenses_in_india <- 
+table_2.8_expenses_in_india <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_2.8_expenses_in_india.txt", 
+                               "table_2.8_expenses_in_india.txt",
                                sep = ""),
                     delim = " ")
 #---------------------------------------------------------
 table_2.9_sat_scores <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_2.9_sat_scores.txt", 
+                               "table_2.9_sat_scores.txt",
                                sep = ""),
                     delim = " ")
 #---------------------------------------------------------
-table_3.5 <- 
+table_3.5 <-
   data.frame(parcial_test = c(1,3,7,10,9,5,4,8,2,6),
              final_test = c(3,2,8,7,9,6,5,10,1,4),
              student = c("a","b","c","d","e","f","g","h","i","j"))
 #---------------------------------------------------------
 table_3.6_wage_and_productivity <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_3.6_wage_and_productivity.txt", 
+                               "table_3.6_wage_and_productivity.txt",
                                sep = ""),
-                    delim = " ") %>% 
-  tidyr::gather("metric","value",2:5) %>% 
-  mutate(value = value/10) %>% 
+                    delim = " ") %>%
+  tidyr::gather("metric","value",2:5) %>%
+  mutate(value = value/10) %>%
   tidyr::spread("metric","value")
 #---------------------------------------------------------
 table_3.8_usa_gdp_nominal_and_real <-
   readr::read_delim(file = paste(dataset_path,
-                               "table_3.8_usa_gdp_nominal_and_real.txt", 
+                               "table_3.8_usa_gdp_nominal_and_real.txt",
                                sep = ""),
                     delim = " ")
 ```
@@ -153,37 +153,37 @@ table_3.8_usa_gdp_nominal_and_real <-
 ### 1.1. A Tabela 1.3 apresenta dados relativos ao Índice de Preços ao Consumidor (CPI) de sete países industrializados. A base do índice é 1982–1984 = 100.
 
 ```{r}
-table_1.3_cpi %>% 
-  head(5) %>% 
+table_1.3_cpi %>%
+  head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
+                  caption =  "Amostra do Dataset") %>%
   table_design()
 ```
 
 **b. Represente graficamente a taxa de inflação de cada país em relação ao tempo (isto é, use o eixo horizontal para o tempo e o eixo vertical para a taxa de inflação).**
 
 ```{r}
-table_1.3_cpi %>% 
+table_1.3_cpi %>%
   mutate(usa_cpi = usa/lag(usa,1)-1,
          canada_cpi = canada/lag(canada,1)-1,
          japan_cpi = japan/lag(japan,1)-1,
          france_cpi = france/lag(france,1)-1,
          germany_cpi = germany/lag(germany,1)-1,
          italy_cpi = italy/lag(italy,1)-1,
-         uk_cpi = uk/lag(uk,1)-1) %>% 
-  select(year, usa_cpi, canada_cpi, japan_cpi, france_cpi, germany_cpi, italy_cpi, uk_cpi) %>% 
-  tidyr::gather("country","values", 2:8) %>% 
+         uk_cpi = uk/lag(uk,1)-1) %>%
+  select(year, usa_cpi, canada_cpi, japan_cpi, france_cpi, germany_cpi, italy_cpi, uk_cpi) %>%
+  tidyr::gather("country","values", 2:8) %>%
   filter(!is.na(values)) -> country_cpi
 ```
 
 ```{r, fig.width=4.5, fig.height=2}
-country_cpi %>% 
+country_cpi %>%
   ggplot2::ggplot()+
-  geom_line(mapping = aes(x = year, 
-                          y = values, 
-                          group = country, 
+  geom_line(mapping = aes(x = year,
+                          y = values,
+                          group = country,
                           color = country))+
   scale_y_continuous(labels = scales::percent)+
   scale_x_discrete(breaks = c("1985","1995","2005"))+
@@ -201,8 +201,8 @@ country_cpi %>%
 Com o pacote **GGally** é possível criar estes comparativos mais facilmente.
 
 ```{r, fig.width=6, fig.height=5}
-country_cpi %>% 
-  tidyr::spread("country", "values") %>% 
+country_cpi %>%
+  tidyr::spread("country", "values") %>%
   GGally::ggpairs(columns = 2:8)+
   theme_graph()+
   theme(axis.text = element_blank())+
@@ -215,23 +215,23 @@ Apenas a linha e coluna 'usa_cpi' precisa ser usada, mostrando o gráficos de di
 ### 1.3 A Tabela 1.4 apresenta as taxas de câmbio em sete países industrializados, no período 1985 - 2006. Exceto no caso do Reino Unido, as taxas de câmbio estão definidas como unidades de moeda estrangeira por um dólar; no caso do Reino Unido, a taxa de câmbio é dada como o número de dólares por uma libra esterlina.
 
 ```{r}
-table_1.4_exchange_rate %>% 
-  mutate(Ano = as.character(Ano)) %>% 
-  head(5) %>% 
+table_1.4_exchange_rate %>%
+  mutate(Ano = as.character(Ano)) %>%
+  head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
+                  caption =  "Amostra do Dataset") %>%
   table_design()
 ```
 
 **a. Represente graficamente a evolução das taxas de câmbio ao longo do tempo e comente sobre o comportamento geral dessa evolução.**
 
 ```{r, fig.width=5, fig.height=4}
-table_1.4_exchange_rate %>% 
+table_1.4_exchange_rate %>%
   mutate(Reino.unido = 1/Reino.unido) %>%  # Ajustando o Reino Unido
-  tidyr::gather("country", "values", 2:10) %>% 
-  mutate(values = as.numeric(values)) %>% 
+  tidyr::gather("country", "values", 2:10) %>%
+  mutate(values = as.numeric(values)) %>%
   ggplot2::ggplot()+
   geom_line(mapping = aes(x = Ano, y = values),
             size = 1,
@@ -251,12 +251,12 @@ table_1.4_exchange_rate %>%
 ### 1.7 Os dados apresentados na Tabela 1.6 foram divulgados na edição do The Wall Street Journal de 1º de março de 1984. Os dados relacionam o orçamento de publicidade (em milhões de dólares) de 21 empresas em 1983 com as impressões retidas, semanalmente, pelos que viram os produtos anunciados por essas empresas. Os dados foram obtidos em uma pesquisa realizada com 4 mil adultos, em que foi pedido aos usuários dos produtos que citassem um comercial da categoria do produto que tivessem assistido na semana anterior.
 
 ```{r}
-table_1.6_advertising %>% 
-  head(5) %>% 
+table_1.6_advertising %>%
+  head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
+                  caption =  "Amostra do Dataset") %>%
   table_design()
 ```
 
@@ -265,9 +265,9 @@ table_1.6_advertising %>%
 **a. Trace um gráfico com as impressões no eixo vertical e os gastos com publicidade no eixo horizontal.**
 
 ```{r}
-table_1.6_advertising %>% 
+table_1.6_advertising %>%
   ggplot2::ggplot()+
-  geom_point(mapping = aes(x = investment, y = impressions), 
+  geom_point(mapping = aes(x = investment, y = impressions),
              shape = 1,
              color = "steel blue")+
   theme_graph()+
@@ -285,41 +285,41 @@ table_1.6_advertising %>%
 
 ```{r}
 # Amostra do dataset
-table_2.7_labour_market %>% 
+table_2.7_labour_market %>%
   head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
-  table_design() %>% 
+                  caption =  "Amostra do Dataset") %>%
+  table_design() %>%
   kableExtra::kable_styling(latex_options = "scale_down")
 ```
 
 **a. Represente graficamente a relação entre a taxa de participação dos homens na força de trabalho civil e a taxa de desemprego civil dos homens. Trace, a olho, uma linha de regressão que passe pelos pontos. A priori, qual a relação esperada entre as duas variáveis e em que teoria econômica está embasada? O diagrama de dispersão respalda essa teoria?**
 
 ```{r}
-table_2.7_labour_market %>% 
+table_2.7_labour_market %>%
   select(year,
          share_men_work_force,
-         share_women_work_force) %>% 
-  tidyr::gather("gender","values",2:3) %>% 
-  inner_join(table_2.7_labour_market %>% 
+         share_women_work_force) %>%
+  tidyr::gather("gender","values",2:3) %>%
+  inner_join(table_2.7_labour_market %>%
                select(year,
                       unemployment_men,
                       unemployment_women) %>%
                tidyr::gather("gender","values",2:3),
-             by = c("year" = "year")) %>% 
-  inner_join(table_2.7_labour_market %>% 
+             by = c("year" = "year")) %>%
+  inner_join(table_2.7_labour_market %>%
                select(year,
                       avg_hourly_earning_men,
                       avg_hourly_earning_women) %>%
                tidyr::gather("gender","values",2:3),
-             by = c("year" = "year")) %>% 
-  mutate(gender.x = ifelse(gender.x == "share_men_work_force","men","women")) %>% 
+             by = c("year" = "year")) %>%
+  mutate(gender.x = ifelse(gender.x == "share_men_work_force","men","women")) %>%
   mutate(gender = gender.x,
          share_work_force = values.x,
          unemployment_rate = values.y,
-         hourly_wage = values) %>% 
+         hourly_wage = values) %>%
   select(year,
          gender,
          share_work_force,
@@ -328,8 +328,8 @@ table_2.7_labour_market %>%
 ```
 
 ```{r}
-table_2.7_labour_market_adj %>% 
-  filter(gender == "men") %>% 
+table_2.7_labour_market_adj %>%
+  filter(gender == "men") %>%
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = share_work_force, y = unemployment_rate))+
   theme_graph()+
@@ -343,9 +343,9 @@ table_2.7_labour_market_adj %>%
 
 ```{r}
 table_2.7_labour_market_adj %>%
-  filter(gender == "women") %>% 
+  filter(gender == "women") %>%
   ggplot2::ggplot()+
-  geom_point(mapping = aes(x = share_work_force, 
+  geom_point(mapping = aes(x = share_work_force,
                            y = unemployment_rate))+
   theme_graph()+
   labs(title = "Relação entre Participação na Força \nde Trabalho e Taxa de Desemprego",
@@ -357,10 +357,10 @@ table_2.7_labour_market_adj %>%
 **c. Agora, represente graficamente a taxa de participação de homens e mulheres em relação aos ganhos médios por hora (em dólares de 1982). (Você pode usar gráficos separados.) O que constatou? Como você justificaria isso?**
 
 ```{r, fig.width=5}
-table_2.7_labour_market_adj %>% 
+table_2.7_labour_market_adj %>%
   ggplot2::ggplot()+
-  geom_point(mapping = aes(x = share_work_force, 
-                           y = hourly_wage, 
+  geom_point(mapping = aes(x = share_work_force,
+                           y = hourly_wage,
                            color = gender))+
   theme_graph()+
   scale_color_viridis_d()+
@@ -373,12 +373,12 @@ table_2.7_labour_market_adj %>%
 ### 2.15. A Tabela 2.8 apresenta dados sobre despesas com alimentação e gastos totais, em rupias, para uma amostra de 55 domicílios rurais da Índia. (No início de 2000, um dólar americano era equivalente a cerca de 40 rupias indianas.)
 
 ```{r}
-table_2.8_expenses_in_india %>% 
-  head(5) %>% 
+table_2.8_expenses_in_india %>%
+  head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
+                  caption =  "Amostra do Dataset") %>%
   table_design()
 ```
 
@@ -387,7 +387,7 @@ table_2.8_expenses_in_india %>%
 ```{r}
 table_2.8_expenses_in_india %>%
   ggplot2::ggplot()+
-  geom_point(mapping = aes(x = total, y = food), 
+  geom_point(mapping = aes(x = total, y = food),
              shape = 2,
              color = "dark orange")+
   theme_graph()+
@@ -399,21 +399,21 @@ table_2.8_expenses_in_india %>%
 ### 2.16. A Tabela 2.9 apresenta dados sobre a pontuação média do Teste de Aptidão Escolar (SAT) para os estudantes que se preparavam para ingressar no ensino superior no período 1967-1990.
 
 ```{r}
-table_2.9_sat_scores %>% 
+table_2.9_sat_scores %>%
   head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
-  table_design() %>% 
+                  caption =  "Amostra do Dataset") %>%
+  table_design() %>%
   kableExtra::kable_styling(latex_options = "scale_down")
 ```
 
 **a. Use o eixo horizontal para os anos e o eixo vertical para a pontuação obtida para traçar as notas nas provas de aptidão verbal e matemática obtidas por homens e mulheres, separadamente.**
 
 ```{r,fig.width=4, fig.height=3}
-verbal_graph <- 
-  table_2.9_sat_scores %>% 
+verbal_graph <-
+  table_2.9_sat_scores %>%
   ggplot2::ggplot(mapping = aes(x = year))+
   geom_line(mapping = aes(y = men_verbal_score, color = "men"))+
   geom_line(mapping = aes(y = wonem_verbal_score, color = "women"))+
@@ -427,8 +427,8 @@ verbal_graph <-
        x = "",
        y = "Verbal")
 
-math_graph <- 
-  table_2.9_sat_scores %>% 
+math_graph <-
+  table_2.9_sat_scores %>%
   ggplot2::ggplot(mapping = aes(x = year))+
   geom_line(mapping = aes(y = men_math_score, color = "men"))+
   geom_line(mapping = aes(y = women_math_score, color = "women"))+
@@ -445,7 +445,7 @@ verbal_graph / math_graph
 **d. Represente graficamente as notas de matemática das mulheres em relação às dos homens. O que você observa?**
 
 ```{r}
-table_2.9_sat_scores %>% 
+table_2.9_sat_scores %>%
   ggplot2::ggplot()+
   geom_point(mapping = aes(x = women_math_score, y = men_math_score),
              shape = 2,
@@ -464,35 +464,35 @@ table_2.9_sat_scores %>%
 ### 3.18. Na Tabela 3.5 está a classificação de dez estudantes nas provas parcial e final de estatística. Calcule o coeficiente de correlação de rankings de Spearman e interprete os resultados.**
 
 ```{r}
-table_3.5 <- 
+table_3.5 <-
   data.frame(parcial_test = c(1,3,7,10,9,5,4,8,2,6),
              final_test = c(3,2,8,7,9,6,5,10,1,4),
              student = c("a","b","c","d","e","f","g","h","i","j"))
 
-table_3.5 %>% 
+table_3.5 %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
+                  caption =  "Amostra do Dataset") %>%
   table_design()
 ```
 
 ```{r}
-cor.test(x = table_3.5$parcial_test, 
+cor.test(x = table_3.5$parcial_test,
          y = table_3.5$final_test,
-         method = "spearman") %>% 
+         method = "spearman") %>%
   pander::pander()
 ```
 
 ### 3.20. A Tabela 3.6 apresenta dados relativos a índices de produção por hora (X) e remuneração real por hora (Y) para os setores empresarial e empresarial não agrícola da economia dos Estados Unidos no período 1960-2005. O ano-base dos índices é 1992 D 100 e os índices foram ajustados sazonalmente**
 
 ```{r}
-table_3.6_wage_and_productivity %>% 
-  head(5) %>% 
+table_3.6_wage_and_productivity %>%
+  head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
+                  caption =  "Amostra do Dataset") %>%
   table_design()
 ```
 
@@ -501,13 +501,13 @@ table_3.6_wage_and_productivity %>%
 **a. Represente graficamente Y contra X para os dois setores da economia separadamente.**
 
 ```{r, fig.width=4}
-table_3.6_wage_and_productivity %>% 
+table_3.6_wage_and_productivity %>%
   ggplot2::ggplot()+
-  geom_point(mapping = aes(x = corporate, 
+  geom_point(mapping = aes(x = corporate,
                            y = corporate_wages,
                            color = "Setor Empresarial"),
              shape = 3)+
-  geom_point(mapping = aes(x = non_agricultural, 
+  geom_point(mapping = aes(x = non_agricultural,
                            y = non_agricultural_wages,
                            color = "Setor Não Agrícola"),
              shape = 2)+
@@ -527,37 +527,37 @@ Cada setor terá uma regressão estimada.
 * Setor Empresarial
 
 ```{r}
-table_3.6_wage_and_productivity %>% 
-  lm(formula = "corporate_wages ~ corporate") %>% 
-  summary() %>% 
+table_3.6_wage_and_productivity %>%
+  lm(formula = "corporate_wages ~ corporate") %>%
+  summary() %>%
   pander::pander()
 ```
 
 * Empresarial não Agrícola
 
 ```{r}
-table_3.6_wage_and_productivity %>% 
-  lm(formula = "non_agricultural_wages ~ non_agricultural") %>% 
-  summary() %>% 
+table_3.6_wage_and_productivity %>%
+  lm(formula = "non_agricultural_wages ~ non_agricultural") %>%
+  summary() %>%
   pander::pander()
 ```
 
 ### 3.23. A Tabela 3.8 apresenta dados do produto interno bruto (PIB) dos Estados Unidos no período 1959-2005.
 
 ```{r}
-table_3.8_usa_gdp_nominal_and_real %>% 
-  head(5) %>% 
+table_3.8_usa_gdp_nominal_and_real %>%
+  head(5) %>%
   kableExtra::kbl(format.args = list(big.mark = ".", decimal.mark = ","),
                   linesep = "\\addlinespace",
                   booktabs = T,
-                  caption =  "Amostra do Dataset") %>% 
+                  caption =  "Amostra do Dataset") %>%
   table_design()
 ```
 
 **a. Represente graficamente os dados do PIB em dólares correntes e em dólares constantes (de 2000) em relação ao tempo.**
 
 ```{r}
-table_3.8_usa_gdp_nominal_and_real %>% 
+table_3.8_usa_gdp_nominal_and_real %>%
   ggplot2::ggplot()+
   geom_line(mapping = aes(x = year, y = nominal_gdp, color = "Nominal"))+
   geom_line(mapping = aes(x = year, y = real_gdp, color = "Real"))+
@@ -579,8 +579,8 @@ Apenas pelo gráfico dá para se notar uma relação entre tempo e variação do
 
 ```{r}
 table_3.8_usa_gdp_nominal_and_real %>%
-  lm(formula = "nominal_gdp ~ year") %>% 
-  summary() %>% 
+  lm(formula = "nominal_gdp ~ year") %>%
+  summary() %>%
   pander::pander()
 ```
 
@@ -588,12 +588,11 @@ table_3.8_usa_gdp_nominal_and_real %>%
 
 ```{r}
 table_3.8_usa_gdp_nominal_and_real %>%
-  lm(formula = "real_gdp ~ year") %>% 
-  summary() %>% 
+  lm(formula = "real_gdp ~ year") %>%
+  summary() %>%
   pander::pander()
 ```
 
 **c. Como você interpretaria **$\beta_2$**?**
 
 Para ambas as variáveis (Nominal e Real), o tempo se mostra estatisticamente significativo (com valor p bastante baixo) e também nos dois modelos a capacidade de explicar variações em Y é alta (demonstrado pelo r²).
-

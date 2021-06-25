@@ -10,7 +10,7 @@ output:
     fig_caption: yes
     fig_width: 3.5
     fig_height: 2
-    keep_tex: yes
+    keep_tex: no
     number_sections: no
     toc: no
     includes:
@@ -109,7 +109,7 @@ df[sample(nrow(df),5), ] %>%
 	kableExtra::kbl(caption = "Amostra do Dataset",
 	                linesep = "\\addlinespace",
 	                booktabs = T) %>%
-  table_design()
+    table_design()
 ```
 
 O modelo de regressão linear para este cenário será desenvolvido de acordo com a fórmula abaixo:
