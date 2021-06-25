@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.6.19)  25 JUN 2021 00:42
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.6.19)  25 JUN 2021 11:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1213,81 +1213,80 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 7.21811pt on input line 121.
 LaTeX Font Info:    Font shape `TU/Arial(0)/m/it' will be
 (Font)              scaled to size 10.95pt on input line 124.
-LaTeX Font Info:    Font shape `TU/Arial(0)/b/n' will be
-(Font)              scaled to size 10.95pt on input line 128.
 File: ./images/image_1.png Graphic file (type bmp)
 <./images/image_1.png>
+LaTeX Font Info:    Font shape `TU/Arial(0)/b/n' will be
+(Font)              scaled to size 10.95pt on input line 132.
 [1
 
 ]
 LaTeX Font Info:    Font shape `TU/Arial(0)/b/n' will be
-(Font)              scaled to size 12.0pt on input line 212.
-File: article_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/unnamed-chunk-4-1.pdf>
+(Font)              scaled to size 12.0pt on input line 208.
+File: article_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
+<use article_files/figure-latex/unnamed-chunk-3-1.pdf>
+File: article_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
+<use article_files/figure-latex/unnamed-chunk-5-1.pdf>
 [2]
-File: article_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/unnamed-chunk-6-1.pdf>
+File: article_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type pdf)
+<use article_files/figure-latex/unnamed-chunk-7-1.pdf>
+[3]
 File: article_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
 <use article_files/figure-latex/unnamed-chunk-8-1.pdf>
-[3]
-File: article_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
-<use article_files/figure-latex/unnamed-chunk-9-1.pdf>
 [4]
 LaTeX Font Info:    Font shape `TU/Arial(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 243.
+(Font)              scaled to size 10.0pt on input line 235.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 12.0314pt on input line 245.
+(Font)              scaled to size 12.0314pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.42198pt on input line 245.
+(Font)              scaled to size 8.42198pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0157pt on input line 245.
+(Font)              scaled to size 6.0157pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.03262pt on input line 245.
+(Font)              scaled to size 12.03262pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.42284pt on input line 245.
+(Font)              scaled to size 8.42284pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.01631pt on input line 245.
+(Font)              scaled to size 6.01631pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 12.03018pt on input line 245.
+(Font)              scaled to size 12.03018pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.42113pt on input line 245.
+(Font)              scaled to size 8.42113pt on input line 237.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.01509pt on input line 245.
+(Font)              scaled to size 6.01509pt on input line 237.
 LaTeX Font Info:    Font shape `TU/Arial(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 247.
+(Font)              scaled to size 10.0pt on input line 239.
 [5] [6]
+File: article_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf)
+
+<use article_files/figure-latex/unnamed-chunk-13-1.pdf>
 File: article_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
 
 <use article_files/figure-latex/unnamed-chunk-14-1.pdf>
-File: article_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf)
-
-<use article_files/figure-latex/unnamed-chunk-15-1.pdf>
-[7]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.22206pt on input line 360.
+(Font)              scaled to size 9.22206pt on input line 346.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.58719pt on input line 360.
+(Font)              scaled to size 6.58719pt on input line 346.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 13.1757pt on input line 360.
+(Font)              scaled to size 13.1757pt on input line 346.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.22299pt on input line 360.
+(Font)              scaled to size 9.22299pt on input line 346.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.58786pt on input line 360.
+(Font)              scaled to size 6.58786pt on input line 346.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 13.17303pt on input line 360.
+(Font)              scaled to size 13.17303pt on input line 346.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.22112pt on input line 360.
+(Font)              scaled to size 9.22112pt on input line 346.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.58652pt on input line 360.
-[8] (./article.aux)
+(Font)              scaled to size 6.58652pt on input line 346.
+[7] [8] (./article.aux)
 Package rerunfilecheck Info: File `article.out' has not changed.
 (rerunfilecheck)             Checksum: F563714A68DA50F9E7FDFD607C5E5898;262.
  ) 
 Here is how much of TeX's memory you used:
- 19424 strings out of 478442
- 350101 string characters out of 5856591
- 864855 words of memory out of 5000000
- 39445 multiletter control sequences out of 15000+600000
+ 19423 strings out of 478442
+ 350086 string characters out of 5856591
+ 866877 words of memory out of 5000000
+ 39444 multiletter control sequences out of 15000+600000
  409218 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  87i,9n,122p,646b,516s stack positions out of 5000i,500n,10000p,200000b,80000s

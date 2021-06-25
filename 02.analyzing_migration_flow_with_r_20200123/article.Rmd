@@ -65,16 +65,15 @@ table_design <- function(table,caption_set){
 }
 ```
 
-
 A imigração vem sendo um tema central nos debates políticos para presidencia, gerando muitas dúvidas nos eleitores, por conta de *fake news* que acabam surgindo, e também muita esperança para as pessoas que buscam mudar de vida com a mudança de país. Esta onda imigratória está cada vez chamando mais a atenção da mídia, por conta da grave crise na Syria, Yemen e Venezuela, que fez com que milhões de pessoas decidissem sair de seus lares.
 
 Esta atenção da mídia fez com que estudos mais aprofundados sobre o tema surgissem, visando desmistificar alguns fatos sobre o tema. Um estudo que me chamou bastante a atenção foi o realizado pela [The Economist](https://www.economist.com/printedition/2019-11-16), onde se conduziram diversas reportagens sobre aspectos do fluxo imigratório, como o impacto nos países que recebem as pessoas, empregabilidade, bem-estar, entre outros. A reportagem foi muito bem feita e o tema me atrai bastante, por isso resolvi fazer este post, para tentar analisar os dados do fluxo imigratório.
 
+A imagem abaixo é de uma das reportagens da revista. Achei muito boa.
+
+![](./images/image_1.png){width=50%}
+
 Na tentativa de complementar os *insights* gerados pela reportagem, vou usar os dados do Banco Mundial, através de uma API que pode ser acessada pelo R com o pacote **wbstats**. Esta API me permitirá acessar o banco de dados desta instituição, que me parece ser a melhor fonte para dados de fluxo imigratório.
-
-A imagem abaixo é de uma das reportagens da revista. Fantástica!
-
-![teste](./images/image_1.png){width=65%}
 
 Antes de iniciar a análise dos dados, vou listar abaixo as principais conclusões das reportagens desenvolvidas nesta edição da The Economist.
 
@@ -92,7 +91,7 @@ Antes de iniciar a análise dos dados, vou listar abaixo as principais conclusõ
 
 ## **Analisando os Dados do Fluxo Imigratório**
 
-Agora que entendemos alguns aspectos do fluxo imigratório, nós podemos analisar alguns datasets da base de dados do Banco Mundial para nos aprofundar um pouco mais no tema. Para isso, vamos usar os seguintes pacotes.
+Agora que entendemos alguns aspectos do fluxo imigratório, nós podemos analisar alguns datasets aprofundar um pouco mais o tema. O código usado neste post pode ser acessado neste [link](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/02.analyzing_migration_flow_with_r_20200123/article.Rmd), que é o arquivo .Rmd que gera este PDF.
 
 ```{r}
 library(tidyverse) # data science and data manipulation packages
@@ -102,19 +101,13 @@ library(patchwork)
 
 A primeira informação que vale a pena ser vista sobre o tema é a quantidade de pessoas consideradas imigrantes pelo Banco Mundial. O gráfico abaixo irá mostrar a série temporal desta variável. 
 
-O código abaixo salva na variável 'migrants_pop' o resultado da chamada da API do Banco Mundial. Veja que é necessário especificar qual indicator se deseja trazer, o período e quais países para ser retornado.
-
 ```{r}
 # Creating a variable with the data.frame of the requested data
 migrants_pop <- wbstats::wb(indicator = "SM.POP.TOTL",
                               country = "countries_only",
                               startdate = 1980,
                               enddate = 2020)
-```
 
-Após fazer a requisição, é possível plotar a série temporal.
-
-```{r}
 migrants_pop %>% 
   group_by(date) %>% 
   summarise(immigrants = sum(value)) %>% 
@@ -132,7 +125,7 @@ migrants_pop %>%
        y = "")
 ```
 
-Veja que o dataset trouxe dados até 2015, mesmo eu tendo solicitado até 2020. Em 2015 a população imigrante era de 250 milhões (maior do que a população do Brasil). Agora vamos verificar os países que possuem maior proporção de imigrantes em seus territórios. O próximo gráfico irá trazer os 20 países com maior proporção de população imigrante. Provavelmente Canadá e Austrália estarão presentes neste rank. Irei remover países com população abaixo de 1 milhão de habitantes.
+Em 2015 a população imigrante era de 250 milhões (maior do que a população do Brasil). Agora vamos verificar os países que possuem maior proporção de imigrantes em seus territórios. O próximo gráfico irá trazer os 20 países com maior proporção de população imigrante. Provavelmente Canadá e Austrália estarão presentes neste rank. Irei remover países com população abaixo de 1 milhão de habitantes.
 
 ```{r}
 # Trazendo a população dos países
@@ -246,12 +239,10 @@ remitances_over_gdp %>%
   table_design()
 ```
 
-Aparentemente são 31 países nesta situação, o que corrobora o que foi indicado na reportagem, visto que alguns países desta tabela são bem pequenos, e podem ter sido desconsiderados pela revista.
-
-Outra informação indicada nas reportagens é de que as remessas enviadas pelos familiares aos seus parentes é um fluxo acíclico. Isso quer dizer que o fluxo não varia em conformidade com a variação do PIB do país que recebe este investimento. Essa hipótese tem um fundamento sólido, visto que o imigrante, ao ver seus parentes precisando de ajuda (por conta de uma crise econômica), envia mais dinheiro para que eles consigam passar por esta situação adversa. Apesar deste embasamento, é necessário ver empiricamente esta afirmação.
+Uma informação sobre *remittances* indicada nas reportagens é de que estas remessas são um fluxo acíclico. Isso quer dizer que o fluxo não varia de acordo com a variação do PIB do país que recebe este investimento. Essa hipótese tem um fundamento sólido, visto que o imigrante, ao ver seus parentes precisando de ajuda (por conta de uma crise econômica), envia mais dinheiro para que eles consigam passar por esta situação adversa. Apesar deste embasamento, é necessário ver empiricamente esta afirmação.
 
 Vou selecionar alguns países com baixo PIB per capita para ver se o fluxo de 'remittances' de fato assume um comportamento acíclico. Os países serão:
-Suriname, Somalia, Serra Leoa, Senegal, Sudão, Ruanda, Nepal, Nigéria, Malawi, Mali, Líbia, Quênia, Etiópia, Eritreia e Congo.
+Suriname, Somalia, Serra Leoa, Senegal, Sudão, Ruanda, Nepal, Nigéria, Malawi, Mali, Líbia, Quênia, Etiópia, Eritreia e Congo. Para estes países, irei pegar no Banco Mundial os valores de remessas recebidas e PIB per Capita. Os valores de remessas recebidas será normalizado pela população.
 
 ```{r}
 # Creating a variable with the selected countries
@@ -264,8 +255,6 @@ country_view <- c("Yemen, Rep.","Tanzania","Uganda",
                   "Congo, Rep.")
 ```
 
-Agora vamos ver o fluxo de 'remittances' e o PIB per Capita.
-
 ```{r}
 remitances_received <- wbstats::wb(indicator = "BX.TRF.PWKR.CD.DT",
                                country = "countries_only")
@@ -274,9 +263,8 @@ gdp_pc <- wbstats::wb(indicator = "NY.GDP.PCAP.CD",
                       country = "countries_only")
 ```
 
-Tendo as duas variáveis, antes de compará-las, será necessário normalizar o fluxo de 'remittances' pela população. O seguinte código fará esta normalização.
-
 ```{r}
+# Normalizando as remessas recebidas pela população
 remitances_received %>% 
   mutate(remitances = value) %>% 
   select(date, country, remitances) %>% 
@@ -289,7 +277,7 @@ remitances_received %>%
 
 # Gerando uma amostra do dataset
 remitances[sample(nrow(remitances),5), ] %>% 
-  kableExtra::kbl(caption = "Amostra do Dataset",
+  kableExtra::kbl(caption = "Amostra do Dataset - Remessas per Capita",
                   linesep = "\\addlinespace",
 	                booktabs = T) %>%
   table_design()
@@ -332,7 +320,7 @@ remittances <- gdp_pc %>%
 gdp+remittances
 ```
 
-Nota-se que a relação não é direta, porém também não é inversa. Desta forma, esta relação acíclica não fica evidente ao vermos estas duas séries temporais. O gráfico abaixo mostra a correlação destas duas séries temporais.
+Nota-se que a relação não é direta, porém também não é inversa. Desta forma, esta relação acíclica não fica evidente ao vermos estas duas séries temporais. O gráfico abaixo mostra a correlação destas duas variáveis.
 
 ```{r}
 gdp_pc %>% 
@@ -355,7 +343,7 @@ gdp_pc %>%
        x = "Remitances")
 ```
 
-Eu esperava ver uma correlação mais forte, onde o PIB per Capito reduzido iria trazer um valor de 'remittances' per Capita alto. Porém não ficou tão clara esta correlação. O modelo de regressão linear para este contexto pode ser do seguinte formato:
+Eu esperava ver uma correlação mais forte, onde o PIB per Capito reduzido iria trazer um valor de 'remittances' per Capita alto. Porém não ficou tão clara esta correlação. Vou testar abaixo um modelo de regressão linear, que será do seguinte formato:
 
 $$R = \beta_0 + \beta_1 pc.gdp + \mu$$
 
@@ -376,4 +364,3 @@ Com o output do modelo, podemos reescrever a equação inserindo os valores do i
 $$R = 19.29 + 0.03542 pc.gdp + \mu$$
 
 Embora o resultado tenha saído diferente do que eu esperava, tanto o intercepto quanto a inclinação se mostram estatisticamente significativos, com um valor-p abaixo de 5%.
-
