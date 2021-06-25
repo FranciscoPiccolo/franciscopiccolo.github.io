@@ -1,0 +1,66 @@
+---
+title: "Nice title here"
+subtitle: "Nice subtitle"
+author: "your name"
+date: "finish date"
+
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2
+    keep_tex: yes
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+
+documentclass: article
+papersize: a4
+pagestyle: plain  # plain, empty, headings
+geometry: margin=.5in
+linestretch: 1.2
+mainfont: Arial
+fontsize: 11pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      message = F,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 7),
+    plot.caption = element_text(size = 6.5),
+    axis.title = element_text(size = 6.5),
+    axis.text = element_text(face = "italic", size = 6.5),
+    legend.position = "right",
+    legend.text = element_text(size = 6.5),
+    legend.title = element_blank()
+  )
+}
+
+
+table_design <- function(table,caption_set){
+  table %>%
+  kableExtra::kable_styling(position = "center",
+                            font_size = 10,
+                            full_width = F,
+                            latex_options = c("HOLD_position",
+                                              "stripped")) %>%
+  kableExtra::row_spec(row = 0,
+                       bold = T,
+                       italic = F,
+                       underline = F,
+                       background = "RoyalBlue",
+                       color = "white")
+}
+```

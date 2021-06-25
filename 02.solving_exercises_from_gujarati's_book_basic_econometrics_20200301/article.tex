@@ -121,15 +121,15 @@
 \maketitle
 
 \setstretch{1.2}
-Neste post vou resolver alguns exercícios de um livro de econometria bastante usado nos cursos de economia, que se chama \href{https://www.amazon.com.br/Econometria-B\%C3\%A1sica-Damodar-N-Gujarati/dp/8563308327/ref=sr_1_1?__mk_pt_BR=\%C3\%85M\%C3\%85\%C5\%BD\%C3\%95\%C3\%91\&dchild=1\&keywords=econometria+b\%C3\%A1sica+gujarati\&qid=1624149011\&sr=8-1}{Econometria Básica} de Gujarati. Os códigos usados nos exercícios podem ser encontrados no arquivo .Rmd que gera este PDF neste \href{}{link}. Os datasets dos exercícios também estarão no meu repositório do Github nesta \href{}{pasta}.
+Neste post vou resolver alguns exercícios de um livro de econometria bastante usado nos cursos de economia, que se chama \href{https://www.amazon.com.br/Econometria-B\%C3\%A1sica-Damodar-N-Gujarati/dp/8563308327/ref=sr_1_1?__mk_pt_BR=\%C3\%85M\%C3\%85\%C5\%BD\%C3\%95\%C3\%91\&dchild=1\&keywords=econometria+b\%C3\%A1sica+gujarati\&qid=1624149011\&sr=8-1}{Econometria Básica} de Gujarati. Os códigos usados nos exercícios podem ser encontrados no arquivo .Rmd que gera este PDF neste \href{https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/02.solving_exercises_from_gujarati's_book_basic_econometrics_20200301/article.Rmd}{link}. Os datasets dos exercícios também estarão no meu repositório do Github neste \href{https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/tree/master/02.solving_exercises_from_gujarati's_book_basic_econometrics_20200301/datasets}{link}.
 
-O focos será na resolução dos exercícios que permitem aplicações com o R, que serão na maior parte os que pedem para plotar um gráfico ou fazer uma regressão e interpretar os resultados.
+O foco será na resolução dos exercícios que permitem aplicações com o R, que serão na maior parte os que pedem para plotar um gráfico ou fazer uma regressão e interpretar os resultados.
 
-\hypertarget{capuxedtulo-1---a-natureza-da-anuxe1lize-de-regressuxe3o}{%
-\section{Capítulo 1 - A Natureza da Análize de Regressão}\label{capuxedtulo-1---a-natureza-da-anuxe1lize-de-regressuxe3o}}
+\hypertarget{capuxedtulo-1---a-natureza-da-anuxe1lise-de-regressuxe3o}{%
+\section{Capítulo 1 - A Natureza da Análise de Regressão}\label{capuxedtulo-1---a-natureza-da-anuxe1lise-de-regressuxe3o}}
 
-\hypertarget{a-tabela-1.3-apresenta-dados-relativos-ao-uxedndice-de-preuxe7os-ao-consumidor-ipc-de-sete-pauxedses-industrializados.-a-base-do-uxedndice-uxe9-19821984-100.}{%
-\subsubsection{1.1. A Tabela 1.3 apresenta dados relativos ao Índice de Preços ao Consumidor (IPC) de sete países industrializados. A base do índice é 1982--1984 = 100.}\label{a-tabela-1.3-apresenta-dados-relativos-ao-uxedndice-de-preuxe7os-ao-consumidor-ipc-de-sete-pauxedses-industrializados.-a-base-do-uxedndice-uxe9-19821984-100.}}
+\hypertarget{a-tabela-1.3-apresenta-dados-relativos-ao-uxedndice-de-preuxe7os-ao-consumidor-cpi-de-sete-pauxedses-industrializados.-a-base-do-uxedndice-uxe9-19821984-100.}{%
+\subsubsection{1.1. A Tabela 1.3 apresenta dados relativos ao Índice de Preços ao Consumidor (CPI) de sete países industrializados. A base do índice é 1982--1984 = 100.}\label{a-tabela-1.3-apresenta-dados-relativos-ao-uxedndice-de-preuxe7os-ao-consumidor-cpi-de-sete-pauxedses-industrializados.-a-base-do-uxedndice-uxe9-19821984-100.}}
 
 \begin{table}[H]
 
@@ -221,6 +221,8 @@ Apenas a linha e coluna `usa\_cpi' precisa ser usada, mostrando o gráficos de d
 \bottomrule
 \end{tabular}
 \end{table}
+
+\newpage
 
 \textbf{a. Trace um gráfico com as impressões no eixo vertical e os gastos com publicidade no eixo horizontal.}
 
@@ -435,6 +437,8 @@ two.sided\strut
 \end{tabular}
 \end{table}
 
+\newpage
+
 \textbf{a. Represente graficamente Y contra X para os dois setores da economia separadamente.}
 
 \begin{center}\includegraphics{article_files/figure-latex/unnamed-chunk-24-1} \end{center}
@@ -639,5 +643,183 @@ Adjusted \(R^2\)\strut
 \textbf{a. Represente graficamente os dados do PIB em dólares correntes e em dólares constantes (de 2000) em relação ao tempo.}
 
 \begin{center}\includegraphics{article_files/figure-latex/unnamed-chunk-28-1} \end{center}
+
+\textbf{b. Denotando o PIB por Y e o tempo por X (medido em uma sequência cronológica em que l represente 1959, 2, 1960 e assim por diante até 47 para 2005), veja se o seguinte modelo ajusta-se aos dados do PIB:}
+
+\[y_t = \beta_1 + \beta_2 x_t + \mu_t\]
+
+Apenas pelo gráfico dá para se notar uma relação entre tempo e variação do PIB. Algo que é bem comum em séries temporais, onde se incluem modelos de regressão para fazer o `forecasting'. Vamos ver se o modelo se adequa bem aos dados.
+
+\begin{itemize}
+\tightlist
+\item
+  PIB Nominal
+\end{itemize}
+
+\begin{longtable}[]{@{}ccccc@{}}
+\toprule
+\begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.25}}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.15}}\centering
+Estimate\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.18}}\centering
+Std. Error\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.14}}\centering
+t value\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.17}}\centering
+Pr(\textgreater\textbar t\textbar)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.25}}\centering
+\textbf{(Intercept)}\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.15}}\centering
+-496268\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.18}}\centering
+21089\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.14}}\centering
+-23.53\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.17}}\centering
+6.286e-27\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.25}}\centering
+\textbf{year}\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.15}}\centering
+252.6\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.18}}\centering
+10.64\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.14}}\centering
+23.74\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.17}}\centering
+4.367e-27\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}cccc@{}}
+\caption{Fitting linear model: ``nominal\_gdp \textasciitilde{} year''}\tabularnewline
+\toprule
+\begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.21}}\centering
+Observations\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.31}}\centering
+Residual Std. Error\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.11}}\centering
+\(R^2\)\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.24}}\centering
+Adjusted \(R^2\)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.21}}\centering
+Observations\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.31}}\centering
+Residual Std. Error\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.11}}\centering
+\(R^2\)\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.24}}\centering
+Adjusted \(R^2\)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.21}}\centering
+47\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.31}}\centering
+989.5\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.11}}\centering
+0.926\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.24}}\centering
+0.9244\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  PIB Real
+\end{itemize}
+
+\begin{longtable}[]{@{}ccccc@{}}
+\toprule
+\begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.25}}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.15}}\centering
+Estimate\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.18}}\centering
+Std. Error\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.14}}\centering
+t value\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 4\tabcolsep) * \real{0.17}}\centering
+Pr(\textgreater\textbar t\textbar)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.25}}\centering
+\textbf{(Intercept)}\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.15}}\centering
+-351335\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.18}}\centering
+9070\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.14}}\centering
+-38.74\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.17}}\centering
+3.332e-36\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.25}}\centering
+\textbf{year}\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.15}}\centering
+180.3\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.18}}\centering
+4.576\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.14}}\centering
+39.39\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 4\tabcolsep) * \real{0.17}}\centering
+1.597e-36\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}cccc@{}}
+\caption{Fitting linear model: ``real\_gdp \textasciitilde{} year''}\tabularnewline
+\toprule
+\begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.21}}\centering
+Observations\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.31}}\centering
+Residual Std. Error\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.12}}\centering
+\(R^2\)\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.24}}\centering
+Adjusted \(R^2\)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.21}}\centering
+Observations\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.31}}\centering
+Residual Std. Error\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.12}}\centering
+\(R^2\)\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.24}}\centering
+Adjusted \(R^2\)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.21}}\centering
+47\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.31}}\centering
+425.6\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.12}}\centering
+0.9718\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.24}}\centering
+0.9712\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\textbf{c.~Como você interpretaria }\(\beta_2\)\textbf{?}
+
+Para ambas as variáveis (Nominal e Real), o tempo se mostra estatisticamente significativo (com valor p bastante baixo) e também nos dois modelos a capacidade de explicar variações em Y é alta (demonstrado pelo r²).
 
 \end{document}
