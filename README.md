@@ -9,4 +9,4 @@ R and statistics.
 
 * Develop nice contenct on R language (I can switch to other languages in the future)
 * Write about analytics projects, R packages, problem solutions, recommended books, etc.
-* Share the code used in a way that can be ran by other users, something called reproucible research.
+* Share the code used in a way that can be run by other users, something called reproucible research.
