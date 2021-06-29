@@ -22,6 +22,6 @@ journey.
 
 Besided that, I could have created a ~nice~ blog with the R package ```Blogdown``` and ```Hugo themes```
 but after spending some time working on a blog I realized that the design aspect of it was removing
-my attention of the most important part of the project (write good stuff in a simple way). Then
+my attention from the most important part of the project (write good stuff in a simple way). Then
 I decided to understand a little better about Latex and develop the content on PDF format so that
 I don't waste my time trying to make the blog page prettier. I hope this will be a long term good decision.
