@@ -25,3 +25,18 @@ but after spending some time working on a blog I realized that the design aspect
 my attention from the most important part of the project (write good stuff in a simple way). Then
 I decided to understand a little better about Latex and develop the content on PDF format so that
 I don't waste my time trying to make the blog page prettier. I hope this will be a long term good decision.
+
+-------------------------------------------------------------------------------
+
+## Project Backlog (future content to write about)
+
+* Working with tsibble tables
+
+* R package with time series datasets:
+https://cran.r-project.org/web/packages/astsa/index.html
+https://cran.r-project.org/web/packages/TSA/index.html
+https://cran.r-project.org/web/packages/expsmooth/index.html
+https://cran.r-project.org/web/packages/forecast/index.html
+https://cran.r-project.org/web/packages/feasts/index.html
+https://cran.r-project.org/web/packages/fpp/index.html
+https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html#B
