@@ -1,0 +1,151 @@
+---
+title: "Séries Temporais em Pacotes do R"
+subtitle: "Conhecendo alguns datasets para estudo"
+author: "Francisco Piccolo"
+date: "wip"
+
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2
+    keep_tex: no
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+
+documentclass: article
+papersize: a4
+pagestyle: plain  #plain, empty, headings
+geometry: margin=.5in
+linestretch: 1.2
+mainfont: Arial
+fontsize: 11pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      message = F,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 7),
+    plot.caption = element_text(size = 6.5),
+    axis.title = element_text(size = 6.5),
+    axis.text = element_text(face = "italic", size = 6.5),
+    legend.position = "right",
+    legend.text = element_text(size = 6.5),
+    legend.title = element_blank()
+  )
+}
+
+table_design <- function(table,caption_set){
+  table %>%
+  kableExtra::kable_styling(position = "center",
+                            font_size = 10,
+                            full_width = F,
+                            latex_options = c("HOLD_position",
+                                              "stripped")) %>%
+  kableExtra::row_spec(row = 0,
+                       bold = T,
+                       italic = F,
+                       underline = F,
+                       background = "RoyalBlue",
+                       color = "white")
+}
+```
+
+# Introdução
+
+A análise de dados notóriamente vem se tornando uma habilidade bastante demandada em diferentes áreas de atuação. Nos dias atuais a tecnologia permite que se aprimore esta habilidade com facilidade, por isso neste post vou mostrar uma destas facilidades, que é a de obtenção de datasets de através do R para aplicação da análise de dados.
+
+Os datasets que vou explorar são focados em séries temporais, pois como a disponibilidade é grande, achei melhor focar em datasets específicos em cada post. Como de costume, o código que vou usar neste post estará neste [link]() que contém o arquivo .Rmd que gera este PDF. Vale destacar que uma lista completa de pacotes de datasets do R pode ser encontrada [aqui](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html#A). 
+
+Outro ponto que é importante dizer é que existem APIs que dão acesso a base de dados, que são facilmente acessíveis, por exemplo o *BETS* e o *wbstats*, que são APIs em forma de pacotes. Irei fazer um post específico sobre estas APIs em breve.
+
+# Pacotes e Datasets "built in"
+
+```{r}
+# Chamando pacotes que irei usar no post
+library(tidyverse)
+library(patchwork)
+library(zoo)
+```
+
+## [astsa](https://cran.r-project.org/web/packages/astsa/index.html) (Applied Statistical Time Series Analysis)
+
+* **birth**: Nascimento mês a mês dos EUA
+
+```{r, fig.width=6, fig.height=3}
+astsa::birth %>%
+  data.frame() %>% 
+  mutate(month = rep_len(x = c(1,2,3,4,5,6,7,8,9,10,11,12),
+                         length.out = astsa::birth %>% length()),
+         year = rep(x = c(seq(1948,1979, by = 1)),
+                    length.out = 373,
+                    each = 12),
+         date = lubridate::ym(paste(year,month,""))) %>% 
+  rename(value = ".") -> birth_ds
+
+
+g1 <- 
+  birth_ds  %>% 
+  ggplot2::ggplot()+
+  geom_line(mapping = aes(x = date, 
+                          y = value,
+                          group = 1))+
+  theme_graph()+
+  labs(title = "Nascimentos nos EUA mês a mês",
+       x = "",
+       y = "")
+
+g2 <- 
+  birth_ds  %>% 
+  ggplot2::ggplot()+
+  geom_line(mapping = aes(x = as.integer(month), 
+                          y = value,
+                          group = year,
+                          color = year))+
+  scale_color_viridis_c()+
+  theme_graph()+
+  theme(legend.position = "bottom")+
+  labs(x = "",
+       y = "")
+
+g1+g2
+```
+
+\newpage
+
+```{r}
+ts(astsa::cardox, 
+   start = c(1958,3),
+   end = c(2018,11),
+   frequency = 12) -> ts
+  
+
+df <- data.frame(Y = as.matrix(ts), date = as.Date(as.yearmon(time(ts))))
+
+df %>% 
+  ggplot2::ggplot()+
+  geom_line(mapping = aes(x = date,
+                          y = Y,
+                          group = 1))+
+  theme_graph()
+
+
+df %>% 
+  tsibble::as_tibble() %>% 
+  str()
+```
+
+
