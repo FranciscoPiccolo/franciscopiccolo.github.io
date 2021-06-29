@@ -20,7 +20,7 @@ help me on my career as well. Secondly, there are not so many content about R an
 analytics in PT-BR, so the content being displayed here can help other folks on the
 journey.
 
-Besided that, I could have created a __nice__ blog with the R package **Blogdown** and **Hugo themes**
+Besided that, I could have created a ~nice~ blog with the R package ```Blogdown``` and ```Hugo themes```
 but after spending some time working on a blog I realized that the design aspect of it was removing
 my attention of the most important part of the project (write good stuff in a simple way). Then
 I decided to understand a little better about Latex and develop the content on PDF format so that
