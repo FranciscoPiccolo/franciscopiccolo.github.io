@@ -1,0 +1,119 @@
+---
+title: "Algoritmo de Eliminação Gausiana"
+subtitle: ""
+author: "Francisco Piccolo"
+date: "wip"
+
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2
+    keep_tex: no
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+
+documentclass: article
+papersize: a4
+pagestyle: plain  #plain, empty, headings
+geometry: margin=.5in
+linestretch: 1.2
+mainfont: Arial
+fontsize: 11pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      message = F,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 7),
+    plot.caption = element_text(size = 6.5),
+    axis.title = element_text(size = 6.5),
+    axis.text = element_text(face = "italic", size = 6.5),
+    legend.position = "right",
+    legend.text = element_text(size = 6.5),
+    legend.title = element_blank()
+  )
+}
+
+table_design <- function(table,caption_set){
+  table %>%
+  kableExtra::kable_styling(position = "center",
+                            font_size = 10,
+                            full_width = F,
+                            latex_options = c("HOLD_position",
+                                              "stripped")) %>%
+  kableExtra::row_spec(row = 0,
+                       bold = T,
+                       italic = F,
+                       underline = F,
+                       background = "RoyalBlue",
+                       color = "white")
+}
+```
+
+# Introdução
+
+Elinição Gaussiana é um algoritmo usado para resolver sistemas de equações lineares. É basicamente uma sequência de operações elementares aplicadas nas linhas da matriz para deixar o canto inferior esquerdo com o maior número de zeros possível. Para mais detalhes veja a [wiki](https://en.wikipedia.org/wiki/Gaussian_elimination) deste algoritmo. Neste post eu vou testar este algoritmo que será criado através de uma função no R.
+
+```{r}
+A <- matrix(c(2,-5,4,1,-2.5,1,1,-4,6),byrow=T,nrow=3,ncol=3)
+b <- matrix(c(-3,5,10),nrow=3,ncol=1)
+p <- nrow(A)
+
+(U.pls <- cbind(A,b))
+
+U.pls[1,] <- U.pls[1,]/U.pls[1,1]
+
+i <- 2
+
+while (i < p+1) {
+ j <- i
+ while (j < p+1) {
+  U.pls[j, ] <- U.pls[j, ] - U.pls[i-1, ] * U.pls[j, i-1]
+  j <- j+1
+ }
+ while (U.pls[i,i] == 0) {
+  U.pls <- rbind(U.pls[-i,],U.pls[i,])
+ }
+ U.pls[i,] <- U.pls[i,]/U.pls[i,i]
+ i <- i+1
+}
+for (i in p:2){
+ for (j in i:2-1) {
+  U.pls[j, ] <- U.pls[j, ] - U.pls[i, ] * U.pls[j, i]
+ }
+}
+
+U.pls
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
