@@ -1,27 +1,22 @@
 ---
 title: "Analisando o Fluxo de Imigrantes com R"
-subtitle: "Testando o pacote 'wbstats'"
-author: "Francisco Piccolo"
-date: "2020-01-23"
 
 output:
   bookdown::pdf_document2:
     latex_engine: xelatex
     fig_caption: yes
     fig_width: 3.5
-    fig_height: 2
+    fig_height: 2.5
     keep_tex: no
     number_sections: no
     toc: no
     includes:
       in_header: header.tex
-      
+
 documentclass: article
-papersize: a4
-pagestyle: plain  # plain, empty, headings
 geometry: margin=.5in
-linestretch: 1.2
-mainfont: Arial
+linestretch: 1.0
+mainfont: Calibri
 fontsize: 11pt
 linkcolor: RoyalBlue
 urlcolor: RoyalBlue
@@ -49,33 +44,45 @@ theme_graph <- function(){
 }
 
 
-table_design <- function(table,caption_set){
-  table %>% 
+table_design_1 <- function(table,caption_set){
+  table %>%
   kableExtra::kable_styling(position = "center",
                             font_size = 10,
                             full_width = F,
                             latex_options = c("HOLD_position",
-                                              "stripped")) %>% 
+                                              "stripped",
+                                              "scale_down")) %>%
   kableExtra::row_spec(row = 0,
                        bold = T,
                        italic = F,
                        underline = F,
-                       background = "RoyalBlue",
+                       background = "Black",
+                       color = "white")
+}
+
+table_design_2 <- function(table,caption_set){
+  table %>%
+  kableExtra::kable_styling(position = "center",
+                            font_size = 10,
+                            full_width = F,
+                            latex_options = c("HOLD_position",
+                                              "stripped")) %>%
+  kableExtra::row_spec(row = 0,
+                       bold = T,
+                       italic = F,
+                       underline = F,
+                       background = "Black",
                        color = "white")
 }
 ```
 
-A imigração vem sendo um tema central nos debates políticos para presidencia, gerando muitas dúvidas nos eleitores, por conta de *fake news* que acabam surgindo, e também muita esperança para as pessoas que buscam mudar de vida com a mudança de país. Esta onda imigratória está cada vez chamando mais a atenção da mídia, por conta da grave crise na Syria, Yemen e Venezuela, que fez com que milhões de pessoas decidissem sair de seus lares.
+\linenumbers
 
-Esta atenção da mídia fez com que estudos mais aprofundados sobre o tema surgissem, visando desmistificar alguns fatos sobre o tema. Um estudo que me chamou bastante a atenção foi o realizado pela [The Economist](https://www.economist.com/printedition/2019-11-16), onde se conduziram diversas reportagens sobre aspectos do fluxo imigratório, como o impacto nos países que recebem as pessoas, empregabilidade, bem-estar, entre outros. A reportagem foi muito bem feita e o tema me atrai bastante, por isso resolvi fazer este post, para tentar analisar os dados do fluxo imigratório.
+# Introdução
 
-A imagem abaixo é de uma das reportagens da revista. Achei muito boa.
+A imigração vem sendo um tema central nos debates políticos para presidência, sendo controverso e propício para geração de *fake news*. Por um lado algumas pessoas ficam receosas com fluxo imigratório, por ameaçar seu bem estar e empregos, por outro lado há pessoas que colocam na imigração a esperança de mudar de vida. Os casos mais críticos de imigração nos últimos anos foram presenciados na Síria, Yemen e Venezuela, onde milhões de pessoas saíram de seus lares por conta de guerra, fome e crises econômicas. 
 
-![](./images/image_1.png){width=50%}
-
-Na tentativa de complementar os *insights* gerados pela reportagem, vou usar os dados do Banco Mundial, através de uma API que pode ser acessada pelo R com o pacote **wbstats**. Esta API me permitirá acessar o banco de dados desta instituição, que me parece ser a melhor fonte para dados de fluxo imigratório.
-
-Antes de iniciar a análise dos dados, vou listar abaixo as principais conclusões das reportagens desenvolvidas nesta edição da The Economist.
+Estes casos geraram bastante atenção da mídia e também de pesquisadores que analisaram o tema. Uma reportagem especial sobre imigração foi feito pela [The Economist](https://www.economist.com/printedition/2019-11-16) que analisou o tema sob diversas perspectivas e gerou as seguintes conclusões:
 
 >> i) Pessoas que conseguem migrar de seus países, geralmente saindo de um país pobre e imigrando para um país rico, auferem um aumento de 3 a 6 vezes em sua renda, por conta de que países ricos possuem melhores instituições, melhor alocação de capital e empresas mais modernas.
 
@@ -83,15 +90,17 @@ Antes de iniciar a análise dos dados, vou listar abaixo as principais conclusõ
 
 >> iii) Imigrantes têm mais chance de abrir seu próprio negócio no país em que entram, pois conseguem notar com mais facilidade demandas não atendidas, e também por conta de que descobrem soluções alternativas para problemas existentes na sociedade em que entram. Em outras palavras, os imigrantes olham para as necessidades da sociedade em que entram com outra perspectiva, pensando fora da caixa.
 
->> iv) O maior "problema" com relação à imigração é a mudança cultural (se é que se pode chamar isso de um problema), que ocorre rapidamente em locais que recebem um fluxo imigratório, por conta de que os imigrantes de agrupam em locais específicos. Além de ser o principal problema, é algo difícil de se solucionar, pois é difícil mensurá-lo e contestá-lo. 
+>> iv) O maior "problema" com relação à imigração é a mudança cultural (se é que se pode chamar isso de um problema), que ocorre rapidamente em locais que recebem um fluxo imigratório, por conta de que os imigrantes se agrupam em locais específicos. Além de ser o principal problema, é algo difícil de se solucionar, pois é difícil mensurá-lo e contestá-lo. 
 
 >> v) As pessoas são mais tolerantes ao fluxo imigratório em seus países quando notam que seu governo está sob controle da situação e também das fronteiras de seu país
 
 >> vi) Os imigrantes na maioria das vezes compartilham seus rendimentos com seus familiares que ficaram no país de origem. Esta forma de investimento é chamada de [remittances](https://www.ted.com/talks/dilip_ratha_the_hidden_force_in_global_economics_sending_money_home). Estas remessas já constituem a maior fonte de investimento direto externo de alguns países e seu potencial de impacto é alto, visto que é um investimento que vai direto para as pessoas que precisam e o risco de serem desviada por corrupção é menor. Atualmente, em 28 países, estas remessas representam mais de 10% de seus respectivos PIBs.
 
-## **Analisando os Dados do Fluxo Imigratório**
+A imagem abaixo é de uma das reportagens da revista. Achei muito boa.
 
-Agora que entendemos alguns aspectos do fluxo imigratório, nós podemos analisar alguns datasets aprofundar um pouco mais o tema. O código usado neste post pode ser acessado neste [link](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/02.analyzing_migration_flow_with_r_20200123/article.Rmd), que é o arquivo .Rmd que gera este PDF.
+![](./images/image_1.png){width=50%}
+
+Na tentativa de complementar os *insights* gerados pela reportagem, vou usar os dados do Banco Mundial, através de uma API que pode ser acessada pelo R com o pacote **wbstats**. Esta API me permitirá acessar o banco de dados desta instituição, que me parece ser a melhor fonte para dados de fluxo imigratório. O código que irei usar neste post poderá ser acessado no meu repositório do [Github](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/02.analyzing_migration_flow_with_r_20200123/article.Rmd).
 
 ```{r}
 library(tidyverse) # data science and data manipulation packages
@@ -99,39 +108,85 @@ library(wbstats)   # World Bank API
 library(patchwork)
 ```
 
-A primeira informação que vale a pena ser vista sobre o tema é a quantidade de pessoas consideradas imigrantes pelo Banco Mundial. O gráfico abaixo irá mostrar a série temporal desta variável. 
+# Usando 'wbstats' para coletar dados do Banco Mundial
+
+Antes de iniciar a análise, vamos ver como se faz para coletar os dados necessários do Banco Mundial. O primeiro passo é escolher uma métrica deste [repositório](https://data.worldbank.org/indicator), por exemplo 'Access to electricity (% of population)') que terá a URL 'https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS?view=chart'. O importante desta URL é o valor 'EG.ELC.ACCS.ZS' que é o código desta métrica e que é usado no pacote 'wbstats' para se usar na API. Com este código e após instalar e chamar o pacote, basta rodar o seguinte comando para trazer esta métrica em forma de data frame.
+
+```{r, echo=T}
+access_to_eletricity <- 
+  wbstats::wb(indicator = "EG.ELC.ACCS.ZS",
+              country = "countries_only")
+```
+
+Após rodar o código, a API fará uma chamada no banco de dados do Banco Mundial e retornará a métrica em questão. Vamos ver uma amostra do dataset gerado:
+
+```{r, echo=T}
+access_to_eletricity %>% 
+  filter(country == "Brazil") %>% 
+  head() %>% 
+  kableExtra::kbl(caption = "Amostra do dataset: Access to Eletricity (Brazil)",
+	                linesep = "\\addlinespace",
+	                booktabs = T) %>%
+  table_design_2()
+```
+
+\newpage
+
+Usando este mesmo método, porém para indicadores de imigração, é possível aprofundar mais este tema e gerar novos insights. Abaixo vou rodar 6 chamadas na API para trazer os seguintes datasets (todos serão por país e ano):
+
+* População Migrante; População total; Saída Líquida de pessoas; Remessas sobre PIB; Remessas Recebidas; PIB per Capita.
+
+```{r, echo=T}
+# dataset população migrante
+migrants_pop <- 
+  wbstats::wb(indicator = "SM.POP.TOTL",
+              country = "countries_only")
+
+# dataset população
+population <- 
+  wbstats::wb(indicator = "SP.POP.TOTL",
+              country = "countries_only")
+
+# dataset saída líquida de pessoas (saída - entrada)
+net_immigration <- 
+  wbstats::wb(indicator = "SM.POP.NETM",
+              country = "countries_only")
+
+# dataset remessas sobre PIB
+remitances_over_gdp <- 
+  wbstats::wb(indicator = "BX.TRF.PWKR.DT.GD.ZS",
+              country = "countries_only")
+
+# dataset remessas recebidas
+remitances_received <- 
+  wbstats::wb(indicator = "BX.TRF.PWKR.CD.DT",
+              country = "countries_only")
+
+# dataset PIB per capita
+gdp_pc <- 
+  wbstats::wb(indicator = "NY.GDP.PCAP.CD",
+              country = "countries_only")
+```
+
+# Q&A para Geração de Novos Insights
+
+1) Quantas pessoas estão classificadas como imigrantes atualmente e qual a taxa de variação? **R:** Em 2015 haviam ~243 milhões de pessoas classificadas como imigrantes sendo que em 1960 eram ~71 milhões de pessoas, ou seja um crescimento de ~242%.
 
 ```{r}
-# Creating a variable with the data.frame of the requested data
-migrants_pop <- wbstats::wb(indicator = "SM.POP.TOTL",
-                              country = "countries_only",
-                              startdate = 1980,
-                              enddate = 2020)
-
 migrants_pop %>% 
   group_by(date) %>% 
   summarise(immigrants = sum(value)) %>% 
-  ggplot()+
-  geom_line(mapping = aes(x = date, y = immigrants, group = 1), 
-            size = .5, 
-            color = "dark orange",
-            alpha = .6)+
-  geom_point(mapping = aes(x = date, y = immigrants),
-             color = "dark orange")+
-  scale_y_continuous(labels = scales::comma)+
-  theme_graph()+
-  labs(title = "População Imigrante ao Longo do Tempo",
-       x = "",
-       y = "")
+  tidyr::spread(date,immigrants) %>% 
+  kableExtra::kbl(caption = "População Migrante por Ano",
+	                linesep = "\\addlinespace",
+	                booktabs = T,
+                  format.args = c(big.mark = ".")) %>%
+  table_design_1()
 ```
 
-Em 2015 a população imigrante era de 250 milhões (maior do que a população do Brasil). Agora vamos verificar os países que possuem maior proporção de imigrantes em seus territórios. O próximo gráfico irá trazer os 20 países com maior proporção de população imigrante. Provavelmente Canadá e Austrália estarão presentes neste rank. Irei remover países com população abaixo de 1 milhão de habitantes.
+\newpage
 
-```{r}
-# Trazendo a população dos países
-population <- wbstats::wb(indicator = "SP.POP.TOTL",
-                          country = "countries_only")
-```
+2. Quais são os 10 países com maior % de imigrantes em relação a população total considerando o ano de 2015? **R:** A tabela abaixo apresenta esta resposta:
 
 ```{r, fig.height=6}
 # Juntando os dois datasets de população e imigrantes
@@ -142,225 +197,84 @@ migrants_pop %>%
   mutate(share_immigrants = round(value.x/value.y, digits = 4)) %>% 
   filter(value.y >= 1000000) %>% # Retirando países com baixa população
   arrange(desc(share_immigrants)) %>% 
-  head(20) %>% 
-  mutate(country = fct_reorder(country, share_immigrants)) %>% 
-  ggplot()+
-  geom_col(mapping = aes(x = country, y = share_immigrants),
-           fill = "steel blue")+
-  scale_y_continuous(labels = scales::percent)+
-  theme_graph()+
-  labs(title = "Países com Maior Proporção de \nImigrantes", # \n indica quebra de linha para o título caber na imagem
-       x = "",
-       y = "% de Imigrantes no País")+
-  coord_flip()
+  head(10) %>% 
+  select(country,share_immigrants) %>% 
+  mutate(country = fct_reorder(country, share_immigrants),
+         share_immigrants = scales::percent(share_immigrants,accuracy = 0.01)) %>% 
+  kableExtra::kbl(caption = "Top 10 países: \\% de imigrantes",
+	                linesep = "\\addlinespace",
+	                booktabs = T,
+                  format.args = c(big.mark = ".")) %>%
+  table_design_2()
 ```
 
 Alguns países me surpreenderam estar na lista, como por exemplo Arábia Saudita. Este [artigo](https://www.thestreet.com/personal-finance/countries-with-most-immigrants) reforça esse número.
 
 Se por um lado, alguns países receberam muitos imigrantes, por outro, alguns países perderam muitos residentes. Vamos ver os países que mais perderam residentes nos últimos anos. O Banco Mundial possui um indicador que mostra a saída líquida de pessoas, e com essa métrica, podemos classificar os países do menor valor para o maior e selecionar os 20 primeiros. Com isso, o resultado será os 20 países que mais perderam pessoas.
 
-```{r}
-net_immigration <- wbstats::wb(indicator = "SM.POP.NETM",
-                         country = "countries_only",
-                         startdate = 2010,
-                         enddate = 2019) %>% 
-  select(country, value, date)
-```
+3. Quais os 10 países que mais perderam pessoas (i.e. que migraram para outros países) desde 2010? **R:** O gráfico abaixo mostra esta lista:
 
 ```{r, fig.height=6}
 net_immigration %>% 
   group_by(country) %>% 
   summarise(net_immigration = sum(value)) %>% 
   arrange(net_immigration) %>% 
-  head(20) %>% 
+  head(10) %>% 
   mutate(net_immigration = net_immigration * -1,
          country = fct_reorder(country, net_immigration)) %>% 
-  ggplot()+
-  geom_col(mapping = aes(x = country, y = net_immigration),
-           fill = "steel blue")+
-  scale_y_continuous(labels = scales::comma)+
-  theme_graph()+
-  coord_flip()+
-  labs(title = "Países que Mais Perderam \nImigrantes desde 2010",
-       x = "",
-       y = "")
+  select(country,net_immigration) %>% 
+  kableExtra::kbl(caption = "Top 10 países: Saída de pessoas",
+	                linesep = "\\addlinespace",
+	                booktabs = T,
+                  format.args = c(big.mark = ".")) %>%
+  table_design_2()
 ```
 
 Síria e Venezuela são dois países que eu esperava ver neste gráfico. Porém Índia e China aparecem por conta de sua grande população, pois um pequeno movimento de seus habitantes é algo grande comparado aos outros. O ideal é normalizar este dataset usando a população de cada país, de forma que a saída de pessoas seja relativa à sua população. Para isso, basta cruzarmos este dataset com o dataset de população do país para criar a métrica de 'saída líquida relativa de pessoas'.
+
+4. Quais os 10 países que mais perderam pessoas em relação ao total de habitantes de 2015? Neste caso será a saída de pessoas ao longo de 2010 até 2017 dividido pela população de 2015. **R:** O gráfico abaixo mostra esta lista:
 
 ```{r, fig.height=6}
 # Net immigration summed during the period
 net_immigration %>% 
   group_by(country) %>% 
-  summarise(net_immigration = sum(value)) -> net_immigration
+  summarise(net_immigration = sum(value)) -> net_immigration_2
 
 # Joinning the population and net_immigration data
 population %>% 
   filter(date == 2015) %>%
   mutate(population = value) %>% 
   select(country, population) %>% 
-  inner_join(net_immigration, by = c("country" = "country")) %>% 
+  inner_join(net_immigration_2, by = c("country" = "country")) %>% 
   mutate(net_immigration_share = round(net_immigration/population, digits = 4)) %>% 
   arrange(net_immigration_share) %>% 
-  head(20) %>% 
+  head(10) %>% 
   mutate(net_immigration_share = net_immigration_share * -1,
          country = fct_reorder(country, net_immigration_share)) %>% 
-  ggplot()+
-  geom_col(mapping = aes(x = country, y = net_immigration_share),
-           fill = "steel blue")+
-  scale_y_continuous(labels = scales::percent)+
-  theme_graph()+
-  coord_flip()+
-  labs(title = "% de Migração",
-       subtitle = "Top 20 Países mais afetados",
-       x = "",
-       y = "",
-       caption = "De 2010 até 2017")
+  mutate(net_immigration_share = scales::percent(net_immigration_share,accuracy = 0.01)) %>% 
+  select(country,net_immigration_share) %>% 
+  kableExtra::kbl(linesep = "\\addlinespace",
+                  caption = "Top 10: Países com maior \\% de perda de pessoas",
+	                booktabs = T) %>%
+  table_design_2()
 ```
 
-Com essa visão ajustada, podemos ver outros países compondo o ranking. Seguindo adiante, vamos verificar as 'remittances' que são enviadas por imigrantes para seus familiares que estão em dificuldades. Um dado importante indicado nas reportagens da revista é que este fluxo de investimento direto representa mais de 10% do PIB de 29 países. Vamos ver se este indicador é corroborado pelo dataset do Banco Mundial.
+\newpage
 
-Por sorte o Banco Mundial já mensura o percentual de 'remittances' sobre o PIB, desta forma desenvolver esta tabela ficou bem simples.
+5. Quantos países possuem mais que 10% de seu PIB composto por *remittances* (remessas enviadas por familiares que imigraram para outros países)? **R:** São 32 países nesta situação. A seguinte lista apresenta seus respectivos valores de 'Remittances Over GDP'.
 
 ```{r}
-remitances_over_gdp <- wbstats::wb(indicator = "BX.TRF.PWKR.DT.GD.ZS",
-                         country = "countries_only")
-
 remitances_over_gdp %>% 
   filter(date == "2018",
          country != "Lesotho",
          value > 10) %>%
-  mutate("Remittance over gdp" = paste(round(value,digits = 2),"%",sep = "")) %>% 
+  mutate("Remittance Over GDP" = paste(round(value,digits = 2),"%",sep = "")) %>% 
   arrange(desc(value)) %>% 
   mutate(rows = row_number()) %>% 
-  select(rows, date, country, "Remittance over gdp") %>% 
+  select(rows, date, country, "Remittance Over GDP") %>% 
   kableExtra::kbl(linesep = "\\addlinespace",
+                  caption = "Países com mais de 10\\% de 'Remittances Over GDP'",
 	                booktabs = T) %>%
-  table_design()
+  table_design_2()
 ```
 
-Uma informação sobre *remittances* indicada nas reportagens é de que estas remessas são um fluxo acíclico. Isso quer dizer que o fluxo não varia de acordo com a variação do PIB do país que recebe este investimento. Essa hipótese tem um fundamento sólido, visto que o imigrante, ao ver seus parentes precisando de ajuda (por conta de uma crise econômica), envia mais dinheiro para que eles consigam passar por esta situação adversa. Apesar deste embasamento, é necessário ver empiricamente esta afirmação.
-
-Vou selecionar alguns países com baixo PIB per capita para ver se o fluxo de 'remittances' de fato assume um comportamento acíclico. Os países serão:
-Suriname, Somalia, Serra Leoa, Senegal, Sudão, Ruanda, Nepal, Nigéria, Malawi, Mali, Líbia, Quênia, Etiópia, Eritreia e Congo. Para estes países, irei pegar no Banco Mundial os valores de remessas recebidas e PIB per Capita. Os valores de remessas recebidas será normalizado pela população.
-
-```{r}
-# Creating a variable with the selected countries
-country_view <- c("Yemen, Rep.","Tanzania","Uganda",
-                  "Tunisia","Chad","Syrian Arab Republic",
-                  "	Suriname","Somalia","Sierra Leone",
-                  "Senegal","Sudan","Rwanda","Nepal",
-                  "Nigeria","Malawi","Mali","Libya",
-                  "Kenya","Ethiopia","Eritrea",
-                  "Congo, Rep.")
-```
-
-```{r}
-remitances_received <- wbstats::wb(indicator = "BX.TRF.PWKR.CD.DT",
-                               country = "countries_only")
-
-gdp_pc <- wbstats::wb(indicator = "NY.GDP.PCAP.CD",
-                      country = "countries_only")
-```
-
-```{r}
-# Normalizando as remessas recebidas pela população
-remitances_received %>% 
-  mutate(remitances = value) %>% 
-  select(date, country, remitances) %>% 
-  filter(country %in% country_view,
-         date > 2010) %>% 
-  inner_join(population, by = c("date" = "date", "country" = "country")) %>% 
-  select(date, country, remitances, value) %>% 
-  mutate(remitances_adj = round(remitances/value, digits = 4)) %>% 
-  select(date, country, remitances_adj) -> remitances
-
-# Gerando uma amostra do dataset
-remitances[sample(nrow(remitances),5), ] %>% 
-  kableExtra::kbl(caption = "Amostra do Dataset - Remessas per Capita",
-                  linesep = "\\addlinespace",
-	                booktabs = T) %>%
-  table_design()
-```
-
-Agora eu posso cruzar os dois datasets para ver a correlação das duas variáveis para os países selecionados.
-
-```{r, fig.width=6.5}
-gdp <- gdp_pc %>% 
-  mutate(gdp_pc = value) %>% 
-  select(date, country, gdp_pc) %>% 
-  inner_join(remitances, by = c("date" = "date", "country" = "country")) %>%
-  group_by(date) %>% 
-  summarise(gdp = sum(gdp_pc),
-            remitance = sum(remitances_adj)) %>% 
-  ggplot()+
-  geom_line(mapping = aes(x = date, y = gdp, group = 1),
-            color = "dark orange", size = 1)+
-  scale_y_continuous(labels = scales::comma)+
-  theme_graph()+
-  theme(axis.text.x = element_text(angle = 90))+
-  labs(title = "PIB per Capita")
-
-
-remittances <- gdp_pc %>% 
-  mutate(gdp_pc = value) %>% 
-  select(date, country, gdp_pc) %>% 
-  inner_join(remitances, by = c("date" = "date", "country" = "country")) %>%
-  group_by(date) %>% 
-  summarise(gdp = sum(gdp_pc),
-            remitance = sum(remitances_adj)) %>% 
-  ggplot()+
-  geom_line(mapping = aes(x = date, y = remitance, group = 1),
-            color = "steel blue", size = 1)+
-  scale_y_continuous(labels = scales::comma)+
-  theme_graph()+
-  theme(axis.text.x = element_text(angle = 90))+
-  labs(title = "Remittances \nper Capita")
-
-gdp+remittances
-```
-
-Nota-se que a relação não é direta, porém também não é inversa. Desta forma, esta relação acíclica não fica evidente ao vermos estas duas séries temporais. O gráfico abaixo mostra a correlação destas duas variáveis.
-
-```{r}
-gdp_pc %>% 
-  mutate(gdp_pc = value) %>% 
-  select(date, country, gdp_pc) %>% 
-  inner_join(remitances, by = c("date" = "date", "country" = "country")) %>% 
-  ggplot()+
-  geom_point(mapping = aes(x = remitances_adj, y = gdp_pc))+
-  geom_smooth(mapping = aes(x = remitances_adj, y = gdp_pc),
-              method = "lm",
-              formula = y ~ x,
-              se = F,
-              lty = 2,
-              color = "dark orange")+
-  scale_y_continuous(labels = scales::comma)+
-  scale_x_continuous(labels = scales::comma)+
-  theme_graph()+
-  labs(title = "Correlação do PIB per Capita e 'Remittances'",
-       y = "PIB per Capita",
-       x = "Remitances")
-```
-
-Eu esperava ver uma correlação mais forte, onde o PIB per Capito reduzido iria trazer um valor de 'remittances' per Capita alto. Porém não ficou tão clara esta correlação. Vou testar abaixo um modelo de regressão linear, que será do seguinte formato:
-
-$$R = \beta_0 + \beta_1 pc.gdp + \mu$$
-
-Este modelo tentará explicar variações do fluxo de 'remittances' per Capita em função do PIB per Capita, de forma que se possa prever o valor da variável dependente com um dado grau de confiança.
-
-```{r}
-gdp_pc %>% 
-  mutate(gdp_pc = value) %>% 
-  select(date, country, gdp_pc) %>% 
-  inner_join(remitances, by = c("date" = "date", "country" = "country")) %>%
-  lm(formula = remitances_adj ~ gdp_pc) %>% 
-  summary() %>% 
-  pander::pander()
-```
-
-Com o output do modelo, podemos reescrever a equação inserindo os valores do intercepto e inclinação.
-
-$$R = 19.29 + 0.03542 pc.gdp + \mu$$
-
-Embora o resultado tenha saído diferente do que eu esperava, tanto o intercepto quanto a inclinação se mostram estatisticamente significativos, com um valor-p abaixo de 5%.

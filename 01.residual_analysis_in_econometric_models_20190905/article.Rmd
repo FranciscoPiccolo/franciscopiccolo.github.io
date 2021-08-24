@@ -1,15 +1,13 @@
 ---
 title: "Análise de Resíduos em Modelos de Regressão Linear"
 subtitle: "Testando Soluções com R"
-author: "Francisco Piccolo"
-date: "2019-09-05"
 
 output:
   bookdown::pdf_document2:
     latex_engine: xelatex
     fig_caption: yes
     fig_width: 3.5
-    fig_height: 2
+    fig_height: 2.5
     keep_tex: no
     number_sections: no
     toc: no
@@ -17,11 +15,9 @@ output:
       in_header: header.tex
 
 documentclass: article
-papersize: a4
-pagestyle: plain  # plain, empty, headings
 geometry: margin=.5in
-linestretch: 1.2
-mainfont: Arial
+linestretch: 1.0
+mainfont: Calibri
 fontsize: 11pt
 linkcolor: RoyalBlue
 urlcolor: RoyalBlue
@@ -60,10 +56,12 @@ table_design <- function(table,caption_set){
                        bold = T,
                        italic = F,
                        underline = F,
-                       background = "RoyalBlue",
+                       background = "black",
                        color = "white")
 }
 ```
+
+\linenumbers
 
 O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria. Porém, apesar de sua simplicidade, é preciso se atentar a alguns detalhes sobre suas premissas para que os resultados deste modelo possam ser usados para a tomada de decisão.
 
@@ -72,8 +70,6 @@ Abaixo vou listar algumas das premissas da regressão linear:
 i) Ausência de multicolinearidade entre as variáveis independentes.
 
 ii) Ausência de autocorrelação na variável dependente.
-
-iii) Absence of pattern on the behavior of the model residuals, in other words, absence of heteroscedasticity.
 
 iii) Ausência de padrão no comportamento dos resíduos do modelo, ou seja, ausência de heterocedasticidade.
 
@@ -90,7 +86,7 @@ library(corrplot)
 library(readxl)
 ```
 
-### Exemplo prático: Elasticidade preço x oferta na produção de cana de açúcar
+# Exemplo prático: Elasticidade preço x oferta na produção de cana de açúcar
 
 Este exemplo foi passado na minha aula de econometria em 2017. Na época o exercício foi realizado com o software **EViews**, por sorte eu guardei os dados e agora posso refazer o problema com mais facilidade com o uso do R. O dataset pode ser visualizado neste [link](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/02.Posts_pdf/02.residual_analysis_in_econometric_models_20190905/datasets/dataset_1.csv).
 
