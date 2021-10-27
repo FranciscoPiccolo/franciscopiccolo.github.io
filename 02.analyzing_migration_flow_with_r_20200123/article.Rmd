@@ -50,7 +50,7 @@ table_design_1 <- function(table,caption_set){
                             font_size = 10,
                             full_width = F,
                             latex_options = c("HOLD_position",
-                                              "stripped",
+                                              "striped",
                                               "scale_down")) %>%
   kableExtra::row_spec(row = 0,
                        bold = T,
@@ -66,7 +66,7 @@ table_design_2 <- function(table,caption_set){
                             font_size = 10,
                             full_width = F,
                             latex_options = c("HOLD_position",
-                                              "stripped")) %>%
+                                              "striped")) %>%
   kableExtra::row_spec(row = 0,
                        bold = T,
                        italic = F,
@@ -80,7 +80,7 @@ table_design_2 <- function(table,caption_set){
 
 # Introdução
 
-A imigração vem sendo um tema central nos debates políticos para presidência, sendo controverso e propício para geração de *fake news*. Por um lado algumas pessoas ficam receosas com fluxo imigratório, por ameaçar seu bem estar e empregos, por outro lado há pessoas que colocam na imigração a esperança de mudar de vida. Os casos mais críticos de imigração nos últimos anos foram presenciados na Síria, Yemen e Venezuela, onde milhões de pessoas saíram de seus lares por conta de guerra, fome e crises econômicas. 
+A imigração vem sendo um tema central nos debates políticos para presidência, sendo controverso e propício para geração de *fake news*. Por um lado algumas pessoas ficam receosas com fluxo imigratório, por ameaçar seu bem estar e empregos, por outro lado há pessoas que colocam na imigração a esperança de mudar de vida. Os casos mais críticos de imigração nos últimos anos foram presenciados na Síria, Yemen e Venezuela, onde milhões de pessoas saíram de seus lares por conta de guerra, fome e crises econômicas.
 
 Estes casos geraram bastante atenção da mídia e também de pesquisadores que analisaram o tema. Uma reportagem especial sobre imigração foi feito pela [The Economist](https://www.economist.com/printedition/2019-11-16) que analisou o tema sob diversas perspectivas e gerou as seguintes conclusões:
 
@@ -90,7 +90,7 @@ Estes casos geraram bastante atenção da mídia e também de pesquisadores que 
 
 >> iii) Imigrantes têm mais chance de abrir seu próprio negócio no país em que entram, pois conseguem notar com mais facilidade demandas não atendidas, e também por conta de que descobrem soluções alternativas para problemas existentes na sociedade em que entram. Em outras palavras, os imigrantes olham para as necessidades da sociedade em que entram com outra perspectiva, pensando fora da caixa.
 
->> iv) O maior "problema" com relação à imigração é a mudança cultural (se é que se pode chamar isso de um problema), que ocorre rapidamente em locais que recebem um fluxo imigratório, por conta de que os imigrantes se agrupam em locais específicos. Além de ser o principal problema, é algo difícil de se solucionar, pois é difícil mensurá-lo e contestá-lo. 
+>> iv) O maior "problema" com relação à imigração é a mudança cultural (se é que se pode chamar isso de um problema), que ocorre rapidamente em locais que recebem um fluxo imigratório, por conta de que os imigrantes se agrupam em locais específicos. Além de ser o principal problema, é algo difícil de se solucionar, pois é difícil mensurá-lo e contestá-lo.
 
 >> v) As pessoas são mais tolerantes ao fluxo imigratório em seus países quando notam que seu governo está sob controle da situação e também das fronteiras de seu país
 
@@ -113,7 +113,7 @@ library(patchwork)
 Antes de iniciar a análise, vamos ver como se faz para coletar os dados necessários do Banco Mundial. O primeiro passo é escolher uma métrica deste [repositório](https://data.worldbank.org/indicator), por exemplo 'Access to electricity (% of population)') que terá a URL 'https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS?view=chart'. O importante desta URL é o valor 'EG.ELC.ACCS.ZS' que é o código desta métrica e que é usado no pacote 'wbstats' para se usar na API. Com este código e após instalar e chamar o pacote, basta rodar o seguinte comando para trazer esta métrica em forma de data frame.
 
 ```{r, echo=T}
-access_to_eletricity <- 
+access_to_eletricity <-
   wbstats::wb(indicator = "EG.ELC.ACCS.ZS",
               country = "countries_only")
 ```
@@ -121,9 +121,9 @@ access_to_eletricity <-
 Após rodar o código, a API fará uma chamada no banco de dados do Banco Mundial e retornará a métrica em questão. Vamos ver uma amostra do dataset gerado:
 
 ```{r, echo=T}
-access_to_eletricity %>% 
-  filter(country == "Brazil") %>% 
-  head() %>% 
+access_to_eletricity %>%
+  filter(country == "Brazil") %>%
+  head() %>%
   kableExtra::kbl(caption = "Amostra do dataset: Access to Eletricity (Brazil)",
 	                linesep = "\\addlinespace",
 	                booktabs = T) %>%
@@ -138,32 +138,32 @@ Usando este mesmo método, porém para indicadores de imigração, é possível 
 
 ```{r, echo=T}
 # dataset população migrante
-migrants_pop <- 
+migrants_pop <-
   wbstats::wb(indicator = "SM.POP.TOTL",
               country = "countries_only")
 
 # dataset população
-population <- 
+population <-
   wbstats::wb(indicator = "SP.POP.TOTL",
               country = "countries_only")
 
 # dataset saída líquida de pessoas (saída - entrada)
-net_immigration <- 
+net_immigration <-
   wbstats::wb(indicator = "SM.POP.NETM",
               country = "countries_only")
 
 # dataset remessas sobre PIB
-remitances_over_gdp <- 
+remitances_over_gdp <-
   wbstats::wb(indicator = "BX.TRF.PWKR.DT.GD.ZS",
               country = "countries_only")
 
 # dataset remessas recebidas
-remitances_received <- 
+remitances_received <-
   wbstats::wb(indicator = "BX.TRF.PWKR.CD.DT",
               country = "countries_only")
 
 # dataset PIB per capita
-gdp_pc <- 
+gdp_pc <-
   wbstats::wb(indicator = "NY.GDP.PCAP.CD",
               country = "countries_only")
 ```
@@ -173,10 +173,10 @@ gdp_pc <-
 1) Quantas pessoas estão classificadas como imigrantes atualmente e qual a taxa de variação? **R:** Em 2015 haviam ~243 milhões de pessoas classificadas como imigrantes sendo que em 1960 eram ~71 milhões de pessoas, ou seja um crescimento de ~242%.
 
 ```{r}
-migrants_pop %>% 
-  group_by(date) %>% 
-  summarise(immigrants = sum(value)) %>% 
-  tidyr::spread(date,immigrants) %>% 
+migrants_pop %>%
+  group_by(date) %>%
+  summarise(immigrants = sum(value)) %>%
+  tidyr::spread(date,immigrants) %>%
   kableExtra::kbl(caption = "População Migrante por Ano",
 	                linesep = "\\addlinespace",
 	                booktabs = T,
@@ -190,17 +190,17 @@ migrants_pop %>%
 
 ```{r, fig.height=6}
 # Juntando os dois datasets de população e imigrantes
-migrants_pop %>% 
-  filter(date == "2015") %>% 
-  select(country, date, value) %>% 
+migrants_pop %>%
+  filter(date == "2015") %>%
+  select(country, date, value) %>%
   inner_join(population, by = c("country" = "country", "date" = "date")) %>%
-  mutate(share_immigrants = round(value.x/value.y, digits = 4)) %>% 
+  mutate(share_immigrants = round(value.x/value.y, digits = 4)) %>%
   filter(value.y >= 1000000) %>% # Retirando países com baixa população
-  arrange(desc(share_immigrants)) %>% 
-  head(10) %>% 
-  select(country,share_immigrants) %>% 
+  arrange(desc(share_immigrants)) %>%
+  head(10) %>%
+  select(country,share_immigrants) %>%
   mutate(country = fct_reorder(country, share_immigrants),
-         share_immigrants = scales::percent(share_immigrants,accuracy = 0.01)) %>% 
+         share_immigrants = scales::percent(share_immigrants,accuracy = 0.01)) %>%
   kableExtra::kbl(caption = "Top 10 países: \\% de imigrantes",
 	                linesep = "\\addlinespace",
 	                booktabs = T,
@@ -215,14 +215,14 @@ Se por um lado, alguns países receberam muitos imigrantes, por outro, alguns pa
 3. Quais os 10 países que mais perderam pessoas (i.e. que migraram para outros países) desde 2010? **R:** O gráfico abaixo mostra esta lista:
 
 ```{r, fig.height=6}
-net_immigration %>% 
-  group_by(country) %>% 
-  summarise(net_immigration = sum(value)) %>% 
-  arrange(net_immigration) %>% 
-  head(10) %>% 
+net_immigration %>%
+  group_by(country) %>%
+  summarise(net_immigration = sum(value)) %>%
+  arrange(net_immigration) %>%
+  head(10) %>%
   mutate(net_immigration = net_immigration * -1,
-         country = fct_reorder(country, net_immigration)) %>% 
-  select(country,net_immigration) %>% 
+         country = fct_reorder(country, net_immigration)) %>%
+  select(country,net_immigration) %>%
   kableExtra::kbl(caption = "Top 10 países: Saída de pessoas",
 	                linesep = "\\addlinespace",
 	                booktabs = T,
@@ -236,23 +236,23 @@ Síria e Venezuela são dois países que eu esperava ver neste gráfico. Porém 
 
 ```{r, fig.height=6}
 # Net immigration summed during the period
-net_immigration %>% 
-  group_by(country) %>% 
+net_immigration %>%
+  group_by(country) %>%
   summarise(net_immigration = sum(value)) -> net_immigration_2
 
 # Joinning the population and net_immigration data
-population %>% 
+population %>%
   filter(date == 2015) %>%
-  mutate(population = value) %>% 
-  select(country, population) %>% 
-  inner_join(net_immigration_2, by = c("country" = "country")) %>% 
-  mutate(net_immigration_share = round(net_immigration/population, digits = 4)) %>% 
-  arrange(net_immigration_share) %>% 
-  head(10) %>% 
+  mutate(population = value) %>%
+  select(country, population) %>%
+  inner_join(net_immigration_2, by = c("country" = "country")) %>%
+  mutate(net_immigration_share = round(net_immigration/population, digits = 4)) %>%
+  arrange(net_immigration_share) %>%
+  head(10) %>%
   mutate(net_immigration_share = net_immigration_share * -1,
-         country = fct_reorder(country, net_immigration_share)) %>% 
-  mutate(net_immigration_share = scales::percent(net_immigration_share,accuracy = 0.01)) %>% 
-  select(country,net_immigration_share) %>% 
+         country = fct_reorder(country, net_immigration_share)) %>%
+  mutate(net_immigration_share = scales::percent(net_immigration_share,accuracy = 0.01)) %>%
+  select(country,net_immigration_share) %>%
   kableExtra::kbl(linesep = "\\addlinespace",
                   caption = "Top 10: Países com maior \\% de perda de pessoas",
 	                booktabs = T) %>%
@@ -264,17 +264,16 @@ population %>%
 5. Quantos países possuem mais que 10% de seu PIB composto por *remittances* (remessas enviadas por familiares que imigraram para outros países)? **R:** São 32 países nesta situação. A seguinte lista apresenta seus respectivos valores de 'Remittances Over GDP'.
 
 ```{r}
-remitances_over_gdp %>% 
+remitances_over_gdp %>%
   filter(date == "2018",
          country != "Lesotho",
          value > 10) %>%
-  mutate("Remittance Over GDP" = paste(round(value,digits = 2),"%",sep = "")) %>% 
-  arrange(desc(value)) %>% 
-  mutate(rows = row_number()) %>% 
-  select(rows, date, country, "Remittance Over GDP") %>% 
+  mutate("Remittance Over GDP" = paste(round(value,digits = 2),"%",sep = "")) %>%
+  arrange(desc(value)) %>%
+  mutate(rows = row_number()) %>%
+  select(rows, date, country, "Remittance Over GDP") %>%
   kableExtra::kbl(linesep = "\\addlinespace",
                   caption = "Países com mais de 10\\% de 'Remittances Over GDP'",
 	                booktabs = T) %>%
   table_design_2()
 ```
-

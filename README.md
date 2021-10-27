@@ -3,23 +3,21 @@
 Hello, welcome to this humble repository focused on R code that generates
 .PDF files with content related to statistics and data analytics. The content
 is published in PT-BR in order to help brazilian people on the journey to learn
-R and statistics.
+R and statistics (or also get feedback so that I can learn R and statistics).
 
-## Key Objetives
+The key goals that made me willing to develop this repository is to develop content
+using R/R_markdown (I may change to other languages in the future) and focus on content
+related to business intelligence and statistics. Lastly, the other objective for this repository
+is to share the code that I used, so that other people can use it as well.
 
-* Develop contenct on R (I will probably develop content on other languages in the future)
-* Write about analytics projects, R packages, problem solutions, recommended books, etc.
-* Share the code used in a way that can be run by other users (something called reproucible research).
+I've took this initiative because writing well is a challenge for me and is a skill that
+I admire. The other reason is because business intelligence and statistics content in portuguese
+is rare, so that this content can be valuable for people trying to learn it that are not
+confortable when reading content in english.
 
-## Motivations
-There are a few reasons that made me stand up to develop this project. First, this would
-be a nice challenge for me as I'm not a good writer and it's a skill I'm willing to improve.
-Also, writting about statistics and problems related to analytics is something that will
-help me on my career as well. Secondly, there are not so many content about R and
-analytics in portuguese, so the content being displayed here can help others on the journey.
-
-Besides that, I could have created a ~nice~ blog with the R package ```Blogdown``` and ```Hugo themes```
-but after spending some time working on a blog I realized that the design aspect of it was removing
-my attention from the most important part of the project, that is to write good stuff in a simple way. Then
-I decided to understand a little better about Latex and develop the content on PDF format, so that
-I don't waste time trying to make the blog page prettier.
+To conclude, you may be asking, "why you didn't develop a ~nice~ blog with R package ```Blogdown``` and
+a fancy ```hugo theme```?". Honestly, I've tried it first but after some time I've realized that I was
+putting too much attention on the design if the blog and working to adjust the design and details of the blog
+was becoming a bottleneck. So I took the decision to learn a little bit of Latex and created a PDF layout
+to be generated from my R_markdown code. Now I don't have to worry about the design, a lot of
+bugs and techinical issues are gone and I can focus on writing the content.
