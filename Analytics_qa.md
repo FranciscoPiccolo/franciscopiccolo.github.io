@@ -21,11 +21,15 @@ obtido por recrutadores, que poderão usar estas perguntas no processo seletivo.
 
 #### 1)
 
->> texto respondendo a pergunta
+```
+Resposta
+```
 
 #### 2)
 
->> texto respondendo a pergunta
+```
+Resposta
+```
 
 --------------------------------------------------------------------------------------------
 
