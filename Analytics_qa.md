@@ -21,18 +21,28 @@ obtido por recrutadores, que poderão usar estas perguntas no processo seletivo.
 
 #### 1)
 
->> Resposta 1
-
->> Reposta 2
-
->> Resposta 3
+>> texto respondendo a pergunta
 
 #### 2)
+
+>> texto respondendo a pergunta
 
 --------------------------------------------------------------------------------------------
 
 ### Engineering
 
+#### 1)
+
+```sql
+-- Test sql code to be included on question
+create table #tmp_table_1
+    (field_1 int2)
+;
+
+select * from #tmp_table_1;
+```
+
+>> texto respondendo a pergunta
 
 --------------------------------------------------------------------------------------------
 
