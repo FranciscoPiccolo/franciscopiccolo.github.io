@@ -76,10 +76,8 @@ table_design_2 <- function(table,caption_set){
 }
 ```
 
-\linenumbers
-
 # Introdução
-
+  
 A imigração vem sendo um tema central nos debates políticos para presidência, sendo controverso e propício para geração de *fake news*. Por um lado algumas pessoas ficam receosas com fluxo imigratório, por ameaçar seu bem estar e empregos, por outro lado há pessoas que colocam na imigração a esperança de mudar de vida. Os casos mais críticos de imigração nos últimos anos foram presenciados na Síria, Yemen e Venezuela, onde milhões de pessoas saíram de seus lares por conta de guerra, fome e crises econômicas.
 
 Estes casos geraram bastante atenção da mídia e também de pesquisadores que analisaram o tema. Uma reportagem especial sobre imigração foi feito pela [The Economist](https://www.economist.com/printedition/2019-11-16) que analisou o tema sob diversas perspectivas e gerou as seguintes conclusões:
