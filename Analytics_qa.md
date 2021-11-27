@@ -16,3 +16,29 @@ perguntas pertinentes e identificando pontos de melhorias. Outro benefício pode
 obtido por recrutadores, que poderão usar estas perguntas no processo seletivo.
 
 --------------------------------------------------------------------------------------------
+
+### Analytics
+
+#### 1)
+
+>> Resposta 1
+
+>> Reposta 2
+
+>> Resposta 3
+
+#### 2)
+
+--------------------------------------------------------------------------------------------
+
+### Engineering
+
+
+--------------------------------------------------------------------------------------------
+
+### Statistics
+
+
+--------------------------------------------------------------------------------------------
+
+### Business/Management
