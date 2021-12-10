@@ -21,3 +21,7 @@ putting too much attention on the design if the blog and working to adjust the d
 was becoming a bottleneck. So I took the decision to learn a little bit of Latex and created a PDF layout
 to be generated from my R_markdown code. Now I don't have to worry about the design, a lot of
 bugs and techinical issues are gone and I can focus on writing the content.
+
+Articles:
+
+[2020-01-23 Analyzing Migration Flow with R](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/PDFs/2020-01-23%20Analyzing%20Migration%20Flow%20With%20R.pdf).
