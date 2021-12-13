@@ -1,5 +1,12 @@
 # README
 
+Seja bem vindo a este humilde repositório que irá trazer conteúdos relacionado
+à estatística, inteligência de negócios (BI) e engenharia de dados de uma forma
+simples e direta. Os textos postados aqui serão feitos através do R + R_markdown
+que gerará um arquivo PDF ao final. O código usado nos textos será disponibilizado
+através dos arquivos .MD, desta forma vc poderá ver como algo foi construído e
+reconstruir em sua máquina (algo que costumam chamar de pesquisa reprodutível).
+
 Hello, welcome to this humble repository focused on R code that generates
 .PDF files with content related to statistics and data analytics. The content
 is published in PT-BR in order to help brazilian people on the journey to learn
