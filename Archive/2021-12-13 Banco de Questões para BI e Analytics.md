@@ -46,8 +46,11 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 Na pesquisa geral a amostra seria grande e não enviesada, obtendo valores mais variados para o índice de felicidade e renda
 familiar. Por outro lado, na pesquisa com familiares e amigos, seria uma amostra viesada, pois a renda familiar
 e índice de felicidade seriam mais próximos entre os participantes, gerando uma regressão mais plana e uma correlação
-menor entre as variáveis. Desta forma a correlação seria menor do que na pesquisa geral, ou seja, X > Y.
+menor entre as variáveis. Desta forma a correlação seria menor do que na pesquisa geral, ou seja, X > Y. (ver imagem abaixo
+ilustrativa)
 ```
+
+<img src="https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/Code%20Repository/03.analytics_qa_20211213/images/image_1.1.png" width="300" height="150" />
 
 #### 2) Assumindo que mais pessoas morrem por conta do mosquito que transmite a malária do que por conta de tubarões, por quê seria incorreto afirmar que o mosquito é mais perigoso que o tubarão?
 
