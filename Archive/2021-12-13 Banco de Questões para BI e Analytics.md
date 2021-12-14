@@ -40,13 +40,12 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 
 ### Estatística
 
-#### 1) Em uma pesquisa sobre índice de felicidade e renda familiar foi constatado que há uma correlação positiva entre estas variáveis de valor X. Se caso você replicar esta pesquisa com seus familiares e amigos é provável que você obtenha uma correlação de valor Y. O que explicaria um valor de X > Y?
+#### 1) Em uma pesquisa sobre índice de felicidade e renda familiar foi constatado que há uma correlação (R²) positiva entre estas variáveis de valor X (R² = X). Se caso você replicar esta pesquisa com seus familiares e amigos, é provável que você obtenha uma correlação R² = Y. O que explicaria um valor de X > Y, ou seja, por quê a correlação na pesquisa ampla é maior que a correlação na pesquisa com seus familiares?
 
 ```
-Na pesquisa geral a amostra seria ampla e não viesada, obtendo valores mais variados para o índice de felicidade e renda familiar.
-Por outro lado, na pesquisa com familiares e amigos, seria uma amostra viesada, pois a renda familiar e índice de felicidade seriam
-mais próximos entre os participantes, gerando uma regressão mais plana e uma correlação menor entre as variáveis. Desta forma a
-correlação seria menor do que na pesquisa geral, ou seja, X > Y.
+Na pesquisa geral a amostra seria grande e não enviesada, obtendo valores mais variados para o índice de felicidade e renda familiar. Por outro lado, na pesquisa com familiares e amigos, seria uma amostra viesada, pois a renda familiar
+e índice de felicidade seriam mais próximos entre os participantes, gerando uma regressão mais plana e uma correlação
+menor entre as variáveis. Desta forma a correlação seria menor do que na pesquisa geral, ou seja, X > Y.
 ```
 
 #### 2) Assumindo que mais pessoas morrem por conta do mosquito que transmite a malária do que por conta de tubarões, por quê seria incorreto afirmar que o mosquito é mais perigoso que o tubarão?
