@@ -11,7 +11,7 @@ almeja uma posição na área de BI poderá se beneficiar desta lista, observand
 perguntas pertinentes e identificando pontos de melhorias. Outro benefício poderá ser
 obtido por recrutadores, que poderão usar estas perguntas em seus processos seletivos.
 
-![](~/Code Repository/03.analytics_qa_20211213/images/image_1.png){width=50%}
+![](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/Code%20Repository/03.analytics_qa_20211213/images/image_1.png){width=50%}
 
 --------------------------------------------------------------------------------------------
 
