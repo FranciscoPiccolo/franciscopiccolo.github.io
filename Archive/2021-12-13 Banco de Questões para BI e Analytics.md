@@ -31,7 +31,10 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 ```
 ```
 
+#### 4) Assumindo que uma área de BI desenvolva ETLs usando Redshift com algumas CPUs ligadas 24h/7. Como você faria para estimar o custo de seus ETLs em relação ao custo total destas instâncias?
 
+```
+```
 
 --------------------------------------------------------------------------------------------
 
@@ -51,4 +54,12 @@ correlação seria menor do que na pesquisa geral, ou seja, X > Y.
 ```
 ```
 
-#### 3)
+#### 3) Uma padaria faz entrega de pães na casa de seus clientes. A pontualidade da entrega é crítico para o sucesso do negócio, por isso a área de BI criou uma métrica para mensurar a diferença média entre o horário solicitado pelo cliente e o horário efetivo da entrega. Quais seriam alguns pontos negativos deste indicador? Qual outra métrica poderia ser usada para gerar e recomendações de melhorias no processo?
+
+```
+```
+
+#### 4) Quais características um indicador precisa ter para ser considerado relevante para o negócio e gerar *insights* acionáveis?
+
+```
+```
