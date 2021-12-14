@@ -70,5 +70,9 @@ ilustrativa)
 #### 5) Um Analista de BI precisará testar a hipótese referente a uma nova modificação em um site de e-commerce. A modificação é referente ao botão "Adicionar ao Carrinho" (que envia o produto ao carrinho de compra), que atualmente está no canto direito da página e será remanejado para o canto esquerdo. Qual estratégia você sugeriria para testar a hipótese de que a mudança deve ser colocada em produção? Quais métricas você mediria para chegar em uma recomendação?
 
 ```
-Para testar esta mudança um teste A/B seria ideal, onde se criariam dois grupos de usuários do e-commerce. Durante alguns dias um grupo usaria o site sem mudança e outro com a mudança do botão. Após estes dias algumas variáveis como conversion rate; average sales per customer; basket size poderiam ser analisadas para validar se a mudança gerou aumento de vendas, taxa de conversão e tamanho da cesta de compras. Para se gerar uma recomendação confiável a amostra deve ser aleatória e o dias de uso devem ser variados.
+Para testar esta mudança um teste A/B seria ideal, onde se criariam dois grupos de usuários do e-commerce. Durante alguns dias
+um grupo usaria o site sem mudança e outro com a mudança do botão. Após estes dias algumas variáveis como conversion rate;
+average sales per customer; basket size poderiam ser analisadas para validar se a mudança gerou aumento de vendas, taxa de
+conversão e tamanho da cesta de compras. Para se gerar uma recomendação confiável a amostra deve ser aleatória e o dias de
+uso devem ser variados.
 ```
