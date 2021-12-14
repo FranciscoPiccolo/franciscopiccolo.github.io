@@ -50,7 +50,7 @@ menor entre as variáveis. Desta forma a correlação seria menor do que na pesq
 ilustrativa)
 ```
 
-<img src="https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/Code%20Repository/03.analytics_qa_20211213/images/image_1.1.png" width="400" height="300" />
+<img src="https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/Code%20Repository/03.analytics_qa_20211213/images/image_1.1.png" width="500" height="300" />
 
 #### 2) Assumindo que mais pessoas morrem por conta do mosquito que transmite a malária do que por conta de tubarões, por quê seria incorreto afirmar que o mosquito é mais perigoso que o tubarão?
 
