@@ -4,7 +4,7 @@
 
 Neste documento vou listar perguntas e respostas que me parecem oportunas para se
 perguntar a um candidato que almeja uma vaga na área de Business Intelligence (BI).
-Esta lista (eu espero) será construída pela própria comunidade que atua na área,
+Esta lista poderá ser construída pela própria comunidade que atua na área,
 onde outras pessoas poderão contribuir através de um **commit** neste repositório ou
 abrindo um *issue* e indicando a pergunta e possíveis respostas. Com isso, um candidato que
 almeja uma posição na área de BI poderá se beneficiar desta lista, observando
@@ -15,7 +15,7 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 
 ### Engenharia de Dados
 
-#### 1) Quais são as principais vantagens e desvantagens de uma modelagem de banco de dados baseada em tabelas desnormalizadas? Em quais situações é ideal optar por tabelas desnormalizadas?
+#### 1) Quais são as principais vantagens e desvantagens de uma modelagem de banco de dados baseada em tabelas desnormalizadas? Em quais situações é ideal seguir com esta estratégia de modelagem?
 
 ```
 
@@ -40,7 +40,7 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 
 ### Estatística
 
-#### 1) Em uma pesquisa sobre índice de felicidade e renda familiar foi constatado que há uma correlação (R²) positiva entre estas variáveis de valor X (R² = X). Se caso você replicar esta pesquisa com seus familiares e amigos, é provável que você obtenha uma correlação R² = Y. O que explicaria um valor de X > Y, ou seja, por quê a correlação na pesquisa ampla é maior que a correlação na pesquisa com seus familiares?
+#### 1) Em uma pesquisa sobre índice de felicidade e renda familiar foi constatado que há uma correlação (R²) positiva entre estas variáveis de valor X (R² = X). Se caso você replicar esta pesquisa com seus familiares e amigos, é provável que você obtenha uma correlação R² = Y. O que explicaria um valor de X > Y, ou seja, por quê a correlação na pesquisa ampla é maior que a correlação na pesquisa com seus familiares e amigos?
 
 ```
 Na pesquisa geral a amostra seria grande e não enviesada, obtendo valores mais variados para o índice de felicidade e renda
