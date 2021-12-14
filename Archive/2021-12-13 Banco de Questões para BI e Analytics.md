@@ -43,7 +43,8 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 #### 1) Em uma pesquisa sobre índice de felicidade e renda familiar foi constatado que há uma correlação (R²) positiva entre estas variáveis de valor X (R² = X). Se caso você replicar esta pesquisa com seus familiares e amigos, é provável que você obtenha uma correlação R² = Y. O que explicaria um valor de X > Y, ou seja, por quê a correlação na pesquisa ampla é maior que a correlação na pesquisa com seus familiares?
 
 ```
-Na pesquisa geral a amostra seria grande e não enviesada, obtendo valores mais variados para o índice de felicidade e renda familiar. Por outro lado, na pesquisa com familiares e amigos, seria uma amostra viesada, pois a renda familiar
+Na pesquisa geral a amostra seria grande e não enviesada, obtendo valores mais variados para o índice de felicidade e renda
+familiar. Por outro lado, na pesquisa com familiares e amigos, seria uma amostra viesada, pois a renda familiar
 e índice de felicidade seriam mais próximos entre os participantes, gerando uma regressão mais plana e uma correlação
 menor entre as variáveis. Desta forma a correlação seria menor do que na pesquisa geral, ou seja, X > Y.
 ```
