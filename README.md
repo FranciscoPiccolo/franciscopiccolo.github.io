@@ -15,4 +15,4 @@ Documentos e Código:
 
 [2021-07-10 Criando Algoritmo em R para Geração de Matrizes](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/Code%20Repository/04.matrix_generator_algorithm/article.pdf) | [Código](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/Code%20Repository/04.matrix_generator_algorithm/article.Rmd)
 
-[2021-12-13 Banco de Questões para BI e Analytics]()
+[2021-12-13 Banco de Questões para BI e Analytics](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/Code%20Repository/03.analytics_qa_20211213/article.md)
