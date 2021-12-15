@@ -1,5 +1,5 @@
 ---
-title: "Resolvendo Exercícios do Livro "Econometria Básica - Gujarati""
+title: "Resolvendo Exercícios do Livro 'Econometria Básica - Gujarati'"
 
 output:
   bookdown::pdf_document2:
@@ -74,9 +74,17 @@ library(patchwork)
 library(gt)
 library(modelsummary)
 library(stringr)
+library(RCurl)
+library(curl)
+
+read_delim(curl("https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/Code Repository/05.solving_exercises_from_gujarati's_book_basic_econometrics_20200310/datasets/table_1.3_cpi.txt"), delim = " ")
 
 # Criando variável com o caminho onde se localiza os datasets
-dataset_path <- "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/03.solving_exercises_from_gujarati's_book_basic_econometrics_20200310/datasets/"
+dataset_path <- "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/Code Repository/05.solving_exercises_from_gujarati's_book_basic_econometrics_20200310/datasets/"
+
+table_1.3_cpi <-
+  readr::read_delim(file = "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/Code Repository/05.solving_exercises_from_gujarati's_book_basic_econometrics_20200310/datasets/table_1.3_cpi.txt",
+                  delim = " ")
 
 # Trazendo os datasets dos exercícios
 table_1.3_cpi <-
