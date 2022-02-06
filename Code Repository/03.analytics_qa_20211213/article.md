@@ -22,7 +22,9 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 #### 2) Ao desenvolver um ETL de uma tabela fato, quais *quality checks* você faria para garantir que o ETL está gerando dados consistentes?
 
 > (i)   Checar se a primary key contêm valores únicos.
+
 > (ii)  Checar se campos timestamp e date não possuem datas incorretas.
+
 > (iii) Checar se o ETL não está distorcendo valores da tabela fonte (e.g. receita total da tabela fonte = X e receita total da fato = Y).
 
 #### 3) Quais informações do plano de execução de uma *query* você observaria para checar se a performance dela está boa ou ruim?
