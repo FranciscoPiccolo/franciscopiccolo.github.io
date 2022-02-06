@@ -17,15 +17,13 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 
 #### 1) Quais são as principais vantagens e desvantagens de uma modelagem de banco de dados baseada em tabelas desnormalizadas? Em quais situações é ideal seguir com esta estratégia de modelagem?
 
-Vantagens
+> Vantagens
 (i)   Redução de consultas complexas envolvendo muitos joins entre tabelas grandes.
 (ii)  Facilidade para pessoas das áreas de negócio consultarem o DW sem dependência do time técnico (considerando que haja um dicionário de dados adequado).
-
 Desvantagens
 (i)   Possíveis problemas com qualidade dos dados durante a criação das tabelas desnormalizadas.
 (ii)  Custo de manutenção das tabelas desnormalizadas.
 (iii) Aumento da ocupação do DW (porém o custo de armazenagem tende a cair mais em relação ao custo de processamento, então isso não chega a ser uma desvantagem tão grande).
-
 Esta estratégia é ideal quando o espaço no DW não é uma restrição, quando o tempo de processamento de consultas está sendo um gargalo para as áreas de negócio tomarem decisões e também quando há um time de engenharia de dados que irá aplicar manutenções nestas tabelas e garantir a qualidade dos dados.
 
 #### 2) Ao desenvolver um ETL de uma tabela fato, quais *quality checks* você faria para garantir que o ETL está gerando dados consistentes?
