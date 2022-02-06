@@ -29,9 +29,9 @@ Desvantagens
 (iii) Aumento da ocupação do DW (porém o custo de armazenagem tende a cair mais em relação ao custo de processamento, então
 isso não chega a ser uma desvantagem tão grande).
 
-Esta estratégia é ideal quando o espaço no DW não é uma restrição, quando o tempo de processamento de consultas está sendo um gargalo
-para as áreas de negócio tomarem decisões e também quando há um time de engenharia de dados que irá aplicar manutenções nestas tabelas e
-garantir a qualidade dos dados.
+Esta estratégia é ideal quando o espaço no DW não é uma restrição, quando o tempo de processamento de consultas está sendo um
+gargalo para as áreas de negócio tomarem decisões e também quando há um time de engenharia de dados que irá aplicar manutenções
+nestas tabelas e garantir a qualidade dos dados.
 ```
 
 #### 2) Ao desenvolver um ETL de uma tabela fato, quais *quality checks* você faria para garantir que o ETL está gerando dados consistentes?
