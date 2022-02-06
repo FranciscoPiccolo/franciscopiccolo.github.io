@@ -20,14 +20,18 @@ obtido por recrutadores, que poderão usar estas perguntas em seus processos sel
 ```
 Vantagens
 (i)   Redução de consultas complexas envolvendo muitos joins entre tabelas grandes.
-(ii)  Facilidade para pessoas das áreas de negócio consultarem o DW sem dependência do time técnico (considerando que haja um dicionário de dados adequado).
+(ii)  Facilidade para pessoas das áreas de negócio consultarem o DW sem dependência do time técnico (considerando que haja um
+dicionário de dados adequado).
 
 Desvantagens
 (i)   Possíveis problemas com qualidade dos dados durante a criação das tabelas desnormalizadas.
 (ii)  Custo de manutenção das tabelas desnormalizadas.
-(iii) Aumento da ocupação do DW (porém o custo de armazenagem tende a cair mais em relação ao custo de processamento, então isso não chega a ser uma desvantagem tão grande).
+(iii) Aumento da ocupação do DW (porém o custo de armazenagem tende a cair mais em relação ao custo de processamento, então
+isso não chega a ser uma desvantagem tão grande).
 
-Esta estratégia é ideal quando o espaço no DW não é uma restrição, quando o tempo de processamento de consultas está sendo um gargalo para as áreas de negócio tomarem decisões e também quando há um time de engenharia de dados que irá aplicar manutenções nestas tabelas e garantir a qualidade dos dados.
+Esta estratégia é ideal quando o espaço no DW não é uma restrição, quando o tempo de processamento de consultas está sendo um gargalo
+para as áreas de negócio tomarem decisões e também quando há um time de engenharia de dados que irá aplicar manutenções nestas tabelas e
+garantir a qualidade dos dados.
 ```
 
 #### 2) Ao desenvolver um ETL de uma tabela fato, quais *quality checks* você faria para garantir que o ETL está gerando dados consistentes?
@@ -41,7 +45,8 @@ Esta estratégia é ideal quando o espaço no DW não é uma restrição, quando
 #### 3) Quais informações do plano de execução de uma *query* você observaria para checar se a performance dela está boa ou ruim?
 
 ```
-A primeira seria no tipo de join sendo executado. Se caso for um nested join é um sinal de que a consulta pode ter problemas. Em seguida seria a ordenação dos dados, para checar se está havendo necessidade de reordenar a tabela antes de fazer o join.
+A primeira seria no tipo de join sendo executado. Se caso for um nested join é um sinal de que a consulta pode ter problemas. Em seguida
+seria a ordenação dos dados, para checar se está havendo necessidade de reordenar a tabela antes de fazer o join.
 ```
 
 #### 4) Assumindo que uma área de BI desenvolva ETLs usando Redshift com algumas CPUs ligadas 24h/7. Como você faria para estimar o custo de seus ETLs em relação ao custo total destas instâncias?
@@ -79,12 +84,17 @@ ilustrativa)
 
 ```
 Características de uma boa métrica
-1) Focada em output e não input: Ao invés de mensurar número de ligações feitas a potenciais clientes (input), mensure vendas concluídas (output).
-2) Altera o comportamento das pessoas: um bom indicador deve ser relevante para o negócio e por isso variações nele devem gerar mudanças no negócio (i.e. novos projetos, melhorias de processo, etc).
-3) Comparável no tempo: poder olhar variação diária, semanal, mensal... é essencial para acompanhar tendência, sazonalidade e fazer projeções.
+1) Focada em output e não input: Ao invés de mensurar número de ligações feitas a potenciais clientes (input), mensure vendas
+concluídas (output).
+2) Altera o comportamento das pessoas: um bom indicador deve ser relevante para o negócio e por isso variações nele devem gerar
+mudanças no negócio (i.e. novos projetos, melhorias de processo, etc).
+3) Comparável no tempo: poder olhar variação diária, semanal, mensal... é essencial para acompanhar tendência, sazonalidade e
+fazer projeções.
 4) Facilmente compreensível entre os stakeholders: a métrica não deve ser difícil de ser entendida e explicada.
-5) É um número racional (i.e. que pode ser representado por uma fração): esta características fará o indicador ser mais fácil de receber ações e de ser comparado ao longo do tempo.
-6) Ter um target ou projeção: Um bom indicador deve possuir um target e/ou uma projeção para o período. O exercício envolvido nesta estimativa de target/projeção será importante para entender as alavancas que impactam este indicador (relações causais).
+5) É um número racional (i.e. que pode ser representado por uma fração): esta características fará o indicador ser mais fácil de
+receber ações e de ser comparado ao longo do tempo.
+6) Ter um target ou projeção: Um bom indicador deve possuir um target e/ou uma projeção para o período. O exercício envolvido nesta
+estimativa de target/projeção será importante para entender as alavancas que impactam este indicador (relações causais).
 ```
 
 #### 5) Um Analista de BI precisará testar a hipótese referente a uma nova modificação em um site de e-commerce. A modificação é referente ao botão "Adicionar ao Carrinho" (que envia o produto ao carrinho de compra), que atualmente está no canto direito da página e será remanejado para o canto esquerdo. Qual estratégia você sugeriria para testar a hipótese de que a mudança deve ser colocada em produção? Quais métricas você mediria para chegar em uma recomendação?
