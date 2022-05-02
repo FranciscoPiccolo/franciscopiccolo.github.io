@@ -8,6 +8,7 @@ math: true
 
 
 <p>Neste post vou desenvolver e analisar diversos modelos de ‘forecasting’ que aprendi após ler livros sobre o tema. A ideia é mostrar, de maneira simples, como rodar estes modelos no R, como analisar a performance e interpretar os resultados.</p>
+<p>aaaaaaaaaaaaaa</p>
 <p>Neste trabalho eu vou usar os pacotes abaixo, que já contêm vários datasets de exemplo para desenvolvimento do ‘forecast’.</p>
 <pre class="r"><code>library(GGally)
 library(fpp3)
@@ -43,41 +44,41 @@ library(fma)</code></pre>
 <p>Esta série é obtida no dataset ‘aus_production’ do pacote ‘tsibbledata’.</p>
 <div id="análise-exploratória" class="section level4">
 <h4><strong>Análise Exploratória</strong></h4>
-<pre class="r"><code>tsibbledata::aus_production %&gt;% 
+<pre class="r"><code>tsibbledata::aus_production %&gt;%
   select(Quarter, Bricks) %&gt;%
-  filter(!is.na(Bricks)) %&gt;% 
+  filter(!is.na(Bricks)) %&gt;%
   feasts::autoplot(Bricks)+
   theme_graph()+
   labs(title = &quot;Produção Trimestral de Barro&quot;,
        subtitle = &quot;Série sem tendência porém com forte sazonalidade&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Vamos verificar a sazonalidade entre os trimestres.</p>
-<pre class="r"><code>tsibbledata::aus_production %&gt;% 
+<pre class="r"><code>tsibbledata::aus_production %&gt;%
   select(Quarter, Bricks) %&gt;%
-  filter(!is.na(Bricks)) %&gt;% 
+  filter(!is.na(Bricks)) %&gt;%
   feasts::gg_subseries()+
   theme_graph()+
   labs(title = &quot;Produção em cada trimestre&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Parece que os trimestres possuem uma sazonalidade estável. Vamos ver, entre um trimestre e o seguinte, a diferença percentual.</p>
-<pre class="r"><code>tsibbledata::aus_production %&gt;% 
+<pre class="r"><code>tsibbledata::aus_production %&gt;%
   select(Quarter, Bricks) %&gt;%
-  filter(!is.na(Bricks)) %&gt;% 
+  filter(!is.na(Bricks)) %&gt;%
   mutate(lag_bricks = lag(Bricks,1),
-         perc_delta = Bricks/lag_bricks-1) %&gt;% 
+         perc_delta = Bricks/lag_bricks-1) %&gt;%
   feasts::autoplot(perc_delta)+
   scale_y_continuous(labels = scales::percent)+
   labs(title = &quot;Diferença % entre um trimestre e o seguinte&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Agora vamos segmentar a série através do modelo ‘STL’ (Multiple Seasonal Decomposition by Loess). Este modelo irá decompor a série em Sazonalidade, Tendência e Resíduo.</p>
-<pre class="r"><code>stl &lt;- tsibbledata::aus_production %&gt;% 
+<pre class="r"><code>stl &lt;- tsibbledata::aus_production %&gt;%
   select(Quarter, Bricks) %&gt;%
-  filter(!is.na(Bricks)) %&gt;% 
+  filter(!is.na(Bricks)) %&gt;%
   fabletools::model(feasts::STL(Bricks))
 
 # Amostra do dataset criado após a decomposição
-fabletools::components(stl) %&gt;% 
-  head(10) %&gt;% 
+fabletools::components(stl) %&gt;%
+  head(10) %&gt;%
   knitr::kable(format.args = list(big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;))</code></pre>
 <table>
 <thead>
@@ -96,96 +97,96 @@ fabletools::components(stl) %&gt;%
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1956 Q1</td>
 <td align="right">189</td>
-<td align="right">204,6824</td>
-<td align="right">-22,103518</td>
-<td align="right">6,4210798</td>
-<td align="right">211,1035</td>
+<td align="right">204,3283</td>
+<td align="right">-21,312354</td>
+<td align="right">5,9840484</td>
+<td align="right">210,3124</td>
 </tr>
 <tr class="even">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1956 Q2</td>
 <td align="right">204</td>
-<td align="right">202,2213</td>
-<td align="right">3,270554</td>
-<td align="right">-1,4918814</td>
-<td align="right">200,7294</td>
+<td align="right">202,0349</td>
+<td align="right">3,350711</td>
+<td align="right">-1,3856307</td>
+<td align="right">200,6493</td>
 </tr>
 <tr class="odd">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1956 Q3</td>
 <td align="right">208</td>
-<td align="right">200,6363</td>
-<td align="right">17,262705</td>
-<td align="right">-9,8990529</td>
-<td align="right">190,7373</td>
+<td align="right">200,5663</td>
+<td align="right">16,607586</td>
+<td align="right">-9,1738871</td>
+<td align="right">191,3924</td>
 </tr>
 <tr class="even">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1956 Q4</td>
 <td align="right">197</td>
-<td align="right">199,8118</td>
-<td align="right">1,654780</td>
-<td align="right">-4,4665777</td>
-<td align="right">195,3452</td>
+<td align="right">199,8229</td>
+<td align="right">1,435276</td>
+<td align="right">-4,2581797</td>
+<td align="right">195,5647</td>
 </tr>
 <tr class="odd">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1957 Q1</td>
 <td align="right">187</td>
-<td align="right">204,2528</td>
-<td align="right">-22,264318</td>
-<td align="right">5,0114886</td>
-<td align="right">209,2643</td>
+<td align="right">204,1946</td>
+<td align="right">-21,451450</td>
+<td align="right">4,2568576</td>
+<td align="right">208,4514</td>
 </tr>
 <tr class="even">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1957 Q2</td>
 <td align="right">214</td>
-<td align="right">209,4834</td>
-<td align="right">3,256947</td>
-<td align="right">1,2596320</td>
-<td align="right">210,7431</td>
+<td align="right">209,4690</td>
+<td align="right">3,291467</td>
+<td align="right">1,2395689</td>
+<td align="right">210,7085</td>
 </tr>
 <tr class="odd">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1957 Q3</td>
 <td align="right">227</td>
-<td align="right">213,7849</td>
-<td align="right">17,418423</td>
-<td align="right">-4,2033676</td>
-<td align="right">209,5816</td>
+<td align="right">213,8472</td>
+<td align="right">16,796957</td>
+<td align="right">-3,6441706</td>
+<td align="right">210,2030</td>
 </tr>
 <tr class="even">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1957 Q4</td>
 <td align="right">222</td>
-<td align="right">217,4343</td>
-<td align="right">1,683168</td>
-<td align="right">2,8825771</td>
-<td align="right">220,3168</td>
+<td align="right">217,4404</td>
+<td align="right">1,457641</td>
+<td align="right">3,1019935</td>
+<td align="right">220,5424</td>
 </tr>
 <tr class="odd">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1958 Q1</td>
 <td align="right">199</td>
-<td align="right">222,0642</td>
-<td align="right">-22,424785</td>
-<td align="right">-0,6394626</td>
-<td align="right">221,4248</td>
+<td align="right">222,0018</td>
+<td align="right">-21,587163</td>
+<td align="right">-1,4146221</td>
+<td align="right">220,5872</td>
 </tr>
 <tr class="even">
 <td align="left">feasts::STL(Bricks)</td>
 <td align="left">1958 Q2</td>
 <td align="right">229</td>
-<td align="right">226,2032</td>
-<td align="right">3,249909</td>
-<td align="right">-0,4531573</td>
-<td align="right">225,7501</td>
+<td align="right">226,1809</td>
+<td align="right">3,247610</td>
+<td align="right">-0,4284878</td>
+<td align="right">225,7524</td>
 </tr>
 </tbody>
 </table>
 <p>Com este dataset da série decomposta, podemos plotar para ver qual “segmento” é mais forte (uma validação visual).</p>
-<pre class="r"><code>fabletools::components(stl) %&gt;% 
+<pre class="r"><code>fabletools::components(stl) %&gt;%
   feasts::autoplot()+
   theme_graph()+
   labs(title = &quot;Série decomposta&quot;,
@@ -197,12 +198,12 @@ fabletools::components(stl) %&gt;%
 <h4><strong>Segmentação em Treino e Teste</strong></h4>
 <p>O dataset vai de 1956/Q1 até 2005/Q2. Para o treino, vou pegar o período de 1956/Q1 até 1999/Q4, e depois irei fazer o teste no período restante para depois fazer a comparação com os valores reais.</p>
 <pre class="r"><code># Dataset de teste
-tsibbledata::aus_production %&gt;% 
+tsibbledata::aus_production %&gt;%
   select(Quarter, Bricks) %&gt;%
   filter(!is.na(Bricks),
          year(Quarter) &lt;= &quot;1999&quot;) -&gt; train_dataset
 
-tsibbledata::aus_production %&gt;% 
+tsibbledata::aus_production %&gt;%
   select(Quarter, Bricks) %&gt;%
   filter(!is.na(Bricks),
          year(Quarter) &gt; &quot;1999&quot;) -&gt; test_dataset</code></pre>
@@ -211,8 +212,8 @@ tsibbledata::aus_production %&gt;%
 <h4><strong>Desenvolvimento dos Modelos</strong></h4>
 <p>Para os modelos ‘Mean’, ‘Naive’, ‘Snaive’ e ‘Drift’, não é preciso ajustar parâmetros para se adequar à série temporal. Porém nos modelos do tipo ‘Exponential Smoothing’ e ‘Arima’ este ajuste se faz necessário. O ajuste que farei será para levar em consideração a sazonalidade da série temporal.</p>
 <pre class="r"><code># Criando os modelos
-model_fit &lt;- 
-  train_dataset %&gt;% 
+model_fit &lt;-
+  train_dataset %&gt;%
   model(
     mean = fable::MEAN(Bricks),
     naive = fable::NAIVE(Bricks),
@@ -225,17 +226,17 @@ model_fit &lt;-
   )
 
 # Gerando as previsões para os próximos 22 períodos (quarters), até 2005 Q2
-forecasting &lt;- model_fit %&gt;% 
+forecasting &lt;- model_fit %&gt;%
   forecast::forecast(h = 22)</code></pre>
 </div>
 <div id="analisando-a-performance" class="section level4">
 <h4><strong>Analisando a Performance</strong></h4>
 <p>Como são muitos modelos, vou separar em dois grupos para colocar no gráfico e ficar mais fácil de visualizar.</p>
 <pre class="r"><code># Plotando os resultados
-g1 &lt;- 
-  forecasting %&gt;% 
-  filter(.model %in% c(&quot;mean&quot;,&quot;naive&quot;,&quot;snaive&quot;,&quot;drift&quot;)) %&gt;% 
-  feasts::autoplot(level = NULL, 
+g1 &lt;-
+  forecasting %&gt;%
+  filter(.model %in% c(&quot;mean&quot;,&quot;naive&quot;,&quot;snaive&quot;,&quot;drift&quot;)) %&gt;%
+  feasts::autoplot(level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = &quot;black&quot;,
@@ -245,10 +246,10 @@ g1 &lt;-
   theme(legend.position = &quot;none&quot;)
 
 g2 &lt;-
-  forecasting %&gt;% 
-    filter(.model %in% c(&quot;mean&quot;,&quot;naive&quot;,&quot;snaive&quot;,&quot;drift&quot;)) %&gt;% 
+  forecasting %&gt;%
+    filter(.model %in% c(&quot;mean&quot;,&quot;naive&quot;,&quot;snaive&quot;,&quot;drift&quot;)) %&gt;%
   feasts::autoplot(train_dataset,
-                   level = NULL, 
+                   level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = &quot;black&quot;,
@@ -265,14 +266,14 @@ g1/g2 + patchwork::plot_annotation(
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>Neste primeiro grupo, evidentemente o modelo ‘Seazonal Naive’ (SNaive) performou melhor. Vamos ver o próximo grupo de modelos.</p>
 <pre class="r"><code># Plotando os resultados
-g1 &lt;- 
-  forecasting %&gt;% 
+g1 &lt;-
+  forecasting %&gt;%
     filter(.model %in% c(&quot;simp_exp_smooth&quot;,
                        &quot;holt_linear_trend&quot;,
                        &quot;holt_damped_trend&quot;,
                        &quot;holt_winter_season_add&quot;,
-                       &quot;holt_winter_season_mult&quot;)) %&gt;% 
-  feasts::autoplot(level = NULL, 
+                       &quot;holt_winter_season_mult&quot;)) %&gt;%
+  feasts::autoplot(level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = &quot;black&quot;,
@@ -282,14 +283,14 @@ g1 &lt;-
   theme(legend.position = &quot;none&quot;)
 
 g2 &lt;-
-  forecasting %&gt;% 
+  forecasting %&gt;%
     filter(.model %in% c(&quot;simp_exp_smooth&quot;,
                        &quot;holt_linear_trend&quot;,
                        &quot;holt_damped_trend&quot;,
                        &quot;holt_winter_season_add&quot;,
-                       &quot;holt_winter_season_mult&quot;)) %&gt;% 
+                       &quot;holt_winter_season_mult&quot;)) %&gt;%
   feasts::autoplot(train_dataset,
-                   level = NULL, 
+                   level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = &quot;black&quot;,

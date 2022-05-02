@@ -27,6 +27,8 @@ theme_graph <- function(){
 
 Neste post vou desenvolver e analisar diversos modelos de 'forecasting' que aprendi após ler livros sobre o tema. A ideia é mostrar, de maneira simples, como rodar estes modelos no R, como analisar a performance e interpretar os resultados.
 
+aaaaaaaaaaaaaa
+
 Neste trabalho eu vou usar os pacotes abaixo, que já contêm vários datasets de exemplo para desenvolvimento do 'forecast'.
 
 ```{r}
@@ -70,9 +72,9 @@ Esta série é obtida no dataset 'aus_production' do pacote 'tsibbledata'.
 #### **Análise Exploratória**
 
 ```{r}
-tsibbledata::aus_production %>% 
+tsibbledata::aus_production %>%
   select(Quarter, Bricks) %>%
-  filter(!is.na(Bricks)) %>% 
+  filter(!is.na(Bricks)) %>%
   feasts::autoplot(Bricks)+
   theme_graph()+
   labs(title = "Produção Trimestral de Barro",
@@ -82,9 +84,9 @@ tsibbledata::aus_production %>%
 Vamos verificar a sazonalidade entre os trimestres.
 
 ```{r}
-tsibbledata::aus_production %>% 
+tsibbledata::aus_production %>%
   select(Quarter, Bricks) %>%
-  filter(!is.na(Bricks)) %>% 
+  filter(!is.na(Bricks)) %>%
   feasts::gg_subseries()+
   theme_graph()+
   labs(title = "Produção em cada trimestre")
@@ -93,11 +95,11 @@ tsibbledata::aus_production %>%
 Parece que os trimestres possuem uma sazonalidade estável. Vamos ver, entre um trimestre e o seguinte, a diferença percentual.
 
 ```{r}
-tsibbledata::aus_production %>% 
+tsibbledata::aus_production %>%
   select(Quarter, Bricks) %>%
-  filter(!is.na(Bricks)) %>% 
+  filter(!is.na(Bricks)) %>%
   mutate(lag_bricks = lag(Bricks,1),
-         perc_delta = Bricks/lag_bricks-1) %>% 
+         perc_delta = Bricks/lag_bricks-1) %>%
   feasts::autoplot(perc_delta)+
   scale_y_continuous(labels = scales::percent)+
   labs(title = "Diferença % entre um trimestre e o seguinte")
@@ -106,21 +108,21 @@ tsibbledata::aus_production %>%
 Agora vamos segmentar a série através do modelo 'STL' (Multiple Seasonal Decomposition by Loess). Este modelo irá decompor a série em Sazonalidade, Tendência e Resíduo.
 
 ```{r}
-stl <- tsibbledata::aus_production %>% 
+stl <- tsibbledata::aus_production %>%
   select(Quarter, Bricks) %>%
-  filter(!is.na(Bricks)) %>% 
+  filter(!is.na(Bricks)) %>%
   fabletools::model(feasts::STL(Bricks))
 
 # Amostra do dataset criado após a decomposição
-fabletools::components(stl) %>% 
-  head(10) %>% 
+fabletools::components(stl) %>%
+  head(10) %>%
   knitr::kable(format.args = list(big.mark = ".", decimal.mark = ","))
 ```
 
 Com este dataset da série decomposta, podemos plotar para ver qual "segmento" é mais forte (uma validação visual).
 
 ```{r, fig.height=4}
-fabletools::components(stl) %>% 
+fabletools::components(stl) %>%
   feasts::autoplot()+
   theme_graph()+
   labs(title = "Série decomposta",
@@ -135,12 +137,12 @@ O dataset vai de 1956/Q1 até 2005/Q2. Para o treino, vou pegar o período de 19
 
 ```{r}
 # Dataset de teste
-tsibbledata::aus_production %>% 
+tsibbledata::aus_production %>%
   select(Quarter, Bricks) %>%
   filter(!is.na(Bricks),
          year(Quarter) <= "1999") -> train_dataset
 
-tsibbledata::aus_production %>% 
+tsibbledata::aus_production %>%
   select(Quarter, Bricks) %>%
   filter(!is.na(Bricks),
          year(Quarter) > "1999") -> test_dataset
@@ -152,8 +154,8 @@ Para os modelos 'Mean', 'Naive', 'Snaive' e 'Drift', não é preciso ajustar par
 
 ```{r}
 # Criando os modelos
-model_fit <- 
-  train_dataset %>% 
+model_fit <-
+  train_dataset %>%
   model(
     mean = fable::MEAN(Bricks),
     naive = fable::NAIVE(Bricks),
@@ -166,7 +168,7 @@ model_fit <-
   )
 
 # Gerando as previsões para os próximos 22 períodos (quarters), até 2005 Q2
-forecasting <- model_fit %>% 
+forecasting <- model_fit %>%
   forecast::forecast(h = 22)
 ```
 
@@ -176,10 +178,10 @@ Como são muitos modelos, vou separar em dois grupos para colocar no gráfico e 
 
 ```{r, fig.height=4, fig.width=6}
 # Plotando os resultados
-g1 <- 
-  forecasting %>% 
-  filter(.model %in% c("mean","naive","snaive","drift")) %>% 
-  feasts::autoplot(level = NULL, 
+g1 <-
+  forecasting %>%
+  filter(.model %in% c("mean","naive","snaive","drift")) %>%
+  feasts::autoplot(level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = "black",
@@ -189,10 +191,10 @@ g1 <-
   theme(legend.position = "none")
 
 g2 <-
-  forecasting %>% 
-    filter(.model %in% c("mean","naive","snaive","drift")) %>% 
+  forecasting %>%
+    filter(.model %in% c("mean","naive","snaive","drift")) %>%
   feasts::autoplot(train_dataset,
-                   level = NULL, 
+                   level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = "black",
@@ -212,14 +214,14 @@ Neste primeiro grupo, evidentemente o modelo 'Seazonal Naive' (SNaive) performou
 
 ```{r, fig.height=4, fig.width=6}
 # Plotando os resultados
-g1 <- 
-  forecasting %>% 
+g1 <-
+  forecasting %>%
     filter(.model %in% c("simp_exp_smooth",
                        "holt_linear_trend",
                        "holt_damped_trend",
                        "holt_winter_season_add",
-                       "holt_winter_season_mult")) %>% 
-  feasts::autoplot(level = NULL, 
+                       "holt_winter_season_mult")) %>%
+  feasts::autoplot(level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = "black",
@@ -229,14 +231,14 @@ g1 <-
   theme(legend.position = "none")
 
 g2 <-
-  forecasting %>% 
+  forecasting %>%
     filter(.model %in% c("simp_exp_smooth",
                        "holt_linear_trend",
                        "holt_damped_trend",
                        "holt_winter_season_add",
-                       "holt_winter_season_mult")) %>% 
+                       "holt_winter_season_mult")) %>%
   feasts::autoplot(train_dataset,
-                   level = NULL, 
+                   level = NULL,
                    size = 1)+
   feasts::autolayer(test_dataset,
                     color = "black",
@@ -251,4 +253,3 @@ g1/g2 + patchwork::plot_annotation(
   title = "Verificando Visualmente a Performance dos Modelos"
 )
 ```
-
