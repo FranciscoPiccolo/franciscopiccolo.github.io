@@ -1,7 +1,6 @@
 ---
-title: "Analisando modelos de Forecasting"
+title: "2022-12-10 - Analisando modelos de Forecasting"
 date: 2020-12-10
-math: true
 ---
 
 ```{r, echo=F, warning=F, message=F}
@@ -26,8 +25,6 @@ theme_graph <- function(){
 ```
 
 Neste post vou desenvolver e analisar diversos modelos de 'forecasting' que aprendi após ler livros sobre o tema. A ideia é mostrar, de maneira simples, como rodar estes modelos no R, como analisar a performance e interpretar os resultados.
-
-aaaaaaaaaaaaaa
 
 Neste trabalho eu vou usar os pacotes abaixo, que já contêm vários datasets de exemplo para desenvolvimento do 'forecast'.
 

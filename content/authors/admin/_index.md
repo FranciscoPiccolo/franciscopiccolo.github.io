@@ -10,21 +10,19 @@ role: Business Intelligence Engineer
 
 # Organizations/Affiliations
 organizations:
-- name: Amazon.com
+- name:
   url: ""
 
 interests:
 - Estatística
-- Banco de Dados
-- Visualização de Dados
+- Bando de Dados
+- Inteligência de Negócios (BI)
 
 education:
   courses:
-  - course: Ciências Econômicas
-    institution: PUC-Campinas
+  - course: Graduação - Economia
     year: 2018
-  - course: Técnico em Logística
-    institution: Centro Universitário Padre Anchietta
+  - course: Técnico - Logística e Supply Chain
     year: 2013
 
 # Social/Academic Networking
@@ -55,9 +53,4 @@ user_groups:
 - Visitors
 ---
 
-Atuo na área de Inteligência de Negócios (aka BI) e análise de dados desde 2015, realizando consultas em banco de dados, desenvolvimento de dashboards em ferramentas de visualização, monitoramento de *data warehouse*, desenvolvimento de ETLs e condução de estudos ad-hoc com uso de ferramentas estatísticas (R/R-Studio).
-
-Especialidades:
-- Data Warehouse: Redshift, Athena e SQL Server
-- Data Viz: Tableau, Sisense e Qlik View
-- Estudos ad-hoc: R Notebooks
+Olá, bem vindo a este humilde blog que trará conteúdo sobre BI, estatística e outros temas relacionados (como livros recomendados, webminars, etc). Decidi construir este blog para aprimorar minha escrita e tentar ajudar a comunidade de dados com um pouco de conteúdo. Atualmente trabalho na área de BI da Amazon e desde 2015 atuo nesta área de *analytics*, fazendo modelagem de dados, construindo datasets, ETLs, visualizações e o mais importante, ajudando a área de negócio a tomar decisões e melhorar processos. Se tiver alguma sugestão, me envie mensagem pelo twitter, linkedin ou abrindo uma *issue* no repositóro do Github que hospeda este site.
