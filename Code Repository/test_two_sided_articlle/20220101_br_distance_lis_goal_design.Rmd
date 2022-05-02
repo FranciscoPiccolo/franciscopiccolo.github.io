@@ -1,0 +1,75 @@
+---
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2.5
+    keep_tex: no
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+
+documentclass: article
+classoption:
+  - twocolumn
+geometry: margin=.5in
+linestretch: 1.0
+mainfont: Calibri
+fontsize: 9pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+# Overview
+
+The LIS rate indicates the percentage of inventory available on ideal Fulfillment Center (FC) when a customer order is placed. It is the most critical metric to define the inventory placement performance and opportunities. During 2020 and 2021 LIS was measured using the concept of ideal^[Based on F2P infinite simulation] FC defined by F2P, but starting in 2022 the ideal FC will use a distance measurement in order to accommodate better the topology expansion and speed opportunities.
+
+In Brazil, the ideal FC using the distance concept will be FCs within 400 km of the customer postal code. This distance was taken to represent FCs capable of delivery the order within 2 or less days (2dd). If there is no FC within 400 km from the customer (i.e. no entitlement), the LIS will be 0 for this demand. As the network expands launching new FCs, more areas start to be covered, increasing demand entitlement and LIS consequentially.
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 
+
+
+# Header 1
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 
+
+
+## Header 2
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 
+
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 
+
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 
+
+
+### Header 3
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 
+
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 
+
+
+Topology expansion: For 2022 we expect two new FCs being launched, XBRC in Curitiba and XBRS in Salvador. Both FCs launching in October.
+
+Demand coverage (entitlement): The entitlement will change when new FCs are launch or when the demand shifts to other geographies. The model will not consider the demand shift possibility, assuming that demand will be equally spread as it was in 20221. The only driver that will change entitlement will be new FCs that will cover a new demand within 400km. In 2021, from January to October, the entitlement was of ~80% and in November it increased to 87.3% after FOR2 launch. The entitlement of 87.3% will be used during 2022 until the new FCs get launched in October. After the launch of XBRC and XBRS, the entitlement will increase 2.5% due to XBRC and 3.5% due to XBRS ending 2022 at 93.3%. See appendix 2 for entitlement per FC 

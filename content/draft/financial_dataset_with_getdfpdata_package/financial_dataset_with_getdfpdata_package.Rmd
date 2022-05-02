@@ -1,0 +1,231 @@
+---
+title: "Explorando o pacote Get DFP Data"
+date: "2021-03-08"
+output:
+    html_document:
+      fig_height: 4
+      fig_width: 6
+      df_print: paged
+      css: style.css
+---
+
+```{r, eval=T,message=F,warning=F}
+knitr::opts_chunk$set(echo = T,
+                      warning = F,
+                      message = F,
+                      fig.align = "center")
+```
+
+A utilização de dados financeiros de empresas públicas é algo comum para investidores que querem verificar a performance de alguma empresa ou estudantes que estão desenvolvendo artigos sobre finanças corporativas. O acesso a estes dados não é tão trivial, porém algumas empresas, como é o caso da Economatica, auxiliam nesta tarefa, consolidando os dados financeiros e permitindo a exportação em um formato amigável para ser analisado.
+
+Apesar da facilidade, o acesso pela Economatica não é gratuito e isso inviabiliza o acesso por estudantes principalmente. Uma alternativa que parece bastante promissora é a ferramenta [GetDFPData](https://www.msperlin.com/shiny/GetDFPData2/), desenvolvida pelo Professor Marcelo Perlin da UFRGS. De maneira resumida, esta ferramenta realiza chamadas API no repositório da B3, retornando o arquivo (.xslx) com os dados financeiros da empresa que você solicita, no período indicado, podendo ser esta solicitação via GUI ou usando funções no R que são disponibilizadas após instalar o pacote 'GetDFPData2'. Mais detalhes de seu funcionamento podem ser encontrado neste [artigo](http://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/78654) feito pelo próprio Professor Marcelo. 
+
+O artigo indica que problemas de qualidade dos dados podem existir, pois ela apenas retorna dados que são inseridos na B3 pelas empresas, portanto neste artigo vou listar alguns problemas de qualidade dos dados e formas que eles podem ser tratados com o R, para que se tenha um dataset final pronto para ser explorado.
+
+O pacote está em fase de desenvolvimento, podendo ser instaldo via devtools:
+
+```{r, eval=F}
+library(devtools)
+devtools::install_github("msperlin/GetDFPData2")
+```
+
+Após instalar o pacote, vou trazê-lo para o ambiente junto com o tidyverse, para me auxiliar na manipulação dos dados.
+
+```{r}
+library(tidyverse)
+library(GetDFPData2)
+
+file_path <- "C:/Users/fppicco/Desktop/R/Github/franciscopiccolo.github.io/datasets/2021-03-10-financial_dataset_b3_getdfpdata_package/"
+```
+
+Para trazer o dataset financeiro, basta executar o comando abaixo, que irá solicitar o ano de início, fim e o tipo de informação (e.g. DRE (individual ou consolidada), BP Ativo ou Passivo). No comando abaixo, eu solicito o dataset referente à DRE de todas as empresas disponíveis, de 2010 até 2020 e em seguida salvo este dataset em formato '.csv'.
+
+```{r, eval=F}
+# solicitando a DRE à B3
+dataset_original <- GetDFPData2::get_dfp_data(
+                          first_year = "2010",
+                          last_year = "2020",
+                          type_docs = "DRE")
+```
+
+O resultado deste comando são dois datasets, um Individual e outro Consolidado (que agrega todas as unidades de negócio da empresa). Vou trazer os datasets do Balanço Patromonial, neste caso Ativo e Passivo possuem chamadas diferentes.
+
+```{r, eval=F}
+# BP Ativo
+dataset_bpa <- GetDFPData2::get_dfp_data(
+                          first_year = "2010",
+                          last_year = "2020",
+                          type_docs = "BPA")
+
+# BP Passivo
+dataset_bpp <- GetDFPData2::get_dfp_data(
+                          first_year = "2010",
+                          last_year = "2020",
+                          type_docs = "BPP")
+```
+
+Agora vamos salvar este dataset em uma pasta.
+
+```{r, eval=F}
+# Note a utilização do Encoding para preservar os acentos
+
+
+# DRE
+write.csv(x = dataset_original$`DF Consolidado - Demonstração do Resultado`,
+          file = paste(file_path,
+                       "dataset_dre_consolidado.csv", 
+                       sep = ""),
+          fileEncoding = "latin1")
+
+
+# BP Ativo
+write.csv(x = dataset_bpa$`DF Consolidado - Balanço Patrimonial Ativo`,
+          file = paste(file_path,
+                       "dataset_bpa_consolidado.csv", 
+                       sep = ""),
+          fileEncoding = "latin1")
+
+# BP Passivo
+write.csv(x = dataset_bp$`DF Consolidado - Balanço Patrimonial Passivo`,
+file = paste(file_path,
+                       "dataset_bpp_consolidado.csv", 
+                       sep = ""),
+          fileEncoding = "latin1")
+```
+
+Agora basta fazer a leitura do arquivo '.csv' para poder fazer a análise exploratória.
+
+```{r}
+# Novamente, mantendo o encoding na hora da leitura
+dre <- 
+  read.csv(file = paste(file_path,
+                        "dataset_dre_consolidado.csv",
+                        sep = ""),
+           encoding = "latin1")
+
+bpa <- 
+  read.csv(file = paste(file_path,
+                        "dataset_bpa_consolidado.csv",
+                        sep = ""),
+           encoding = "latin1")
+
+bpp <- 
+  read.csv(file = paste(file_path,
+                        "dataset_bpp_consolidado.csv",
+                        sep = ""),
+           encoding = "latin1")
+```
+
+Agora temos 3 datasets para verificar a qualidade e fazer as devidas tratativas para poder usá-lo com confiança. Vamos unificar os 3 para seguir adiante.
+
+```{r}
+# Os 3 datasets possuem o mesmo número de colunas
+unified_dataset <- 
+ dre %>% 
+  mutate(source = "dre") %>% 
+  union_all(bpa %>% 
+              mutate(source = "bpa")) %>% 
+  union_all(bpp %>% 
+              mutate(source = "bpp"))
+```
+
+Vou remover algumas colunas que não considero necessária para a análise e renomear as colunas restantes.
+
+```{r}
+unified_dataset_adj <- 
+  unified_dataset %>% 
+  select(CNPJ_CIA,
+         CD_CVM,
+         DT_REFER,
+         DENOM_CIA,
+         ESCALA_MOEDA,
+         CD_CONTA,
+         DS_CONTA,
+         VL_CONTA,
+         source) %>% 
+  rename(cnpj = CNPJ_CIA,
+         cvm_code = CD_CVM,
+         reference_date = DT_REFER,
+         company_name = DENOM_CIA,
+         currency = ESCALA_MOEDA,
+         account_number = CD_CONTA,
+         account_description = DS_CONTA,
+         value = VL_CONTA)
+```
+
+Vamos ver os campos deste dataset e os tipos de dados.
+
+```{r}
+# Números de registros e quantodade de colunas
+unified_dataset_adj %>% 
+  dim()
+```
+
+```{r}
+# Tipos de dados
+unified_dataset_adj %>% 
+  str()
+```
+
+Veja que o campo 'reference_date' está como 'chr', porém deveria ser date. Vamos aplicar a mudança com o código abaixo.
+
+```{r}
+unified_dataset_adj$reference_date <- lubridate::ymd(unified_dataset_adj$reference_date)
+```
+
+Agora vamos verificar se o dataset contêm valores duplicados.
+
+```{r}
+# Conferindo se há duplicadas
+unified_dataset_adj %>% dim()
+
+unified_dataset_adj %>% 
+  distinct_all() %>% 
+  dim()
+```
+
+Removendo duplicados do dataset.
+
+```{r}
+unified_dataset_adj <- 
+  unified_dataset_adj %>% 
+  distinct_all()
+```
+
+### Validando uma empresa (Via Varejo)
+
+Vamos pegar uma única empresa para ver como os dados são apresentados
+
+```{r}
+unified_dataset_adj %>% 
+  filter(company_name == "VIA VAREJO S.A.") %>% 
+  head()
+```
+
+Vamos selecionar algumas métricas importantes de cada demonstrativo.
+
+```{r}
+unified_dataset_adj %>% 
+  filter(company_name == "VIA VAREJO S.A.") %>% 
+  tidyr::spread("reference_date", "value") %>% 
+  View()
+```
+
+
+```{r}
+unified_dataset_adj %>% 
+  filter(company_name == "VIA VAREJO S.A.",
+         account_number %in% c("1","1.01","2.01","3.01","3.03","3.04")) %>% 
+  ggplot()+
+  geom_line(mapping = aes(x = reference_date, y = value))+
+  facet_wrap(~account_description)
+```
+
+
+
+
+
+
+
+
+
