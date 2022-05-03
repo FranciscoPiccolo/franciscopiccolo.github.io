@@ -1,15 +1,14 @@
 ---
-title: "Análise de Resíduos em Modelos de Regressão Linear"
+title: "2019-09-10 - Análise de Resíduos em Modelos de Regressão Linear"
 date: 2019-09-10
-math: true
 ---
 
 ```{r, echo=F, warning=F, message=F}
 knitr::opts_chunk$set(echo = T,
                       warning = F,
                       message = F,
-                      fig.height = 3,
-                      fig.width = 4.5,
+                      fig.height = 2.5,
+                      fig.width = 3.0,
                       fig.align = "center")
 
 # Função para padronizar o design dos gráficos
@@ -28,21 +27,17 @@ theme_graph <- function(){
 
 O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria. Porém, apesar de sua simplicidade, é preciso se atentar a alguns detalhes sobre suas premissas para que os resultados deste modelo possam ser usados para a tomada de decisão.
 
-Abaixo vou listar algumas das premissas da regressão linear:
+Abaixo vou listar algumas premissas da regressão linear, que sendo atendidas, fazem com que o modelo gere conclusões confiáves:
 
 i) Ausência de multicolinearidade entre as variáveis independentes.
 
 ii) Ausência de autocorrelação na variável dependente.
 
-iii) Absence of pattern on the behavior of the model residuals, in other words, absence of heteroscedasticity.
-
 iii) Ausência de padrão no comportamento dos resíduos do modelo, ou seja, ausência de heterocedasticidade.
 
 iv) Resíduos se distribuem de acordo com uma distribuição normal.
 
-Tendo estas premissas atendidas, o modelo pode gerar conclusões confiáveis. Neste post eu vou desenvolver alguns modelos de regressão linear para testar as premissas **iii** e **iv** que tratam dos resíduos, para ver alguns casos práticos.
-
-Para começar, vamos trazer os pacotes necessários para execução das funções no R:
+Neste post vou calcular uma regressão linear simples e analisar os resíduos ver se as premissas **iii** e **iv** estão sendo atendidas. Para começar, vamos trazer os pacotes necessários no R:
 
 ```{r}
 library(tidyverse)
@@ -51,26 +46,16 @@ library(corrplot)
 library(readxl)
 ```
 
-Também vou criar uma função para facilitar a padronização dos gráficos que serão gerados.
-
-
-#### Exemplo 1: Elasticidade preço x oferta na produção de cana de açúcar.
-
-Este exemplo foi passado na minha aula de econometria em 2017. Na época o exercício foi realizado com o software **EViews**, por sorte eu guardei os dados e agora posso refazer o problema com mais facilidade com o uso do R.
-
-No exercício, há a variável independente (X) sendo o preço da cana de açúcar e a variável dependente (Y) sendo a área plantada de cana de açúcar (representando uma proxy para a oferta do produto). O objetivo deste modelo é tentar quantificar a elasticidade da oferta em função do preço, ou seja, quantificar quão sensível é a oferta da cana de açúcar quando ocorre uma variações em seu preço. Os dados deste exercício estão no meu repositório do Github, vamos trazê-los com o comando abaixo, salvando-os na variável df (a.k.a data.frame):
+O exemplo que tenho apresenta dados de preço e oferta de cana de açúcar. A variável independente é o preço da cana de açúcar e a variável dependente é a área plantada deste produto, que representando uma proxy para sua oferta. O objetivo da regressão será quantificar a elasticidade da oferta em função do preço, ou seja, quantificar quão sensível é a oferta da cana de açúcar quando ocorre uma variações em seu preço. Os dados deste exercício estão no meu repositório do Github, vamos trazê-los com o comando abaixo, salvando-os na variável df:
 
 ```{r}
-df <- read.csv(file = "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2019-09-05-residual_analysis_on_linear_regression_models/dataset_1.csv", sep = ";", dec = ",")
-
-dim(df)
+df <- read.csv(file = "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2019-09-05-residual_analysis_on_linear_regression_models/dataset_1.csv", 
+               sep = ";", 
+               dec = ",")
 ```
 
-Com a função **dim** podemos ver a dimensão deste dataset, com 34 registros e 3 colunas. 
-
-The data set for this example has 34 rows, with planted area and suggarcane price fields. Vamos ver uma amostra dos dados.
-
 ```{r}
+# Amostra do dataset
 df[sample(nrow(df),5), ] %>%
 	as_tibble()
 ```
@@ -111,7 +96,7 @@ df %>%
        y = "Área Plantada")
 ```
 
-Podemos ver que há uma relação entre o preço do produto e sua oferta. Agora vamos aplicar o log natural no modelo de regressão. Para isso, o R nos fornece duas opções:
+Podemos ver que há uma correlação positiva entre o preço do produto e sua oferta. Agora vamos aplicar o log natural no modelo de regressão. Para isso, o R nos fornece duas opções:
 
 * Ajustar as variáveis no dataset e construir o modelo usando as variáveis ajustadas.
 
@@ -134,7 +119,7 @@ second_method <-
   lm(formula = log(area) ~ log(price))
 ```
 
-Com as duas variáveis criadas, vamos criar uma tabela comparando os principais resultados dos modelos:
+Com as duas variáveis criadas, vamos criar uma tabela comparando os principais resultados do modelo (i.e. coeficiente e intercepto):
 
 ```{r}
 data.frame("1º Método" = c(first_method$coefficients),
@@ -143,7 +128,7 @@ data.frame("1º Método" = c(first_method$coefficients),
 
 Conforme indicado, ambos os métodos geram o mesmo valor. Eu prefiro o segundo, que exige menos linhas de código. Com base nos coeficientes estimados, temos a seguinte equação:
 
-$$\hat{Y} = 1.6416 + 0.9706X_1 + \mu$$
+$$\hat{Y} = 6.11 + 0.97X_1 + \mu$$
 
 O resultado é estatisticamente significativo, visto que tanto o intercepto quanto a inclinação apresentam um valor-p baixo. Veja abaixo estes valores bem como o R².
 
@@ -151,7 +136,7 @@ O resultado é estatisticamente significativo, visto que tanto o intercepto quan
 second_method %>% summary()
 ```
 
-Apesar destes dados mostrarem que a reta se ajustou bem aos dados e que o modelo consegue explicar ~70% da variação na variável dependente, é preciso anda analisar os resíduos para poder ter confiança no resultado para fazer projeções. No gráfico abaixo, vamos ver como se distribui os resíduos do modelo.
+Apesar destes dados mostrarem que a reta se ajustou bem aos dados e que o modelo consegue explicar ~70% da variação na variável dependente, é preciso ainda analisar os resíduos para poder ter confiança no resultado e fazer projeções. No gráfico abaixo, vamos ver como se distribuem os resíduos do modelo.
 
 ```{r}
 model_residuals <- 
@@ -183,7 +168,7 @@ model_residuals %>%
        y = "")
 ```
 
-Este gráfico também aponta para a ideia de resíduos normalmente distribuídos. Apesar de estes métodos serem bons e práticos, as vezes é necessário usar métodos formais para gerar alguma conclusão. Para validação da independência no comportamento dos resíduos pode-se usar o teste **Durbin Watson**. O código abaixo realiza este teste.
+Este gráfico também aponta para a ideia de resíduos normalmente distribuídos. Apesar de estes métodos serem bons e práticos, as vezes é necessário usar métodos formais para gerar uma conclusão. Para validação da independência no comportamento dos resíduos pode-se usar o teste **Durbin Watson**. O código abaixo realiza este teste.
 
 ```{r}
 # Necessário instalar e chamar o pacote 'lmtest'
@@ -199,4 +184,4 @@ O resultado do teste foi de 1.2912, mas apenas com este valor não é possível 
 
 Tendo DW igual a 1.2912, acima de 0 e abaixo de DL, pode-se concluir que os resíduos são independentes.
 
-Com isso, podemos concluir que de fato o modelo é confiável para realizar projeções, pois tanto os gráficos quanto o teste formal indicam que as premissas (iii) e (iv) estão sendo atendidas, como como as outras premissas. Desta forma, podemos concluir que há elasticidade na oferta de cana de açúcar com relação ao seu preço.
+Com isso, podemos concluir que de fato o modelo é confiável para realizar projeções, pois tanto os gráficos quanto o teste formal indicam que as premissas (iii) e (iv) estão sendo atendidas. Desta forma, podemos concluir que há elasticidade na oferta de cana de açúcar com relação ao seu preço.
