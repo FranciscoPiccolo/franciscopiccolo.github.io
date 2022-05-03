@@ -1,5 +1,5 @@
 ---
-title: "2019-09-10 - Análise de Resíduos em Modelos de Regressão Linear"
+title: "Análise de Resíduos em Modelos de Regressão Linear"
 date: 2019-09-10
 ---
 
