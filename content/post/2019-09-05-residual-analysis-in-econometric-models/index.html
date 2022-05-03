@@ -14,7 +14,7 @@ date: 2019-09-10
 <li><p>Ausência de padrão no comportamento dos resíduos do modelo, ou seja, ausência de heterocedasticidade.</p></li>
 <li><p>Resíduos se distribuem de acordo com uma distribuição normal.</p></li>
 </ol>
-<p>Neste post vou calcular uma regressão linear simples e analisar os resíduos ver se as premissas <strong>iii</strong> e <strong>iv</strong> estão sendo atendidas. Para começar, vamos trazer os pacotes necessários no R:</p>
+<p>Neste post vou calcular uma regressão linear simples e analisar os resíduos para ver se as premissas <strong>iii</strong> e <strong>iv</strong> estão sendo atendidas. Para começar, vamos trazer os pacotes necessários no R:</p>
 <pre class="r"><code>library(tidyverse)
 library(lmtest)
 library(corrplot)
@@ -29,11 +29,11 @@ df[sample(nrow(df),5), ] %&gt;%
 <pre><code>## # A tibble: 5 x 3
 ##   period  area price
 ##    &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-## 1     16    99 0.221
-## 2     14   232 0.270
-## 3     22   138 0.285
-## 4     15   125 0.236
-## 5      6    57 0.132</code></pre>
+## 1     12    80 0.146
+## 2     32   208 0.463
+## 3     27    97 0.401
+## 4     26   124 0.288
+## 5     34   235 0.392</code></pre>
 <p>O modelo de regressão linear para este cenário será desenvolvido de acordo com a fórmula abaixo:</p>
 <p><span class="math display">\[ lnY_t = \beta_0+\beta_1 (lnX_t) + \mu_t \]</span></p>
 <p>Onde:</p>

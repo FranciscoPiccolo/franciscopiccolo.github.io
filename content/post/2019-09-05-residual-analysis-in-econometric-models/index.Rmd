@@ -37,7 +37,7 @@ iii) Ausência de padrão no comportamento dos resíduos do modelo, ou seja, aus
 
 iv) Resíduos se distribuem de acordo com uma distribuição normal.
 
-Neste post vou calcular uma regressão linear simples e analisar os resíduos ver se as premissas **iii** e **iv** estão sendo atendidas. Para começar, vamos trazer os pacotes necessários no R:
+Neste post vou calcular uma regressão linear simples e analisar os resíduos para ver se as premissas **iii** e **iv** estão sendo atendidas. Para começar, vamos trazer os pacotes necessários no R:
 
 ```{r}
 library(tidyverse)
