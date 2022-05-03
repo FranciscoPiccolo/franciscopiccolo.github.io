@@ -1,12 +1,12 @@
 ---
 # Display name
-title: Francisco Piccolo
+title:
 
 # Is this the primary user of the site?
 superuser: true
 
 # Role/position
-role: Business Intelligence Engineer
+role: 
 
 # Organizations/Affiliations
 organizations:
