@@ -167,7 +167,7 @@ copyright_license = {enable = false, allow_derivatives = false, share_alike = tr
 link_authors = true
 
 # Abstract length (characters) in the Compact and Portfolio Card list views. Also, see `summaryLength` in `config.toml`.
-abstract_length = 0
+abstract_length = 10
 
 # Load JS plugins
 #   E.g. To load `/assets/js/custom.js`, set `plugins_js = ["custom"]`.
@@ -199,7 +199,7 @@ plugins_js  = []
   #   2: Compact
   #   3: Card
   #   4: Citation (publications only)
-  post_view = 2
+  post_view = 1
   publication_view = 2
   talk_view = 2
 
