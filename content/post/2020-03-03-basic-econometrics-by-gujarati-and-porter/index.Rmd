@@ -1,5 +1,5 @@
 ---
-title: "Econometria Básica de Gujarati e Porter: Resolvendo Exercícios Propostos"
+title: "Econometria Básica de Gujarati e Porter: Resolução de Exercícios no R"
 date: 2020-03-01
 math: true
 ---
