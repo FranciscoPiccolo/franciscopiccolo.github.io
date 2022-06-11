@@ -1,0 +1,65 @@
+---
+title: "Datasets do Livro 'Econometria Básica de Gujarati'"
+date: 2020-03-01
+math: true
+---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = T,
+                      warning = F,
+                      message = F,
+                      fig.height = 3,
+                      fig.width = 4.5,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 12),
+    plot.subtitle = element_text(size = 8),
+    plot.caption = element_text(face = "italic", size = 7),
+    axis.title = element_text(face = "italic", size = 7),
+    legend.position = "bottom",
+    legend.title = element_blank()
+  )
+}
+```
+
+O livro 'Econometria Básica' do Gujarati é bastante recomendado nos cursos de economia, por ser bem completo e didático. Os datasets apresentados no livro, usados para rodar os modelos econométricos, estão disponíveis no meu repositório do [Github](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/tree/master/datasets/2020-03-01-basic_econometrics_by_gujarati) e neste post vou mostrar como acessá-los através do R para que os alunos possam resolvê-los com mais facilidade.
+
+Para rodar o código e trazer o dataset no seu ambiente, é preciso antes trazer o pacote 'readr'.
+
+```{r}
+library(readr)
+```
+
+O caminho do dataset no repositório seria "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2020-03-01-basic_econometrics_by_gujarati/table_1.3_cpi.txt", porém ao invés de indicar este caminho toda vez que for puxar um dataset, é melhor salvar este caminho em uma variável...
+
+```{r}
+dataset_path <- "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2020-03-01-basic_econometrics_by_gujarati/"
+```
+
+Usando esta variável é possível trazer um dataset através do comando abaixo. Veja que a função paste é usada para concatenar a varável 'dataset_path' com a tabela que você quer trazer.
+
+```{r}
+table_1.3_cpi <-
+  readr::read_delim(file = paste(dataset_path,
+                               "table_1.3_cpi.txt",
+                               sep = ""),
+                  delim = " ") %>%
+  mutate(year = as.character(year))
+```
+
+Em seguida, com o comando abaxo você consegue ver uma amostra deste dataset.
+
+```{r}
+table_1.3_cpi %>%
+  head(5) %>%
+  knitr::kable(format.args = list(big.mark = ".", decimal.mark = "."))
+```
+
+A tabela abaixo mostra os datasets do livro, uma breve descrição e quais estão presentes no repositório.
+
+|Dataset   | Descrição                               | Disponível |
+|----------|-----------------------------------------|------------|
+|
