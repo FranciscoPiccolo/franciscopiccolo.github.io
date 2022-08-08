@@ -1,2 +1,1 @@
-# franciscopiccolo.github.io
-webpage
+Olá, bem vindo a este humilde blog que trará conteúdo sobre BI, estatística e outros temas relacionados (como livros recomendados, webminars, etc). Decidi construir este blog para aprimorar minha escrita e tentar ajudar a comunidade de dados com um pouco de conteúdo. Atualmente trabalho na área de BI da Amazon e desde 2015 atuo nesta área de *analytics*, fazendo modelagem de dados, construindo datasets, ETLs, visualizações e o mais importante, ajudando a área de negócio a tomar decisões e melhorar processos. Se tiver alguma sugestão, me envie mensagem pelo linkedin ou pode abrir uma *issue* no repositóro do Github que hospeda este site.
