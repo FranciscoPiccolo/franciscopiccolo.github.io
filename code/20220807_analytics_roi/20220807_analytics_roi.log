@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.8.7)  7 AUG 2022 23:54
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.8.7)  8 AUG 2022 09:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**analytics_roi.tex
-(./analytics_roi.tex
+**20220807_analytics_roi.tex
+(./20220807_analytics_roi.tex
 LaTeX2e <2022-06-01> patch level 5
 L3 programming layer <2022-08-05> (c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -582,8 +582,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 \Hy@SectionHShift=\skip76
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 103.
-(./analytics_roi.aux)
-\openout1 = `analytics_roi.aux'.
+(./20220807_analytics_roi.aux)
+\openout1 = `20220807_analytics_roi.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 108.
 LaTeX Font Info:    ... okay on input line 108.
@@ -866,9 +866,9 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 108.
-(./analytics_roi.out) (./analytics_roi.out)
+(./20220807_analytics_roi.out) (./20220807_analytics_roi.out)
 \@outlinefile=\write3
-\openout3 = `analytics_roi.out'.
+\openout3 = `20220807_analytics_roi.out'.
 
 LaTeX Font Info:    Font shape `TU/Calibri(0)/m/n' will be
 (Font)              scaled to size 12.0pt on input line 112.
@@ -919,17 +919,17 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-11.0pt}.
 
-[2] (./analytics_roi.aux)
-Package rerunfilecheck Info: File `analytics_roi.out' has not changed.
+[2] (./20220807_analytics_roi.aux)
+Package rerunfilecheck Info: File `20220807_analytics_roi.out' has not changed.
 (rerunfilecheck)             Checksum: 32B27BA9C522A7840062479055DC2C7D;514.
  ) 
 Here is how much of TeX's memory you used:
  18539 strings out of 477855
- 341377 string characters out of 5844971
- 839539 words of memory out of 5000000
+ 341530 string characters out of 5844971
+ 839566 words of memory out of 5000000
  39233 multiletter control sequences out of 15000+600000
  472836 words of font info for 65 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,11n,122p,881b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,11n,122p,890b,378s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on analytics_roi.pdf (2 pages).
+Output written on 20220807_analytics_roi.pdf (2 pages).
