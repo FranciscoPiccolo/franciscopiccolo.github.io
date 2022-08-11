@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.8.7)  11 AUG 2022 20:06
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.8.7)  11 AUG 2022 20:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -885,33 +885,37 @@ Package hyperref Info: Link coloring ON on input line 149.
 \@outlinefile=\write4
 \openout4 = `20190905_residual_analysis_in_econometric_models.out'.
 
+LaTeX Font Info:    Font shape `TU/Calibri(0)/m/n' will be
+(Font)              scaled to size 12.0pt on input line 153.
 LaTeX Font Info:    Font shape `TU/Calibri(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 168.
+(Font)              scaled to size 12.0pt on input line 153.
+LaTeX Font Info:    Font shape `TU/Calibri(0)/b/n' will be
+(Font)              scaled to size 10.0pt on input line 171.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.54175pt on input line 217.
+(Font)              scaled to size 7.54175pt on input line 220.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.38696pt on input line 217.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 217.
+(Font)              scaled to size 5.38696pt on input line 220.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 220.
 (c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.775pt on input line 217.
+(Font)              scaled to size 10.775pt on input line 220.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.5425pt on input line 217.
+(Font)              scaled to size 7.5425pt on input line 220.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.3875pt on input line 217.
+(Font)              scaled to size 5.3875pt on input line 220.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.77286pt on input line 217.
+(Font)              scaled to size 10.77286pt on input line 220.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.541pt on input line 217.
+(Font)              scaled to size 7.541pt on input line 220.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.38643pt on input line 217.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 217.
+(Font)              scaled to size 5.38643pt on input line 220.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 220.
 (c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 217.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 220.
 (c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -964,15 +968,15 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 
 [5] (./20190905_residual_analysis_in_econometric_models.aux)
 Package rerunfilecheck Info: File `20190905_residual_analysis_in_econometric_models.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+(rerunfilecheck)             Checksum: CD1FB01B39339BF20C2096B8789F7690;349.
  ) 
 Here is how much of TeX's memory you used:
- 19067 strings out of 477855
- 352680 string characters out of 5844971
- 839501 words of memory out of 5000000
- 39745 multiletter control sequences out of 15000+600000
- 472844 words of font info for 66 fonts, out of 8000000 for 9000
+ 19075 strings out of 477855
+ 352928 string characters out of 5844971
+ 840579 words of memory out of 5000000
+ 39751 multiletter control sequences out of 15000+600000
+ 472860 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,12n,122p,619b,371s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,12n,122p,619b,360s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on 20190905_residual_analysis_in_econometric_models.pdf (5 pages).
