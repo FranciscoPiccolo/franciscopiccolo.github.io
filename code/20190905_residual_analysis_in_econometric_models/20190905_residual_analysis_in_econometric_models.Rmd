@@ -32,10 +32,10 @@ knitr::opts_chunk$set(echo = T,
 # Função para padronizar o design dos gráficos
 theme_graph <- function(){
   theme(
-    plot.title = element_text(size = 12),
-    plot.subtitle = element_text(size = 8),
-    plot.caption = element_text(face = "italic", size = 7),
-    axis.title = element_text(face = "italic", size = 7),
+    plot.title = element_text(size = 8),
+    plot.subtitle = element_text(size = 7),
+    plot.caption = element_text(face = "bold", size = 6),
+    axis.title = element_text(face = "bold", size = 6),
     legend.position = "bottom",
     legend.title = element_blank()
   )
@@ -67,7 +67,14 @@ library(readxl)
 O exemplo que tenho apresenta dados de preço e oferta de cana de açúcar. A variável independente é o preço da cana de açúcar e a variável dependente é a área plantada deste produto, que representando uma proxy para sua oferta. O objetivo da regressão será quantificar a elasticidade da oferta em função do preço, ou seja, quantificar quão sensível é a oferta da cana de açúcar quando ocorre uma variações em seu preço. Os dados deste exercício estão no meu repositório do Github, vamos trazê-los com o comando abaixo, salvando-os na variável df:
 
 ```{r}
-df <- read.csv(file = "https://raw.githubusercontent.com/FranciscoPiccolo/franciscopiccolo.github.io/master/datasets/2019-09-05-residual_analysis_on_linear_regression_models/dataset_1.csv", 
+path <- 
+  paste("https://raw.githubusercontent.com/FranciscoPiccolo/",
+        "franciscopiccolo.github.io/master/code/",
+        "20190905_residual_analysis_in_econometric_models/dataset/",
+        "dataset_1.csv",
+        sep = "")
+
+df <- read.csv(file = path,
                sep = ";", 
                dec = ",")
 ```
