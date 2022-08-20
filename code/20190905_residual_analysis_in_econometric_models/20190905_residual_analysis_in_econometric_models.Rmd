@@ -26,18 +26,20 @@ knitr::opts_chunk$set(echo = T,
                       warning = F,
                       message = F,
                       fig.height = 2.5,
-                      fig.width = 3.0,
+                      fig.width = 4.0,
                       fig.align = "center")
 
 # Função para padronizar o design dos gráficos
 theme_graph <- function(){
   theme(
-    plot.title = element_text(size = 8),
+    plot.title = element_text(size = 8.5, face = "bold"),
     plot.subtitle = element_text(size = 7),
-    plot.caption = element_text(face = "bold", size = 6),
-    axis.title = element_text(face = "bold", size = 6),
+    plot.caption = element_text(size = 7, color = "#63687a"),
+    axis.title = element_text(size = 7, color = "#63687a"),
+    axis.text = element_text(size = 6, color = "#63687a"),
     legend.position = "bottom",
-    legend.title = element_blank()
+    legend.title = element_blank(),
+    panel.background = element_rect(fill = "lightblue",color = "lightblue")
   )
 }
 ```
@@ -106,14 +108,14 @@ Os dados precisam ter a aplicação do log natural, pois esta transformação fa
 
 O gráfico abaixo irá mostrar o comportamento das variáveis do dataset, bem como a curva de regressão linear, antes de aplicar a transformação log natural.
 
-```{r}
+```{r,fig.pos="F"}
 df %>% 
   ggplot()+
-  geom_point(mapping = aes(x = price, y = area), shape = 2)+
+  geom_point(mapping = aes(x = price, y = area), shape = 1)+
   geom_smooth(mapping = aes(x = price, y = area), 
               method = "lm", 
               formula = y ~ x, 
-              se = F, 
+              se = T, 
               lty = 2,
               color = "dark orange")+
   theme_graph()+
@@ -189,6 +191,7 @@ Aparentemente os resíduos se distribuem normalmente. Outro gráfico interessant
 model_residuals %>% 
   ggplot()+
   geom_qq(mapping = aes(sample = values))+
+  theme_graph()+
   labs(title = "Residuals' Q-Q plot",
        x = "",
        y = "")
