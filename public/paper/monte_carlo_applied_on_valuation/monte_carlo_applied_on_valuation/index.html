@@ -1,0 +1,942 @@
+<!DOCTYPE html><html lang="en-us" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Francisco Piccolo">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="My abstract.
+Keywords: My Keywords
+INTRODUCTIONbOn the first decade of the 21ft century the global economy has experienced the dot-com and real estate bubbles that bursted and impacted the lives of many people on different ways.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://francisco.piccolo.com/paper/monte_carlo_applied_on_valuation/monte_carlo_applied_on_valuation/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/tomorrow-night-blue.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/tomorrow-night-blue.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://francisco.piccolo.com/paper/monte_carlo_applied_on_valuation/monte_carlo_applied_on_valuation/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Francisco Piccolo">
+  <meta property="og:url" content="https://francisco.piccolo.com/paper/monte_carlo_applied_on_valuation/monte_carlo_applied_on_valuation/">
+  <meta property="og:title" content="Monte Carlo Simulation Applied on Discounted Cash Flow | Francisco Piccolo">
+  <meta property="og:description" content="My abstract.
+Keywords: My Keywords
+INTRODUCTIONbOn the first decade of the 21ft century the global economy has experienced the dot-com and real estate bubbles that bursted and impacted the lives of many people on different ways."><meta property="og:image" content="https://francisco.piccolo.com/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://francisco.piccolo.com/images/icon_hu7930c23c34249c3e1231392b717ef0d2_2480_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  
+    
+    
+  
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Monte Carlo Simulation Applied on Discounted Cash Flow | Francisco Piccolo</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Francisco Piccolo</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Francisco Piccolo</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/math"><span>Math Notes</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/library"><span>Library</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+
+      
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Monte Carlo Simulation Applied on Discounted Cash Flow</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jan 1, 0001
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>My abstract.</p>
+<p><em>Keywords</em>: My Keywords</p>
+<div id="introductionb" class="section level1">
+<h1>INTRODUCTIONb</h1>
+<p>On the first decade of the 21ft century the global economy has experienced the dot-com and real estate bubbles that bursted and impacted the lives of many people on different ways. Some authors claim that these bubbles could have been avoided if basic principles from finance and economics were applied during the euphoria (Koller, 2006). The basic principles indicated by these authors are related to value creation and the methods to proof that an asset is creating value.</p>
+<p>On one side, the creation of value for a given asset (e.g. a company) is related to the Free Cash Flow that it generates, where this Free Cash Flow must be higher than the cost of capital used to put this asset to work (Assaf Neto, 2004). On the other side, the methods used to proof that an asset is creating value is related to the financial and mathematical framework used on the analysis. These financial and mathematical framework are generally called Valuation.</p>
+<p>The Valuation is a technique used to calculate the value of an asset and is broadly used on the financial sector (Assaf Neto, 2004). Within this area, there are different methods that can be used to infer the asset’s value and one of the most used and recommended is the Discounted Cash Flow Valuation. This method tries to project the future Free Cash Flow (FCF) that an asset will generate and applies a rate to discount these future FCF, where this rate will represent the cost of capital. This cost of capital exist to represent the investors that allocates capital on the asset being evaluated and it contemplates both risk and opportunity cost.</p>
+<p>Projecting FCF, discounting it by the cost of capital and summing up the periods projected is the foundation of this method, that will result in a value that represents the asset’s value. In other words, this method indicates that an asset will value the sum of future free cash flows after being discounted by the cost of capital. The method seems simple, but it’s often forgotten by investors, leading to decisions that, when in conjunction with other circumstances, create bubbles that can be avoided, like the dot-com bubble from the 2000’s or the real state bubble from 2007/08.</p>
+<p>The Discounted Free Cash Flow Valuation is well recommended on the academia (Damodaram, 2012), but the method will generate a deterministic result. This deterministic result informs the asset’s value, but it doesn’t inform the distribution of values that will exist if the model incorporates the risk during the Free Cash Flow projections. This risk on the projections was first incorporated by McKisney Company during the 1980, that applied the Monte Carlo Simulation together with the Discounted Free Cash Flow Valuation (Sharma; Peacock, 2008).</p>
+<p>The simulation applied on Discounted Cash Flow Valuations is a recommended approach by practitioners but the literature covering the way to build a model to run this simulation isn’t broad. This research will attempt to cover this gap, showing the step-by-step method to develop a Discounted Cash Flow Valuation using Monte Carlo Simulations to generate a distribution probability of values for an asset.</p>
+</div>
+<div id="model" class="section level1">
+<h1>MODEL</h1>
+<p>The Discounted Free Cash Flow Valuation can be explained with a simple example, that will grow in complexity in a smooth way. First it’s necessary to get the asset’s Free Cash Flow. For this illustration, let’s assume the asset is a company. On this case, the Free Cash Flow can be found on the company’s Balance Sheet and Profit and Loss Statement. These documents will indicate the revenues, costs, expenditures, taxes and investments for a specific period. With these variables, it’s possible to solve the following equation and find the company’s Free Cash Flow:</p>
+<p><span class="math display">\[FCF = ((R-C-E).(1-t))-I\]</span>
+Where:</p>
+<p>R = Revenue.</p>
+<p>C = Cost of Products Sold.</p>
+<p>E = Expenses.</p>
+<p>t = Tax rate.</p>
+<p>I = Investments.</p>
+<p>After calculating FCF, it’s necessary to get the cost of capital for the investors that allocated capital on the company. This cost of capital will account for internal and external investors and the recommended method to estimate this cost is the Weigt Average Cost of Capital (WACC), that will look at the company’s capital structure in terms of capital division between internal and external, and calculate the cost for each type of investor in order to generate the weigh average. The WACC equation is presented as follows:</p>
+<p><span class="math display">\[WACC = I_i.K_d + E_i.K_e\]</span>
+Where:</p>
+<p><span class="math inline">\(I_i =\)</span> Capital share for internal investors.</p>
+<p><span class="math inline">\(K_d =\)</span> Cost of capital for internal investors.</p>
+<p><span class="math inline">\(E_i =\)</span> Capital share for external investors.</p>
+<p><span class="math inline">\(K_e =\)</span> Cost of capital for external investors.</p>
+<p>The capital structure for the company can be calculated using the company’s Balance Sheet that will inform on liabilities the parcel of that came from Internal and External investors. The cost of capital for external investors will be in the form of financial expenditures indicated on the Profit and Loss statement, where the ratio of financial expenditures over the amount of loan on the period will indicate the cost of capital for these investors.</p>
+<p>The cost of capital for internal investors relies on a model called Capital Asset Pricing Model (CAPM). This model infer how much return internal investors will demand for the evaluated asset, using as proxy a free risk return rate and a risk rate that represent the company’s risk, like a premium risk. The equation for this model is described below:</p>
+<p><span class="math display">\[K_d = R_f + \beta(R_m-R_f)\]</span></p>
+<p>Where:</p>
+<p><span class="math inline">\(R_f =\)</span> Return rate for asset with zero risk.</p>
+<p><span class="math inline">\(R_m =\)</span> Market return rate.</p>
+<p><span class="math inline">\(\beta =\)</span> Company’s beta.</p>
+<p>For <span class="math inline">\(R_f\)</span> it’s recommended to use government’s bonds that is the nearest of a free risk asset. For market return, the S&amp;OP 500 rate of return in one year is the recommended proxy. The company’s beta measure the covariance of the company’s volatility with the market volatility. The equation for calculating beta if described below:</p>
+<p><span class="math display">\[\beta = \frac{COV(R_i,R_m)}{VAR(R_m)}\]</span>
+Where:</p>
+<p><span class="math inline">\(R_i =\)</span> Asset’s return rate.</p>
+<p><span class="math inline">\(R_m =\)</span> Market’s return rate.</p>
+<p>After calculating each variable, it’s possible to develop the Discounted Free Cash Flow Valuation in order to reach the Enterprise Value (EV), with the final equation:</p>
+<p><span class="math display">\[EV = \sum_{t=1}^n\frac{FCF_1}{(1+r)^1} + \frac{FCF_2}{(1+r)^2} + ... \frac{FCF_t}{(1+r)^t} + RV \]</span></p>
+</div>
+<div id="methods" class="section level1">
+<h1>METHODS</h1>
+<p>Taking a simple approach to understand each variables impact on company’s valuation.</p>
+<p>The above graph shows each Discounted Cash Flow for the 10 years projection.</p>
+<p><img src="output/figures/unnamed-chunk-2-1.png" width="528" style="display: block; margin: auto;" /></p>
+<pre><code>## # A tibble: 1 x 1
+##   company_value
+##           &lt;dbl&gt;
+## 1         3571.</code></pre>
+<p>In order to calculate the company’s value it’s necessary to have the historical values of the necessary variabbles present on the following equations:</p>
+</div>
+<div id="results" class="section level1">
+<h1>RESULTS</h1>
+</div>
+<div id="discussion" class="section level1">
+<h1>DISCUSSION</h1>
+</div>
+<div id="conclusions" class="section level1">
+<h1>CONCLUSIONS</h1>
+<div style="page-break-after: always;"></div>
+<div style="page-break-after: always;"></div>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://francisco.piccolo.com/"><img class="avatar mr-3 avatar-circle" src="/author/francisco-piccolo/avatar_hucb46ee835631cdfb6ef541a5998b66fa_142341_270x270_fill_q90_lanczos_center.jpg" alt="Francisco Piccolo"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://francisco.piccolo.com/">Francisco Piccolo</a></h5>
+      <h6 class="card-subtitle">Business Intelligence Engineer</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/franciscopiccolo/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/FranciscoPicco1" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/FranciscoPiccolo" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="article-widget">
+  
+<div class="post-nav">
+  
+  
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.17933aeaca1aa3585c6fde5371c9f1d2.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>
