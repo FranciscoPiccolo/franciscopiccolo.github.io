@@ -10,3 +10,5 @@ Se tiver alguma sugestão, me envie um email (*tobias.piccolo@gmail.com*), mensa
 ### 2020
 
 ### 2019
+
+[2019-09-05 Análise de Resíduos em Modelos Econométricos](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/posts/20190905_residual_analysis_in_econometric_models.md)
