@@ -12,10 +12,10 @@ output:
       in_header: header.tex
 
 documentclass: article
-geometry: margin=.5in
+geometry: margin=1in
 linestretch: 1
 mainfont: Calibri
-fontsize: 10pt
+fontsize: 11pt
 linkcolor: RoyalBlue
 urlcolor: RoyalBlue
 links-as-notes: false
