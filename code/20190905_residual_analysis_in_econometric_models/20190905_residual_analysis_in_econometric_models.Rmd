@@ -1,3 +1,49 @@
+---
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2.5
+    keep_tex: no
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+
+documentclass: article
+geometry: margin=.5in
+linestretch: 1
+mainfont: Calibri
+fontsize: 10pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = T,
+                      warning = F,
+                      message = F,
+                      fig.height = 2.5,
+                      fig.width = 4.0,
+                      fig.align = "center")
+
+# Função para padronizar o design dos gráficos
+theme_graph <- function(){
+  theme(
+    plot.title = element_text(size = 8.5, face = "bold"),
+    plot.subtitle = element_text(size = 7),
+    plot.caption = element_text(size = 7, color = "#63687a"),
+    axis.title = element_text(size = 7, color = "#63687a"),
+    axis.text = element_text(size = 6, color = "#63687a"),
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    panel.background = element_rect(fill = "lightblue",color = "lightblue")
+  )
+}
+```
+
 # Analisando os Resíduos de um Modelo de Regressão Linear
 
 O modelo de regressão linear é bastante usado na predição de variáveis contínuas, onde há uma ou mais variáveis independentes buscando mapear o comportamento de uma variável dependente. O modelo é bastante simples e lembro ser um dos primeiros a ser ensinado nas aulas de econometria. Porém, apesar de sua simplicidade, é preciso se atentar a alguns detalhes sobre suas premissas para que os resultados deste modelo possam ser usados para a tomada de decisão.
@@ -24,7 +70,7 @@ library(readxl)
 O exemplo que tenho apresenta dados de preço e oferta de cana de açúcar. A variável independente é o preço da cana de açúcar e a variável dependente é a área plantada deste produto, que representando uma proxy para sua oferta. O objetivo da regressão será quantificar a elasticidade da oferta em função do preço, ou seja, quantificar quão sensível é a oferta da cana de açúcar quando ocorre uma variações em seu preço. Os dados deste exercício estão no meu repositório do Github, vamos trazê-los com o comando abaixo, salvando-os na variável df:
 
 ```{r}
-path <-
+path <- 
   paste("https://raw.githubusercontent.com/FranciscoPiccolo/",
         "franciscopiccolo.github.io/master/code/",
         "20190905_residual_analysis_in_econometric_models/dataset/",
@@ -32,7 +78,7 @@ path <-
         sep = "")
 
 df <- read.csv(file = path,
-               sep = ";",
+               sep = ";", 
                dec = ",")
 ```
 
@@ -63,13 +109,13 @@ Os dados precisam ter a aplicação do log natural, pois esta transformação fa
 O gráfico abaixo irá mostrar o comportamento das variáveis do dataset, bem como a curva de regressão linear, antes de aplicar a transformação log natural.
 
 ```{r,fig.pos="F"}
-df %>%
+df %>% 
   ggplot()+
   geom_point(mapping = aes(x = price, y = area), shape = 1)+
-  geom_smooth(mapping = aes(x = price, y = area),
-              method = "lm",
-              formula = y ~ x,
-              se = T,
+  geom_smooth(mapping = aes(x = price, y = area), 
+              method = "lm", 
+              formula = y ~ x, 
+              se = T, 
               lty = 2,
               color = "dark orange")+
   theme_graph()+
@@ -90,14 +136,14 @@ Primeiro vou criar duas variáveis com os resultados dos dois métodos:
 
 ```{r}
 # Método 1, criando novos campos no dataset com a transformação log (e)
-first_method <-
-  df %>%
+first_method <- 
+  df %>% 
   mutate(area_log = log(area),
-         price_log = log(price)) %>%
+         price_log = log(price)) %>% 
   lm(formula = area_log ~ price_log)
 
-second_method <-
-  df %>%
+second_method <- 
+  df %>% 
   lm(formula = log(area) ~ log(price))
 ```
 
@@ -121,7 +167,7 @@ second_method %>% summary()
 Apesar destes dados mostrarem que a reta se ajustou bem aos dados e que o modelo consegue explicar ~70% da variação na variável dependente, é preciso ainda analisar os resíduos para poder ter confiança no resultado e fazer projeções. No gráfico abaixo, vamos ver como se distribuem os resíduos do modelo.
 
 ```{r}
-model_residuals <-
+model_residuals <- 
   data.frame(values = second_method$residuals)
 ```
 
@@ -129,7 +175,7 @@ Eu opto primeiro por analisar um histograma dos reísduos, pois ele indicará se
 
 ```{r}
 # Histogram
-model_residuals %>%
+model_residuals %>% 
   ggplot()+
   geom_histogram(mapping = aes(x = values), fill = "steel blue")+
   theme_graph()+
@@ -142,7 +188,7 @@ Aparentemente os resíduos se distribuem normalmente. Outro gráfico interessant
 
 ```{r}
 # q-q plot
-model_residuals %>%
+model_residuals %>% 
   ggplot()+
   geom_qq(mapping = aes(sample = values))+
   theme_graph()+
@@ -155,7 +201,7 @@ Este gráfico também aponta para a ideia de resíduos normalmente distribuídos
 
 ```{r}
 # Necessário instalar e chamar o pacote 'lmtest'
-lmtest::dwtest(df %>%
+lmtest::dwtest(df %>% 
                  lm(formula = log(area) ~ log(price)))
 ```
 

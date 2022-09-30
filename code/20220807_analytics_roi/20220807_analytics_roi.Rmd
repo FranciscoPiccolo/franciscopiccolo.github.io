@@ -1,3 +1,33 @@
+---
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: yes
+    fig_width: 3.5
+    fig_height: 2.54
+    keep_tex: no
+    number_sections: no
+    toc: no
+    includes:
+      in_header: header.tex
+
+documentclass: article
+geometry: margin=1in
+linestretch: 1
+mainfont: Calibri
+fontsize: 11pt
+linkcolor: RoyalBlue
+urlcolor: RoyalBlue
+links-as-notes: false
+---
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      message = F,
+                      fig.align = "center")
+```
+
 # Analytics ROI - Como estimar o retorno de um projeto de Analytics?
 
 A área de BI e analytics ganhou atenção das empresas, tanto startups quanto negócios já consolidados, de uns 10 anos para cá (2022). Talvez por conta do custo de armazenagem e processamento de dados que caiu bastante com a adoção da computação em nuvem ou também pelo crescimento de negócios digitais que conseguem captar ações do usuário interagindo com o produto (aplicativos) ou no caso de e-commerce, que consegue acompanhar o que o cliente observa na vitrine virtual. Desta forma os negócios nascem dependentes do analytics para crescer e se tornar lucrativo, fomentando este hype da área e da profissão.
