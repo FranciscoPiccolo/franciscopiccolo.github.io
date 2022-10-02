@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.24)  2 OCT 2022 20:30
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.24)  2 OCT 2022 20:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**20190905_residual_analysis_in_econometric_models.tex
-(./20190905_residual_analysis_in_econometric_models.tex
+**20200120_immigration_data_analysis.tex
+(./20200120_immigration_data_analysis.tex
 LaTeX2e <2022-06-01> patch level 5
 L3 programming layer <2022-08-30> (c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -598,38 +598,38 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip77
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 143.
-(./20190905_residual_analysis_in_econometric_models.aux)
-\openout1 = `20190905_residual_analysis_in_econometric_models.aux'.
+Package hyperref Info: Option `colorlinks' set `true' on input line 142.
+(./20200120_immigration_data_analysis.aux)
+\openout1 = `20200120_immigration_data_analysis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 148.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 147.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 148.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 147.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 148.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 147.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 148.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 147.
 
 Package fontspec Info: latinmodern-math scale = 1.077385667404905.
 
@@ -655,7 +655,7 @@ Package fontspec Info: Font family 'latinmodern-math.otf(0)' created for font
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 11.79744pt on input line 148.
+(Font)              scaled to size 11.79744pt on input line 147.
 
 Package fontspec Info: latinmodern-math scale = 1.077385667404905.
 
@@ -687,15 +687,15 @@ Package fontspec Info: Font family 'latinmodern-math.otf(1)' created for font
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 11.79744pt on input line 148.
+(Font)              scaled to size 11.79744pt on input line 147.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 148.
+(Font)              `operators' in the math version `normal' on input line 147.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input line 148.
+(Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input line 147.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 148.
+(Font)              `operators' in the math version `bold' on input line 147.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on input line 148.
+(Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on input line 147.
 
 Package fontspec Info: latinmodern-math scale = 1.077385667404905.
 
@@ -774,13 +774,13 @@ Package fontspec Info: Font family 'latinmodern-math.otf(2)' created for font
 (fontspec)             =0pt\relax \fontdimen 21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 148.
+(Font)              `symbols' in the math version `normal' on input line 147.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
-(Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on input line 148.
+(Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on input line 147.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 148.
+(Font)              `symbols' in the math version `bold' on input line 147.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
-(Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on input line 148.
+(Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on input line 147.
 
 Package fontspec Info: latinmodern-math scale = 1.077385667404905.
 
@@ -841,13 +841,13 @@ Package fontspec Info: Font family 'latinmodern-math.otf(3)' created for font
 (fontspec)             =7.07846pt\relax \fontdimen 13\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `normal' on input line 148.
+(Font)              `largesymbols' in the math version `normal' on input line 147.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
-(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on input line 148.
+(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on input line 147.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 148.
+(Font)              `largesymbols' in the math version `bold' on input line 147.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
-(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on input line 148.
+(Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on input line 147.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -882,17 +882,21 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 148.
-(./20190905_residual_analysis_in_econometric_models.out) (./20190905_residual_analysis_in_econometric_models.out)
+Package hyperref Info: Link coloring ON on input line 147.
+(./20200120_immigration_data_analysis.out) (./20200120_immigration_data_analysis.out)
 \@outlinefile=\write4
-\openout4 = `20190905_residual_analysis_in_econometric_models.out'.
+\openout4 = `20200120_immigration_data_analysis.out'.
 
 LaTeX Font Info:    Font shape `TU/Calibri(0)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 152.
+(Font)              scaled to size 12.0pt on input line 151.
 LaTeX Font Info:    Font shape `TU/Calibri(0)/b/n' will be
-(Font)              scaled to size 12.0pt on input line 152.
+(Font)              scaled to size 12.0pt on input line 151.
+LaTeX Font Info:    Font shape `TU/Calibri(0)/m/it' will be
+(Font)              scaled to size 10.95pt on input line 153.
 LaTeX Font Info:    Font shape `TU/Calibri(0)/b/n' will be
-(Font)              scaled to size 10.95pt on input line 170.
+(Font)              scaled to size 10.95pt on input line 157.
+File: ./images/image_1.png Graphic file (type bmp)
+<./images/image_1.png>
 
 Package fancyhdr Warning: \headheight is too small (1.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -903,36 +907,6 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 [1
 
 ]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.2582pt on input line 219.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.89873pt on input line 219.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 219.
-(c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.79861pt on input line 219.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.25902pt on input line 219.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.8993pt on input line 219.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.7961pt on input line 219.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.25726pt on input line 219.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.89806pt on input line 219.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 219.
-(c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 219.
-(c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-File: 20190905_residual_analysis_in_econometric_models_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
-<use 20190905_residual_analysis_in_econometric_models_files/figure-latex/unnamed-chunk-5-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (1.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -941,6 +915,10 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
 
 [2]
+File: 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
+<use 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-4-1.pdf>
+File: 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
+<use 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-6-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (1.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -949,8 +927,6 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
 
 [3]
-File: 20190905_residual_analysis_in_econometric_models_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
-<use 20190905_residual_analysis_in_econometric_models_files/figure-latex/unnamed-chunk-10-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (1.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -959,8 +935,8 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
 
 [4]
-File: 20190905_residual_analysis_in_econometric_models_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
-<use 20190905_residual_analysis_in_econometric_models_files/figure-latex/unnamed-chunk-11-1.pdf>
+File: 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
+<use 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-8-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (1.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -969,6 +945,8 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
 
 [5]
+File: 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
+<use 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-9-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (1.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -976,17 +954,100 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
 
-[6] (./20190905_residual_analysis_in_econometric_models.aux)
-Package rerunfilecheck Info: File `20190905_residual_analysis_in_econometric_models.out' has not changed.
-(rerunfilecheck)             Checksum: CD1FB01B39339BF20C2096B8789F7690;349.
+[6]
+Overfull \vbox (1.53395pt too high) detected at line 363
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (1.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
+
+[7]
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 8.2582pt on input line 365.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.89873pt on input line 365.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 365.
+(c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 11.79861pt on input line 365.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 8.25902pt on input line 365.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.8993pt on input line 365.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 11.7961pt on input line 365.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 8.25726pt on input line 365.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 5.89806pt on input line 365.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 365.
+(c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 365.
+(c:/Users/fppicco/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+
+Package fancyhdr Warning: \headheight is too small (1.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
+
+[8]
+
+Package fancyhdr Warning: \headheight is too small (1.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
+
+[9]
+File: 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
+<use 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-14-1.pdf>
+
+Package fancyhdr Warning: \headheight is too small (1.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
+
+[10]
+File: 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf)
+<use 20200120_immigration_data_analysis_files/figure-latex/unnamed-chunk-15-1.pdf>
+
+Package fancyhdr Warning: \headheight is too small (1.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
+
+[11]
+
+Package fancyhdr Warning: \headheight is too small (1.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.59999pt}.
+
+[12] (./20200120_immigration_data_analysis.aux)
+Package rerunfilecheck Info: File `20200120_immigration_data_analysis.out' has not changed.
+(rerunfilecheck)             Checksum: 739825114E2E1EA0A15C1050A7C3D487;646.
  ) 
 Here is how much of TeX's memory you used:
- 19081 strings out of 477747
- 353272 string characters out of 5842361
- 862985 words of memory out of 5000000
- 39864 multiletter control sequences out of 15000+600000
- 472858 words of font info for 68 fonts, out of 8000000 for 9000
+ 19131 strings out of 477747
+ 355316 string characters out of 5842361
+ 863214 words of memory out of 5000000
+ 39907 multiletter control sequences out of 15000+600000
+ 472866 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,11n,122p,619b,476s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,11n,122p,682b,432s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 20190905_residual_analysis_in_econometric_models.pdf (6 pages).
+Output written on 20200120_immigration_data_analysis.pdf (12 pages).
