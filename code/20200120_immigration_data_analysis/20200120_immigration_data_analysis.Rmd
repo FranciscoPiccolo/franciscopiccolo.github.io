@@ -52,7 +52,7 @@ Esta atenção da mídia fez com que estudos mais aprofundados sobre o tema surg
 
 Na tentativa de complementar os *insights* gerados pela reportagem, vou usar os dados do Banco Mundial, através de uma API que pode ser acessada pelo R com o pacote **wbstats**. Esta API me permitirá acessar o banco de dados desta instituição, que me parece ser a melhor fonte para dados de fluxo imigratório.
 
-A imagem abaixo é de uma das reportagens da revista. Fantástica!
+A imagem abaixo é de uma das reportagens da revista.
 
 ![](./images/image_1.png)
 
