@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.24)  2 OCT 2022 20:45
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.24)  2 OCT 2022 20:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1039,12 +1039,12 @@ Package fancyhdr Warning: \headheight is too small (1.0pt):
 
 [12] (./20200120_immigration_data_analysis.aux)
 Package rerunfilecheck Info: File `20200120_immigration_data_analysis.out' has not changed.
-(rerunfilecheck)             Checksum: 739825114E2E1EA0A15C1050A7C3D487;646.
+(rerunfilecheck)             Checksum: CB856A161758B8A73D39B89DC983B43D;631.
  ) 
 Here is how much of TeX's memory you used:
  19131 strings out of 477747
- 355316 string characters out of 5842361
- 863214 words of memory out of 5000000
+ 355313 string characters out of 5842361
+ 863204 words of memory out of 5000000
  39907 multiletter control sequences out of 15000+600000
  472866 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191

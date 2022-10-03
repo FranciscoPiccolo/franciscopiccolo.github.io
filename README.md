@@ -13,6 +13,8 @@ O blog é feito através de arquivos Rmarkdown e lattex, que geram arquivos em .
 
 ## 2020
 
+[2020-01-20 Analisando o Fluxo Imigratório com Dados do Banco Mundial](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/code/20200120_immigration_data_analysis/20200120_immigration_data_analysis.pdf)
+
 ## 2019
 
 [2019-09-05 Análise de Resíduos em Modelos Econométricos](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/code/20190905_residual_analysis_in_econometric_models/20190905_residual_analysis_in_econometric_models.pdf)

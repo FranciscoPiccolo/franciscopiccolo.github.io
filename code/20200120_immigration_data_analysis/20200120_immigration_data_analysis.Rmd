@@ -44,7 +44,7 @@ theme_graph <- function(){
 }
 ```
 
-# Analisando o Fluxo Imigratório usando dados do Banco Mundial
+# Analisando o Fluxo Imigratório com Dados do Banco Mundial
 
 A imigração vem sendo um tema central nos debates políticos para presidencia, gerando muitas dúvidas nos eleitores, por conta de *fake news* que acabam surgindo, e também muita esperança para as pessoas que buscam mudar de vida com a mudança de país. Esta onda imigratória está cada vez chamando mais a atenção da mídia, por conta da grave crise na Syria, Yemen e Venezuela, que fez com que milhões de pessoas decidissem sair de seus lares.
 
