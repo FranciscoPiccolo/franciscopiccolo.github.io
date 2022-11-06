@@ -5,6 +5,8 @@ Se tiver alguma sugestão, me envie um email (*tobias.piccolo@gmail.com*), mensa
 
 ## 2022
 
+[2022-11-06 How to Measure Anything by Douglas W. Hubbard - Resenha](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/code/20221106_how_to_measure_anything_book_summary/20221106_how_to_measure_anything_book_summary.pdf)
+
 [2022-08-07 Analytics ROI - Como estimar o valor de uma área de dados](https://github.com/FranciscoPiccolo/franciscopiccolo.github.io/blob/master/code/20220807_analytics_roi/20220807_analytics_roi.pdf)
 
 ## 2021
