@@ -27,6 +27,8 @@ Outro conceito bastante interessante apresentado no livro que é importante para
 
 Além destes conceitos, o livro contêm várias explicações sobre métodos estatísticos como simulação monte carlo, amostragem, regressão linear, probabilidade condicional, entre outros. De maneira geral, um excelente livro que os profissionais da área de dados podem extrair bastante conteúdo para aplicar no dia a dia.
 
+---
+
 **2022-08-08 - Analytics ROI: Como estimar o valor de uma área de dados**
 
 A área de BI e analytics ganhou atenção das empresas, tanto startups quanto negócios já consolidados, de uns 10 anos para cá (2022). Talvez por conta do custo de armazenagem e processamento de dados que caiu bastante com a adoção da computação em nuvem ou também pelo crescimento de negócios digitais que conseguem captar ações do usuário interagindo com o produto (aplicativos) ou no caso de e-commerce, que consegue acompanhar o que o cliente observa na vitrine virtual. Desta forma os negócios nascem dependentes do analytics para crescer e se tornar lucrativo, fomentando este hype da área e da profissão.
@@ -57,8 +59,7 @@ Uma parcela (não definida) do valor da decisão será o retorno gerado pelo tim
 
 4. Aumente a frequência da tomada de decisão: Reduza os atritos existentes no funil ‘Analytics → tomada de decisão’. Em outras palavras, automatize as etapas envolvidas na geração de insights acionáveis que viabilizam a tomada de decisão. Isso envolve atividades técnicas como modelar um data warehouse, criar datamarts, criar reports em ferramentas de visualização (onde os stakeholders podem acompanhá-los e tomar decisões sem precisar diretamente de seu suporte), entre outras formas.
 
-
-# Referências:
+**Referências**
 
 https://benn.substack.com/p/method-for-measuring-analytical-work?s=r
 
