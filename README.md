@@ -9,7 +9,8 @@ Se tiver alguma sugestão, me envie uma mensagem no [linkedin (https://www.linke
 
 Recentemente li o livro ‘How to measure anything’ escrito por Douglas W. Hubbard e neste post vou fazer uma breve resenha dele e explicar por que achei um bom livro para profissionais da área de Analytics e BI.
 
-![](./images/book_cover.png)
+![](./code
+/20221106_how_to_measure_anything_book_summary/images/book_cover.png)
 
 O livro começa indicando que qualquer coisa que pode ser observada pode ser mensurada, incluindo (i) eficiência de um gestor, (ii) impacto de políticas governamentais, (iii) risco de falências, dentre outras coisas que as vezes assumimos como imensuráveis. Nas primeiras páginas o autor destaca que o objetivo do livro é mostrar que intangíveis que parecem ser não rastreáveis podem ser mensurados e que a mensuração pode ser feita de uma forma que justifique o custo de realizá-la, ou seja, utilizando métodos simples e de baixo custo.
 
