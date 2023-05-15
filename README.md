@@ -3,9 +3,11 @@ Se tiver alguma sugestão, me envie uma mensagem no [linkedin (https://www.linke
 
 # Posts
 
-**2023-05-13 - An Elegant Puzzle by 
+**2023-05-13 - [Resenha] An Elegant Puzzle by Will Larson**
 
-**2022-11-06 - How to Measure Anything by Douglas W. Hubbard - Resenha e overview deste livro**
+Este livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu 
+
+**2022-11-06 - Livro How to Measure Anything by Douglas W. Hubbard: Boas práticas para a área de dados**
 
 Recentemente li o livro ‘How to measure anything’ escrito por Douglas W. Hubbard e neste post vou fazer uma breve resenha dele e explicar por que achei um bom livro para profissionais da área de Analytics e BI. O livro começa indicando que qualquer coisa que pode ser observada pode ser mensurada, incluindo (i) eficiência de um gestor, (ii) impacto de políticas governamentais, (iii) risco de falências, dentre outras coisas que as vezes assumimos como imensuráveis. Nas primeiras páginas o autor destaca que o objetivo do livro é mostrar que intangíveis que parecem ser não rastreáveis podem ser mensurados e que a mensuração pode ser feita de uma forma que justifique o custo de realizá-la, ou seja, utilizando métodos simples e de baixo custo.
 
