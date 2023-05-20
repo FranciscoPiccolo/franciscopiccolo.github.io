@@ -5,7 +5,13 @@ Se tiver alguma sugestão, me envie uma mensagem no [linkedin (https://www.linke
 
 **2023-05-13 - [Resenha] An Elegant Puzzle by Will Larson**
 
-Este livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu 
+Este livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu registrar seus aprendizados em artigos escritos em seu blog, que após certo período ficou extenso o suficiente para ser colocado em um livro e compartilhado com a comunidade. O livro é amplo em seu conteúdo, indo desde cultura organizacional, gerenciamento de projetos, carreira, produtividade, liderança, contratação, e outros temas cotidianos da vida de um gestor de T.I. Vou colocar aqui alguns insights que consegui extrair dele, separados por área de conhecimento:
+
+**Organizações**
+
+* Existem diferentes formas de se resolver problemas organizacionais, algumas formas são 
+
+---
 
 **2022-11-06 - Livro How to Measure Anything by Douglas W. Hubbard: Boas práticas para a área de dados**
 
