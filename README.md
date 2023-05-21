@@ -5,11 +5,21 @@ Se tiver alguma sugestão, me envie uma mensagem no [linkedin (https://www.linke
 
 **2023-05-13 - [Resenha] An Elegant Puzzle by Will Larson**
 
-Este livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu registrar seus aprendizados em artigos escritos em seu blog, que após certo período ficou extenso o suficiente para ser colocado em um livro e compartilhado com a comunidade. O livro é amplo em seu conteúdo, indo desde cultura organizacional, gerenciamento de projetos, carreira, produtividade, liderança, contratação, e outros temas cotidianos da vida de um gestor de T.I. Vou colocar aqui alguns insights que consegui extrair dele, separados por área de conhecimento:
+Este livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu registrar seus aprendizados em artigos escritos em seu blog, que após certo período ficou extenso o suficiente para ser colocado em um livro. An Elegant Puzzle aborda diversos temas sobre gestão como cultura organizacional, gerenciamento de projetos, carreira, produtividade, liderança, contratação, e entre outros, e em cada tema o autor indica a importância deste tema e como ele o aborda com sua atual experiência, uma leitura recomendada para gerented de desenvolvimento de software (SDM). Vou colocar aqui alguns insights que consegui extrair deste excelente livro.
 
-**Organizações**
+* Existem diferentes formas de se resolver problemas organizacionais, algumas formas são rápidas, porém não duradouras como design de processos, outras formas são permanentes porém demoradas, como re-design da cultura organizacional e há também formas intermediárias, como design da organização (i.e. alocação de times para áreas de negócio). Neste aspeco, recomenda-se que SDMs tenham de 6 até 8 índidual contributors (IC) em seus times, sendo estes números uma quantia ideal para balancear coaching, coordenação e extensão da missão de sua área. Times muito pequenos seriam muito frágeis e com pouca inovação (por conta do foco em débito técnico).
 
-* Existem diferentes formas de se resolver problemas organizacionais, algumas formas são 
+* 4 estágios de um time de desenvolvimento de software:
+    * Falling behind: moral baixa, débito técnico cada vez maior, sem inovação. Para sair deste estágio, contrate mais pessoas e ache quick wins para retomar a confiança e moral do time/stakeholders.
+    * Trading water: resolução de problemas críticos é feita, porém ainda sem inovação. Para mudar de estágio, reduza o trabalho em andamento (WIP) e tente aumentar a produtividade do time.
+    * Repaying technical debt: aumente engajamento com stakeholders para ganhar mais tempo nos projetos, pois em questão de tempo o time terá mais espaço para inovação.
+    * Innovation: débito técnico está baixo. Neste estágio, garanta que o que é desenvolvido agrega valor pro negócio.
+Em alguns momentos, SDMs ficam tentados a contratar mais pessoas por achar que esta é a única solução para um problema, porém as contratações ao longo de um período tem um ponto ótimo, e se ele for ultrapassado, o ganho adicional com um novo funcionário será negativo. Esta idea se baseia no fato de que contratações demandam tempo de várias pessoas (desenvolvedores seniors para treinamento, etc) e muitas entrevistas e contratações reduzem a produtividade do time. Sem contar que o novo funcionário vai precisar de tempo para ser produtivo. Ao crescer seu time de desenvolvimento, seus sistemas de deploy vão receber mais cargas também e sua estrutura organizacional também irá mudar, adicionando mais camadas de gestão na emopresa.
+
+* Mantenha entropia do seu time para que a entrega de produtos/software aconteça quase automaticamente. Para isso, tenha em mente de que projetos só adicionam valor quando são entregues e só são entregues quando são desenvolvidos com foco e baixa interrupção. Neste caso a dica aqui para SDMs é bloquear a agenda para atuar focado em projetos críticos. Outra dica sobre este tema é que cada empresa possui sua linguagem específica e você deve aprender a forma ideal para falar **não** para seus stakeholders na linguagem da sua empresa.
+
+* Todas as empresa possuem um pouco de débito organizacional (semelhante ao débito técnico). 
+
 
 ---
 
