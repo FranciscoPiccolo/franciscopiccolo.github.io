@@ -1,11 +1,6 @@
-Olá, seja bem vindo a este humilde blog que trará conteúdo sobre Analytics, BI, estatística e outros temas da área de dados. Decidi construir este blog para tentar ajudar a comunidade com um pouco de conteúdo e também para aprimorar minha escrita e raciocínio. Atualmente trabalho na área de analytics da Amazon e desde 2015 atuo nesta área, resolvendo problemas de negócio com auxílio de dados, testando hipóteses, estimando ROIs de novas iniciativas, construindo ETLs, reports, simulações e o mais importante, ajudando a área de negócio a tomar decisões e melhorar processos.
-Se tiver alguma sugestão, me envie uma mensagem no [linkedin (https://www.linkedin.com/in/franciscopiccolo/).
-
-# Posts
-
 **2023-05-13 - [Resenha] An Elegant Puzzle by Will Larson**
 
-Este livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu registrar seus aprendizados em artigos escritos em seu blog, que após certo período ficou extenso o suficiente para ser colocado em um livro. An Elegant Puzzle aborda diversos temas sobre gestão como cultura organizacional, gerenciamento de projetos, carreira, produtividade, liderança, contratação, e entre outros, e em cada tema o autor indica a importância deste tema e como ele o aborda com sua atual experiência, uma leitura recomendada para gerented de desenvolvimento de software (SDM). Vou colocar aqui alguns insights que consegui extrair deste excelente livro.
+Livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu registrar seus aprendizados em artigos escritos em seu blog, que após certo período ficou extenso o suficiente para ser colocado em um livro. An Elegant Puzzle aborda diversos temas sobre gestão como cultura organizacional, gerenciamento de projetos, carreira, produtividade, liderança, contratação, e entre outros, e em cada tema o autor indica a importância deste tema e como ele o aborda com sua atual experiência, uma leitura recomendada para gerented de desenvolvimento de software (SDM). Vou colocar aqui alguns insights que consegui extrair deste excelente livro.
 
 * Existem diferentes formas de se resolver problemas organizacionais, algumas formas são rápidas, porém não duradouras como design de processos, outras formas são permanentes porém demoradas, como re-design da cultura organizacional e há também formas intermediárias, como design da organização (i.e. alocação de times para áreas de negócio). Neste aspeco, recomenda-se que SDMs tenham de 6 até 8 índidual contributors (IC) em seus times, sendo estes números uma quantia ideal para balancear coaching, coordenação e extensão da missão de sua área. Times muito pequenos seriam muito frágeis e com pouca inovação (por conta do foco em débito técnico).
 
@@ -18,8 +13,25 @@ Em alguns momentos, SDMs ficam tentados a contratar mais pessoas por achar que e
 
 * Mantenha entropia do seu time para que a entrega de produtos/software aconteça quase automaticamente. Para isso, tenha em mente de que projetos só adicionam valor quando são entregues e só são entregues quando são desenvolvidos com foco e baixa interrupção. Neste caso a dica aqui para SDMs é bloquear a agenda para atuar focado em projetos críticos. Outra dica sobre este tema é que cada empresa possui sua linguagem específica e você deve aprender a forma ideal para falar **não** para seus stakeholders na linguagem da sua empresa.
 
-* Todas as empresa possuem um pouco de débito organizacional (semelhante ao débito técnico). 
+* Todas as empresa possuem um pouco de débito organizacional (semelhante ao débito técnico), porém que impactam no atingimento da missão da empresa. Estes débitos se tornam visíveis num salário abaixo da média de mercado, atribuição de projetos sem critérios claros, avaliação de performance falha e consequentemente promoção de funcionários com base em critérios subjetivos. 
 
+* Aprenda a delegar projetos, decisões e riscos gerenciáveis para seu time, se você não delegar, ficará sobrecarregado (mais do que o normal para um gestor), e não conseguirá alavancar os resultados (entregar com base em seu time). 
+
+* Tenha claro um plano de sucessão (ele será importante, pois após uns 3 anos na sua função/empresa, sua taxa de aprendizado ficará estável). Para montar um plano efetivo, escreva suas atribuições, reuniões e outras tarefas chave ao longo de um período, sempre pensando em como a organização e seu time irá funcionar sem você. Identifique gaps que serão criados sem sua presença e tente endereçá-los (alguns gaps são fáceis de fazer o handover, outros possuem mais risco e precisam ser alinhados com seu gestor).
+
+* Durante períodos de mudança em sua empresa, muitos gaps e incertezas aparecem, nestes momentos os gerentes precisam ser como colas para segurar o time junto, e também aumentar o nível de comunicação para manter o norte/missão claro durante e após a mudança.
+
+* Cíclo iterativo do gerenciamento de produtos: identificação de problemas, seleção de problemas (ROI), validação da solução.
+
+* Dê preferência para experimentos em detrimento de análises. Análises são boas para descobrir gaps de informação/causas raízes. Porém você precisa saber onde olhar para analisar. Por outro lado, experimentos permite que você identifique problemas que não conhecia antes.
+
+* Para garantir que seu time está atuando nos problemas corretos e entregando valor para o negócio, você precisa estar alinhado com a estratégia e visão da empresa. Estratégia é como um documento que mostra trade-offs e ações/padrões a serem seguidos. Visão é algo mais aspiracional em se olha para o futuro identificando um lugar para ser alcançado. Um bom documento sobre estratégia deixa claro que alguma área precisará sair da zona de conforto para endereçar o problema. Um bom documento sobre visão mostra o futuro cenário e indica se as atuais restrições ainda vão existir, e quais novas restrições existirão, e também ele será referenciado por outros times para apoiar decisões (deve ser atualizado todo ano).
+
+* Como compor bons objetivos para serem atingidos: meta numérica + performance atual (baseline) + tendência + tempo para ser atingdo. Exemplo "até o final de 2023 a taxa de churn, que atualmente está em 5% (YoY -1% e MoM -0.1%), estará em 3%. Desta forma você mostra que o atingimento dela não será apenas manter a atual tendência, mas sim aplicar mais esforço para trazer melhorias. Algumas métricas são boas para serem mantidas como estão (BAU - business as usual), e outras são para serem aprimoradas e requerem algum investimento e geram um certo risco (ideais para participarem de OKRs). Para a maioria das métricas, é ideal combinar com indicadores pares (countervailing metrics) para que sua meta não seja atingida através da piora de outra métrica importante.
+
+* Para guiar mudança através de métricas, use boas práticas da área de consultoria como a identificação correta do problema, explore os dados o suficiente para a geração de hipóteses, identifique alavancas importantes, traga benchmarks para auxiliar na comparação, direcione os stakeholders para agirem/tomarem uma decisão.
+
+* Aprensentação para liderança possuem uma forma peculiar que não é ensinada na faculdade. O ideal é começar pela conclusão, mostre o motivo pelo qual o tópico importa, esteja preparado para o assunto mudar de direção, responda as perguntas de maneira direta, esteja aprofundado nos dados.
 
 ---
 
