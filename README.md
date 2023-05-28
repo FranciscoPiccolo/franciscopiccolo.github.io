@@ -1,6 +1,6 @@
 **2023-05-13 - [Resenha] An Elegant Puzzle by Will Larson**
 
-Livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu registrar seus aprendizados em artigos escritos em seu blog, que após certo período ficou extenso o suficiente para ser colocado em um livro. An Elegant Puzzle aborda diversos temas sobre gestão como cultura organizacional, gerenciamento de projetos, carreira, produtividade, liderança, contratação, e entre outros, e em cada tema o autor indica a importância deste tema e como ele o aborda com sua atual experiência, uma leitura recomendada para gerented de desenvolvimento de software (SDM). Vou colocar aqui alguns insights que consegui extrair deste excelente livro.
+Este livro foi escrito por um Gerente de Engenharia de Software que têm vários anos de experiência e que conseguiu registrar seus aprendizados em artigos escritos em seu blog, que após certo período ficou extenso o suficiente para ser colocado em um livro. An Elegant Puzzle aborda diversos temas sobre gestão como cultura organizacional, gerenciamento de projetos, carreira, produtividade, liderança e contratação, e em cada tema o autor indica sua importância e como ele o aborda com sua atual experiência. Achei uma leitura bastante recomendada para gerentes de desenvolvimento de software (SDM) e vou registrar aqui alguns insights que consegui extrair deste excelente livro.
 
 * Existem diferentes formas de se resolver problemas organizacionais, algumas formas são rápidas, porém não duradouras como design de processos, outras formas são permanentes porém demoradas, como re-design da cultura organizacional e há também formas intermediárias, como design da organização (i.e. alocação de times para áreas de negócio). Neste aspeco, recomenda-se que SDMs tenham de 6 até 8 índidual contributors (IC) em seus times, sendo estes números uma quantia ideal para balancear coaching, coordenação e extensão da missão de sua área. Times muito pequenos seriam muito frágeis e com pouca inovação (por conta do foco em débito técnico).
 
@@ -31,7 +31,7 @@ Em alguns momentos, SDMs ficam tentados a contratar mais pessoas por achar que e
 
 * Para guiar mudança através de métricas, use boas práticas da área de consultoria como a identificação correta do problema, explore os dados o suficiente para a geração de hipóteses, identifique alavancas importantes, traga benchmarks para auxiliar na comparação, direcione os stakeholders para agirem/tomarem uma decisão.
 
-* Aprensentação para liderança possuem uma forma peculiar que não é ensinada na faculdade. O ideal é começar pela conclusão, mostre o motivo pelo qual o tópico importa, esteja preparado para o assunto mudar de direção, responda as perguntas de maneira direta, esteja aprofundado nos dados.
+* Apresentar ideas e projetos para executivos exige uma preparação que não é ensidada na faculdade  possue uma forma peculiar que não é ensinada na faculdade. O ideal é começar pela conclusão, mostre o motivo pelo qual o tópico importa, esteja preparado para o assunto mudar de direção, responda as perguntas de maneira direta, esteja aprofundado nos dados.
 
 ---
 
