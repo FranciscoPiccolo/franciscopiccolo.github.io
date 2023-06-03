@@ -31,7 +31,19 @@ Em alguns momentos, SDMs ficam tentados a contratar mais pessoas por achar que e
 
 * Para guiar mudança através de métricas, use boas práticas da área de consultoria como a identificação correta do problema, explore os dados o suficiente para a geração de hipóteses, identifique alavancas importantes, traga benchmarks para auxiliar na comparação, direcione os stakeholders para agirem/tomarem uma decisão.
 
-* Apresentar ideas e projetos para executivos exige uma preparação que não é ensidada na faculdade  possue uma forma peculiar que não é ensinada na faculdade. O ideal é começar pela conclusão, mostre o motivo pelo qual o tópico importa, esteja preparado para o assunto mudar de direção, responda as perguntas de maneira direta, esteja aprofundado nos dados.
+* Apresentar ideas e projetos para executivos/alta liderança exige uma preparação que não é ensidada na faculdade, pois o modelo é diferente do que é feito em pesquisa científica. O autor recomenda (i) começar a apresentação a partir da conclusão; (ii) deixar claro a importância do tema; (iii) estar preparado para a conversa seguir outra direção; (iv) responder as perguntas de forma direta; (v) conhecer bem os números e (vi) deixar claro o que se está pedindo (support needed).
+
+* Liderança é conciliar ações apripriadas ao seu contexto atual. Em momentos de crescimento rápido e mudanças, o ideal é focar em execução, porém em momentos de mais estabilidade, é ideal focar em qualidade, inovação e engajamento/relacionamentos. 
+
+* Formas que gerentes acabam ficando empacados no cargo:
+    * Apenas gerenciar para baixo ou apenas para cima
+    * Não dar visibilidade dos resultados do time para a liderança
+    * Focar em otimizações locais ao invés de gerais. Em alguns momentos, é ideal perder eficiência local para gerar ganhos maiores em outras áreas.
+    * Ter a premissa que de contratar não resolve nenhum problema ou assumir que contratar sempre é a opção 1
+    * Não investir tempo construindo relacionamentos ou investir muito tempo em engajamento
+    * Tentar repetir a estratégia que funcionou em outros empregos como gerente
+    * Não ter confiança para delegar
+    * Apenas ver problemas
 
 ---
 
